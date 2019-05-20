@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" rel="stylesheet">
+
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+
+    <title>teacher_infos</title>
+</head>
+<body>
+
+<div th:replace="admin/commons/bar::topbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div th:replace="admin/commons/bar::sidebar(activeStatus='teacher_infos')"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <table class="table table-striped text-center">
+                <thead>
+                <tr>
+                    <th scope="col">工号</th>
+                    <th scope="col">密码</th>
+                    <th scope="col">姓名</th>
+                    <th scope="col">手机</th>
+                    <th scope="col">邮箱</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="teacher:${pageBean.getList()}">
+                    <td th:text="${teacher.getTeacherNumber()}"></td>
+                    <td th:text="${teacher.getTeacherPassword()}"></td>
+                    <td th:text="${teacher.getTeacherName()}"></td>
+                    <td th:text="${teacher.getTeacherPhone()}"></td>
+                    <td th:text="${teacher.getTeacherEmail()}"></td>
+                    <td>
+                        <a th:href="@{#}" class="btn btn-sm btn-primary">编辑</a>
+                        <button th:attr="delUri=@{/admin/teacher/}+${teacher.teacherId}" type="button" class="btn btn-sm btn-danger deleteBtn" data-toggle="modal" data-target="#exampleModalCenter">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">信息删除</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            确认是否删除此条记录
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-sm btn-danger" id="deleteConfirmBtn">确认删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="deleteTeacherForm" method="post">
+                <input type="hidden" name="_method" value="delete">
+            </form>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </main>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/popper.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}" type="text/javascript"></script>
+
+<script th:src="@{/webjars/feather-icons/4.10.0/dist/feather.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/dashboard.js}" type="text/javascript"></script>
+
+<script>
+
+    $(".deleteBtn").click(function(){
+        $("#deleteConfirmBtn").attr("delUri",$(this).attr("delUri"));
+    });
+
+    $("#deleteConfirmBtn").click(function(){
+        $("#deleteTeacherForm").attr("action",$(this).attr("delUri")).submit();
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>admin_bar</title>
+</head>
+<body>
+    <!--top bar-->
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow" th:fragment="topbar">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="javascript:void(0)">[[${session.loginUser.admUsername}]]</a>
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" th:href="@{/user/logout}">退出</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!--side bar-->
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar" th:fragment="sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a th:class="${activeStatus=='main'?'nav-link active':'nav-link'}" th:href="@{/admin_main.html}">
+                        <span data-feather="home"></span>
+                        首页 <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${activeStatus=='lab_infos'?'nav-link active':'nav-link'}" th:href="@{/admin/labs}">
+                        <span data-feather="hard-drive"></span>
+                        实验室信息管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${activeStatus=='teacher_infos'?'nav-link active':'nav-link'}" th:href="@{/admin/teachers/1}">
+                        <span data-feather="users"></span>
+                        教师信息管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${activeStatus=='stu_infos'?'nav-link active':'nav-link'}" th:href="@{/admin/stus}">
+                        <span data-feather="users"></span>
+                        学生信息管理
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+# server Configuration
+server:
+  servlet:
+    context-path: /lims
+  port: 8888
+
+# spring Configuration
+spring:
+  # DB Configuration
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost/lims
+    driver-class-name: com.mysql.jdbc.Driver
+    # DB Pool Configuration
+    type: com.alibaba.druid.pool.DruidDataSource
+    # \u6570\u636E\u6E90\u5176\u4ED6\u914D\u7F6E
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    # \u914D\u7F6E\u76D1\u63A7\u7EDF\u8BA1\u62E6\u622A\u7684filters\uFF0C\u53BB\u6389\u540E\u76D1\u63A7\u754C\u9762sql\u65E0\u6CD5\u7EDF\u8BA1\uFF0C'wall'\u7528\u4E8E\u9632\u706B\u5899
+    filters: stat,wall
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+  # Thymeleaf Configuration
+  thymeleaf:
+    cache: false
+
+  # MVC date format
+  # default configuration:
+  mvc:
+    date-format: yyyy-MM-dd
