@@ -10,7 +10,7 @@
 
     <link th:href="@{/css/dashboard.css}" rel="stylesheet">
 
-    <title>teacher_infos</title>
+    <title>teacherInfos</title>
 </head>
 <body>
 
@@ -22,14 +22,18 @@
         <div th:replace="admin/commons/bar::sidebar(activeStatus='teacher_infos')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h2>
+                <a class="btn btn-sm btn-success" th:href="@{/admin/teacher}">添加教师</a>
+            </h2>
             <table class="table table-striped text-center">
                 <thead>
                 <tr>
                     <th scope="col">工号</th>
                     <th scope="col">密码</th>
                     <th scope="col">姓名</th>
-                    <th scope="col">手机</th>
+                    <th scope="col">联系方式</th>
                     <th scope="col">邮箱</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>

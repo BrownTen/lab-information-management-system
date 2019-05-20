@@ -53,4 +53,8 @@ public class AdminService {
     public void deleteTeacherInfoByTeacherId(Integer id) {
         teacherMapper.deleteTeacherByTeacherId(id);
     }
+
+    public void insertTeacher(Teacher teacher) {
+        teacherMapper.insertTeacher(teacher);
+    }
 }

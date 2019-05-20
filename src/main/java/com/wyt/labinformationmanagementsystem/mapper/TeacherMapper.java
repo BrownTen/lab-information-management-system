@@ -18,7 +18,7 @@ public interface TeacherMapper {
 
     @Insert("insert into teacher_tbl(teacher_number,teacher_password,teacher_name,teacher_phone,teacher_email) " +
             "values(#{teacherNumber},#{teacherPassword},#{teacherName},#{teacherPhone},#{teacherEmail})")
-    @Options(useGeneratedKeys = true, keyProperty = "teacher_id")
+    @Options(useGeneratedKeys = true)
     void insertTeacher(Teacher teacher);
 
     @Select("select count(*) from teacher_tbl")

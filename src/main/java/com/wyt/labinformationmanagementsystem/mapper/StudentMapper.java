@@ -18,7 +18,7 @@ public interface StudentMapper {
 
     @Insert("insert into student_tbl(stu_number,stu_password,stu_name,stu_phone,stu_email,class_id) " +
             "values(#{stuNumber},#{stuPassword},#{stuName},#{stuPhone},#{stuEmail},#{classId})")
-    @Options(useGeneratedKeys = true, keyProperty = "stu_id")
+    @Options(useGeneratedKeys = true)
     void insertStudent(Student student);
 
 }

@@ -6,10 +6,7 @@ import com.wyt.labinformationmanagementsystem.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -18,10 +15,21 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @GetMapping("/labs")
-    public String labInfos(){
-        //TODO
-        return "admin/infos/lab";
+    @GetMapping("/teacher")
+    public String toTeacherAddPage(){
+        return "admin/addOrEdit/teacher";
+    }
+
+    @PostMapping("/teacher")
+    public String insertTeacher(Teacher teacher){
+        adminService.insertTeacher(teacher);
+        return "redirect:/admin/teachers/1";
+    }
+
+    @DeleteMapping("/teacher/{id}")
+    public String teacherInfoDelete(@PathVariable Integer id){
+        adminService.deleteTeacherInfoByTeacherId(id);
+        return "redirect:/admin/teachers/1";
     }
 
     @GetMapping("/teachers/{currentPage}")
@@ -32,15 +40,15 @@ public class AdminController {
         return "admin/infos/teacher";
     }
 
+    @GetMapping("/labs")
+    public String labInfos(){
+        //TODO
+        return "admin/infos/lab";
+    }
+
     @GetMapping("/stus")
     public String stuInfos(){
         //TODO
         return "admin/infos/stu";
-    }
-
-    @DeleteMapping("/teacher/{id}")
-    public String teacherInfoDelete(@PathVariable Integer id){
-        adminService.deleteTeacherInfoByTeacherId(id);
-        return "redirect:/admin/teachers/1";
     }
 }
