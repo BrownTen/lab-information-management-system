@@ -27,8 +27,21 @@ public class AdminController {
     }
 
     @DeleteMapping("/teacher/{id}")
-    public String teacherInfoDelete(@PathVariable Integer id){
+    public String deleteTeacherInfo(@PathVariable Integer id){
         adminService.deleteTeacherInfoByTeacherId(id);
+        return "redirect:/admin/teachers/1";
+    }
+
+    @GetMapping("/teacher/{id}")
+    public String toTeacherEditPage(@PathVariable Integer id, Model model){
+        Teacher teacher = adminService.findTeacherByTeacherId(id);
+        model.addAttribute("teacher", teacher);
+        return "admin/addOrEdit/teacher";
+    }
+
+    @PutMapping("/teacher")
+    public String updateTeacherInfo(Teacher teacher){
+        adminService.updateTeacherInfo(teacher);
         return "redirect:/admin/teachers/1";
     }
 

@@ -57,4 +57,12 @@ public class AdminService {
     public void insertTeacher(Teacher teacher) {
         teacherMapper.insertTeacher(teacher);
     }
+
+    public Teacher findTeacherByTeacherId(Integer id) {
+        return teacherMapper.findTeacherByTeacherId(id);
+    }
+
+    public void updateTeacherInfo(Teacher teacher) {
+        teacherMapper.updateTeacherInfo(teacher);
+    }
 }

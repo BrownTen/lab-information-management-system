@@ -10,6 +10,9 @@ public interface TeacherMapper {
     @Select("select * from teacher_tbl where teacher_number = #{number}")
     Teacher findTeacherByTeacherNumber(String number);
 
+    @Select("select * from teacher_tbl where teacher_id = #{id}")
+    Teacher findTeacherByTeacherId(Integer id);
+
     @Select("select * from teacher_tbl")
     List<Teacher> findAllTeachers();
 
@@ -26,4 +29,9 @@ public interface TeacherMapper {
 
     @Select("select * from teacher_tbl limit ${index}, ${currentCount}")
     List<Teacher> getTeachersLimits(Integer index, Integer currentCount);
+
+    @Update("update teacher_tbl set teacher_number=#{teacherNumber}, teacher_password=#{teacherPassword}, " +
+            "teacher_name=#{teacherName}, teacher_phone=#{teacherPhone}, teacher_email=#{teacherEmail} " +
+            "where teacher_id=#{teacherId}")
+    void updateTeacherInfo(Teacher teacher);
 }

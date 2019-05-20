@@ -44,7 +44,7 @@
                     <td th:text="${teacher.getTeacherPhone()}"></td>
                     <td th:text="${teacher.getTeacherEmail()}"></td>
                     <td>
-                        <a th:href="@{#}" class="btn btn-sm btn-primary">编辑</a>
+                        <a th:href="@{/admin/teacher/}+${teacher.teacherId}" class="btn btn-sm btn-primary">编辑</a>
                         <button th:attr="delUri=@{/admin/teacher/}+${teacher.teacherId}" type="button" class="btn btn-sm btn-danger deleteBtn" data-toggle="modal" data-target="#exampleModalCenter">删除</button>
                     </td>
                 </tr>
