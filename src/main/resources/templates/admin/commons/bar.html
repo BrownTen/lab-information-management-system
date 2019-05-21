@@ -26,21 +26,39 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a th:class="${activeStatus=='lab_infos'?'nav-link active':'nav-link'}" th:href="@{/admin/labs}">
+                    <a th:class="${activeStatus=='labInfos'?'nav-link active':'nav-link'}" th:href="@{/admin/labs/1}">
                         <span data-feather="hard-drive"></span>
                         实验室信息管理
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a th:class="${activeStatus=='teacher_infos'?'nav-link active':'nav-link'}" th:href="@{/admin/teachers/1}">
+                    <a th:class="${activeStatus=='orderInfos'?'nav-link active':'nav-link'}" th:href="@{/admin/orders/1}">
+                        <span data-feather="check-circle"></span>
+                        预约信息管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${activeStatus=='teacherInfos'?'nav-link active':'nav-link'}" th:href="@{/admin/teachers/1}">
                         <span data-feather="users"></span>
                         教师信息管理
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a th:class="${activeStatus=='stu_infos'?'nav-link active':'nav-link'}" th:href="@{/admin/stus}">
+                    <a th:class="${activeStatus=='classInfos'?'nav-link active':'nav-link'}" th:href="@{/admin/classes/1}">
+                        <span data-feather="users"></span>
+                        班级信息管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${activeStatus=='stuInfos'?'nav-link active':'nav-link'}" th:href="@{/admin/stus/1}">
                         <span data-feather="users"></span>
                         学生信息管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${activeStatus=='courseInfos'?'nav-link active':'nav-link'}" th:href="@{/admin/courses/1}">
+                        <span data-feather="clipboard"></span>
+                        授课信息管理
                     </a>
                 </li>
             </ul>

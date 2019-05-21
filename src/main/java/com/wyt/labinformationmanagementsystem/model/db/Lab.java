@@ -9,13 +9,10 @@ import lombok.experimental.Accessors;
 @ToString
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Student {
-    private Integer stuId;
-    private String stuNumber;
-    private String stuPassword;
-    private String stuName;
-    private String stuPhone;
-    private String stuEmail;
+public class Lab {
+    private Integer labId;
+    private String labName;
+    private String labAddress;
 
-    private Class aClass;
+    private Admin admin;
 }

@@ -49,7 +49,7 @@ public class AdminController {
 
     @GetMapping("/teachers/{currentPage}")
     public String teacherInfos(@PathVariable Integer currentPage, Model model){
-        Integer currentCount = 20;
+        Integer currentCount = 10;
         PageBean<Teacher> pageBean = adminService.getTeachersLimits(currentPage, currentCount);
         model.addAttribute("pageBean", pageBean);
         return "admin/infos/teacher";
@@ -71,15 +71,33 @@ public class AdminController {
         return "admin/infos/teacher";
     }
 
-    @GetMapping("/labs")
-    public String labInfos(){
+    @GetMapping("/labs/{currentPage}")
+    public String labInfos(@PathVariable Integer currentPage, Model model){
         //TODO
         return "admin/infos/lab";
     }
 
-    @GetMapping("/stus")
-    public String stuInfos(){
+    @GetMapping("/stus/{currentPage}")
+    public String stuInfos(@PathVariable Integer currentPage, Model model){
         //TODO
         return "admin/infos/stu";
+    }
+
+    @GetMapping("/orders/{currentPage}")
+    public String orderInfos(@PathVariable Integer currentPage, Model model){
+        //TODO
+        return "admin/infos/order";
+    }
+
+    @GetMapping("/courses/{currentPage}")
+    public String courseInfos(@PathVariable Integer currentPage, Model model){
+        //TODO
+        return "admin/infos/course";
+    }
+
+    @GetMapping("/classes/{currentPage}")
+    public String classInfos(@PathVariable Integer currentPage, Model model){
+        //TODO
+        return "admin/infos/class";
     }
 }
