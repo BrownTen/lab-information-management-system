@@ -34,19 +34,19 @@ public class UserController {
             Admin admin = userService.adminLogin(number);
             if(admin!=null && admin.getAdmPassword().equals(password)){
                 session.setAttribute("loginUser",admin);
-                return "redirect:/admin_main.html";
+                return "redirect:/adminMain.html";
             }
         } else if("student".equals(role)){
             Student student = userService.stuentLogin(number);
             if(student!=null && student.getStuPassword().equals(password)){
                 session.setAttribute("loginUser",student);
-                return "redirect:/stu_main.html";
+                return "redirect:/stuMain.html";
             }
         } else if("teacher".equals(role)){
             Teacher teacher = userService.teacherLogin(number);
             if(teacher!=null && teacher.getTeacherPassword().equals(password)){
                 session.setAttribute("loginUser",teacher);
-                return "redirect:/teacher_main.html";
+                return "redirect:/teacherMain.html";
             }
         }
         map.put("msg","登录失败");

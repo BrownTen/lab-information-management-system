@@ -20,72 +20,39 @@
     <div class="sidebar-sticky">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="#">
+                <a th:class="${activeStatus=='main'?'nav-link active':'nav-link'}" th:href="@{/teacher_main.html}">
                     <span data-feather="home"></span>
                     首页 <span class="sr-only">(current)</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="file"></span>
-                    Orders
+                <a th:class="${activeStatus=='selfInfo'?'nav-link active':'nav-link'}" th:href="@{/teacher}">
+                    <span data-feather="user"></span>
+                    个人信息
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="shopping-cart"></span>
-                    Products
+                <a th:class="${activeStatus=='courseInfo'?'nav-link active':'nav-link'}" th:href="@{#}">
+                    <span data-feather="calendar"></span>
+                    课程安排
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="users"></span>
-                    Customers
+                <a th:class="${activeStatus=='orderLab'?'nav-link active':'nav-link'}" th:href="@{#}">
+                    <span data-feather="arrow-up-right"></span>
+                    实验室预约
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="bar-chart-2"></span>
-                    Reports
+                <a th:class="${activeStatus=='orderRecord'?'nav-link active':'nav-link'}" th:href="@{#}">
+                    <span data-feather="check-circle"></span>
+                    预约记录
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="layers"></span>
-                    Integrations
-                </a>
-            </li>
-        </ul>
-
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>Saved reports</span>
-            <a class="d-flex align-items-center text-muted" href="#">
-                <span data-feather="plus-circle"></span>
-            </a>
-        </h6>
-        <ul class="nav flex-column mb-2">
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Current month
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Last quarter
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Social engagement
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Year-end sale
+                <a th:class="${activeStatus=='reportReview'?'nav-link active':'nav-link'}" th:href="@{#}">
+                    <span data-feather="edit-3"></span>
+                    报告批阅
                 </a>
             </li>
         </ul>
