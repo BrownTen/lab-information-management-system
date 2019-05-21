@@ -2,9 +2,9 @@ package com.wyt.labinformationmanagementsystem.service;
 
 import com.wyt.labinformationmanagementsystem.mapper.StudentMapper;
 import com.wyt.labinformationmanagementsystem.mapper.TeacherMapper;
-import com.wyt.labinformationmanagementsystem.model.PageBean;
-import com.wyt.labinformationmanagementsystem.model.Student;
-import com.wyt.labinformationmanagementsystem.model.Teacher;
+import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
+import com.wyt.labinformationmanagementsystem.model.db.Student;
+import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,5 +64,9 @@ public class AdminService {
 
     public void updateTeacherInfo(Teacher teacher) {
         teacherMapper.updateTeacherInfo(teacher);
+    }
+
+    public List<Teacher> getTeachersByCondition(Teacher teacher) {
+        return teacherMapper.getTeachersByCondition(teacher);
     }
 }

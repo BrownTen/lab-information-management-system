@@ -1,6 +1,6 @@
 package com.wyt.labinformationmanagementsystem.mapper;
 
-import com.wyt.labinformationmanagementsystem.model.Teacher;
+import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -34,4 +34,15 @@ public interface TeacherMapper {
             "teacher_name=#{teacherName}, teacher_phone=#{teacherPhone}, teacher_email=#{teacherEmail} " +
             "where teacher_id=#{teacherId}")
     void updateTeacherInfo(Teacher teacher);
+
+    @Select("<script>" +
+                "select * from teacher_tbl where 1=1 " +
+                "<if test = 'teacherNumber!=null'>" +
+                "and teacher_number like concat('%',#{teacherNumber},'%') " +
+                "</if>" +
+                "<if test = 'teacherName!=null'>" +
+                "and teacher_name like concat('%',#{teacherName},'%') " +
+                "</if>" +
+            "</script>")
+    List<Teacher> getTeachersByCondition(Teacher teacher);
 }

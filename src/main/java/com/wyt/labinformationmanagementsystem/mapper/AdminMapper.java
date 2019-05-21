@@ -1,6 +1,6 @@
 package com.wyt.labinformationmanagementsystem.mapper;
 
-import com.wyt.labinformationmanagementsystem.model.Admin;
+import com.wyt.labinformationmanagementsystem.model.db.Admin;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 

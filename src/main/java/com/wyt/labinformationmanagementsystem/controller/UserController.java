@@ -1,8 +1,8 @@
 package com.wyt.labinformationmanagementsystem.controller;
 
-import com.wyt.labinformationmanagementsystem.model.Admin;
-import com.wyt.labinformationmanagementsystem.model.Student;
-import com.wyt.labinformationmanagementsystem.model.Teacher;
+import com.wyt.labinformationmanagementsystem.model.db.Admin;
+import com.wyt.labinformationmanagementsystem.model.db.Student;
+import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

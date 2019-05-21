@@ -1,12 +1,14 @@
 package com.wyt.labinformationmanagementsystem.controller;
 
-import com.wyt.labinformationmanagementsystem.model.PageBean;
-import com.wyt.labinformationmanagementsystem.model.Teacher;
+import com.wyt.labinformationmanagementsystem.model.db.Teacher;
+import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import com.wyt.labinformationmanagementsystem.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -47,8 +49,24 @@ public class AdminController {
 
     @GetMapping("/teachers/{currentPage}")
     public String teacherInfos(@PathVariable Integer currentPage, Model model){
-        Integer currentCount = 10;
+        Integer currentCount = 20;
         PageBean<Teacher> pageBean = adminService.getTeachersLimits(currentPage, currentCount);
+        model.addAttribute("pageBean", pageBean);
+        return "admin/infos/teacher";
+    }
+
+    @GetMapping("/teachers")
+    public String teacherInfos(Teacher teacher, Model model){
+
+        if ((teacher.getTeacherName()==null && teacher.getTeacherNumber()==null)
+            || ("".equals(teacher.getTeacherNumber()) && "".equals(teacher.getTeacherName()))){
+            return "redirect:/admin/teachers/1";
+        }
+
+        List<Teacher> teacherList = adminService.getTeachersByCondition(teacher);
+        PageBean<Teacher> pageBean = new PageBean<>();
+        pageBean.setList(teacherList);
+        model.addAttribute("conditionParam", teacher);
         model.addAttribute("pageBean", pageBean);
         return "admin/infos/teacher";
     }

@@ -22,10 +22,20 @@
         <div th:replace="admin/commons/bar::sidebar(activeStatus='teacher_infos')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <h2>
-                <a class="btn btn-sm btn-success" th:href="@{/admin/teacher}">添加教师</a>
-            </h2>
-            <table class="table table-striped text-center">
+            <form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/admin/teachers}">
+                <h2 class="mb-2 mr-sm-2">
+                    <a class="btn btn-sm btn-success" th:href="@{/admin/teacher}">添加教师</a>
+                </h2>
+                <label class="sr-only" for="inlineFormInputTeacherNumber">工号</label>
+                <input th:value="${conditionParam!=null}?${conditionParam.teacherNumber}" name="teacherNumber" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputTeacherNumber" placeholder="查询工号">
+
+                <label class="sr-only" for="inlineFormInputTeacherName">姓名</label>
+                <input th:value="${conditionParam!=null}?${conditionParam.teacherName}" name="teacherName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputTeacherName" placeholder="查询姓名">
+
+                <button type="submit" class="btn btn-primary mb-2">查询</button>
+            </form>
+
+            <table class="table table-striped text-center table-sm">
                 <thead>
                 <tr>
                     <th scope="col">工号</th>
@@ -33,7 +43,7 @@
                     <th scope="col">姓名</th>
                     <th scope="col">联系方式</th>
                     <th scope="col">邮箱</th>
-                    <th scope="col"></th>
+                    <th scope="col">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -75,16 +85,16 @@
                 <input type="hidden" name="_method" value="delete">
             </form>
 
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example" th:if="${conditionParam==null}">
                 <ul class="pagination justify-content-end">
                     <li th:class="${pageBean.getCurrentPage()==1?'page-item disabled':'page-item'}">
-                        <a class="page-link" th:href="@{/admin/teacher/}+${pageBean.getCurrentPage()-1}" tabindex="-1" aria-disabled="true">Previous</a>
+                        <a class="page-link" th:href="@{/admin/teacher/}+${pageBean.getCurrentPage()-1}" tabindex="-1" aria-disabled="true">上一页</a>
                     </li>
                     <li th:each="index:${pageBean.getTotalPage()}" th:class="${pageBean.getCurrentPage()==index?'page-item active':'page-item'}">
                         <a th:text="${index}" class="page-link" th:href="@{/admin/teacher/}+${index}"></a>
                     </li>
                     <li th:class="${pageBean.getCurrentPage()==pageBean.getTotalPage()?'page-item disabled':'page-item'}">
-                        <a class="page-link" th:href="@{/admin/teacher/}+${pageBean.getCurrentPage()+1}">Next</a>
+                        <a class="page-link" th:href="@{/admin/teacher/}+${pageBean.getCurrentPage()+1}">下一页</a>
                     </li>
                 </ul>
             </nav>

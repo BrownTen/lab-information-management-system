@@ -1,4 +1,4 @@
-package com.wyt.labinformationmanagementsystem.model;
+package com.wyt.labinformationmanagementsystem.model.vo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

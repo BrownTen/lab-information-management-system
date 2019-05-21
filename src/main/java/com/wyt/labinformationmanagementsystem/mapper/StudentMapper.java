@@ -1,6 +1,6 @@
 package com.wyt.labinformationmanagementsystem.mapper;
 
-import com.wyt.labinformationmanagementsystem.model.Student;
+import com.wyt.labinformationmanagementsystem.model.db.Student;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
