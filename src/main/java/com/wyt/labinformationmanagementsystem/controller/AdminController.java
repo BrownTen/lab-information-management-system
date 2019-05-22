@@ -49,7 +49,7 @@ public class AdminController {
 
     @GetMapping("/teachers/{currentPage}")
     public String findAllTeacherInfos(@PathVariable Integer currentPage, Model model){
-        Integer currentCount = 10;
+        Integer currentCount = 8;
         PageBean<Teacher> pageBean = adminService.getTeachersLimits(currentPage, currentCount);
         model.addAttribute("pageBean", pageBean);
         return "admin/infos/teacher";
@@ -98,6 +98,6 @@ public class AdminController {
     @GetMapping("/groups/{currentPage}")
     public String groupInfos(@PathVariable Integer currentPage, Model model){
         //TODO
-        return "group";
+        return "admin/infos/group";
     }
 }

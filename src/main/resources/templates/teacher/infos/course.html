@@ -54,7 +54,7 @@
                     <li th:class="${pageBean.getCurrentPage()==1?'page-item disabled':'page-item'}">
                         <a class="page-link" th:href="@{/teacher/courses/}+${pageBean.getCurrentPage()-1}" tabindex="-1" aria-disabled="true">上一页</a>
                     </li>
-                    <li th:each="index:${pageBean.getTotalPage()}" th:class="${pageBean.getCurrentPage()==index?'page-item active':'page-item'}">
+                    <li th:each="index:${#numbers.sequence(1, pageBean.totalPage)}" th:class="${pageBean.getCurrentPage()==index?'page-item active':'page-item'}">
                         <a th:text="${index}" class="page-link" th:href="@{/teacher/courses/}+${index}"></a>
                     </li>
                     <li th:class="${pageBean.getCurrentPage()==pageBean.getTotalPage()?'page-item disabled':'page-item'}">

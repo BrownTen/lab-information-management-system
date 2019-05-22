@@ -1,6 +1,7 @@
 package com.wyt.labinformationmanagementsystem.controller;
 
 import com.wyt.labinformationmanagementsystem.model.db.Course;
+import com.wyt.labinformationmanagementsystem.model.db.Order;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import com.wyt.labinformationmanagementsystem.service.TeacherService;
@@ -35,11 +36,11 @@ public class TeacherController {
     }
 
     @GetMapping("/courses/{currentPage}/{teacherId}")
-    public String findCoursesByTeacherId(@PathVariable Integer currentPage,
-                                         @PathVariable Integer teacherId,
-                                         Model model){
-        Integer currentCount = 10;
-        PageBean<Course> pageBean = teacherService.getCoursesLimitsByTeacherId(currentPage, currentCount, teacherId);
+    public String findCoursesLimitByTeacherId(@PathVariable Integer currentPage,
+                                              @PathVariable Integer teacherId,
+                                              Model model){
+        Integer currentCount = 8;
+        PageBean<Course> pageBean = teacherService.getCoursesLimitByTeacherId(currentPage, currentCount, teacherId);
         model.addAttribute("pageBean", pageBean);
         return "teacher/infos/course";
     }
@@ -65,8 +66,12 @@ public class TeacherController {
         return "teacher/infos/course";
     }
 
-    @GetMapping("/labs")
-    public String findAllLabs(){
+    @GetMapping("/orderLabs/{currentPage}")
+    public String findLabsLimitStatus0(@PathVariable Integer currentPage,
+                                       Model model){
+        Integer currentCount = 8;
+        PageBean<Order> pageBean = teacherService.getOrdersLimitStatus0(currentPage, currentCount);
+        model.addAttribute("pageBean", pageBean);
         return "teacher/infos/orderLab";
     }
 

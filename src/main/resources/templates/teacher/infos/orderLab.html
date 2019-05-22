@@ -22,10 +22,55 @@
         <div th:replace="teacher/commons/bar::sidebar(activeStatus='orderLab')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">该功能尚未开通</h1>
-            </div>
+            <!--<form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/teacher/courses/}+${session.loginUser.teacherId}">-->
+                <!--<label class="sr-only" for="inlineFormInputCourseName">授课名称</label>-->
+                <!--<input th:value="${conditionBody!=null}?${conditionBody[0]}" name="courseName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputCourseName" placeholder="查询授课名称">-->
 
+                <!--<label class="sr-only" for="inlineFormInputGroupName">授课班级</label>-->
+                <!--<input th:value="${conditionBody!=null}?${conditionBody[1]}" name="groupName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputGroupName" placeholder="查询授课班级">-->
+
+                <!--<button type="submit" class="btn btn-primary mb-2">查询</button>-->
+            <!--</form>-->
+
+            <table class="table table-striped text-center">
+                <thead>
+                <tr>
+                    <th scope="col">序号</th>
+                    <th scope="col">实验室名称</th>
+                    <th scope="col">实验室地址</th>
+                    <th scope="col">管理员姓名</th>
+                    <th scope="col">实验室可用时间</th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order,orderStat:${pageBean.getList()}">
+                    <th scope="row" th:text="${orderStat.count}"></th>
+                    <td th:text="${order.lab.labName}"></td>
+                    <td th:text="${order.lab.labAddress}"></td>
+                    <td th:text="${order.lab.admin.admUsername}"></td>
+                    <td th:text="${order.orderDate}+''+${order.orderTime==0?'/上午':'/下午'}"></td>
+                    <td>
+                        <a th:href="@{#}" class="btn btn-sm btn-primary">预约</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--<nav aria-label="Page navigation example" th:if="${conditionBody==null}">-->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li th:class="${pageBean.getCurrentPage()==1?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/teacher/orderLabs/}+${pageBean.currentPage-1}" tabindex="-1" aria-disabled="true">上一页</a>
+                    </li>
+                    <li th:each="index:${#numbers.sequence(1, pageBean.totalPage)}" th:class="${pageBean.currentPage==index?'page-item active':'page-item'}">
+                        <a th:text="${index}" class="page-link" th:href="@{/teacher/orderLabs/}+${index}"></a>
+                    </li>
+                    <li th:class="${pageBean.getCurrentPage()==pageBean.getTotalPage()?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/teacher/orderLabs/}+${pageBean.currentPage+1}">下一页</a>
+                    </li>
+                </ul>
+            </nav>
         </main>
     </div>
 </div>

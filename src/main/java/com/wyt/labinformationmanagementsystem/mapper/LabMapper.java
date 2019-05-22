@@ -27,4 +27,5 @@ public interface LabMapper {
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.getOrdersByLabId"))
     })
     Lab getLabByOrderId(Integer orderId);
+
 }

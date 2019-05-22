@@ -20,7 +20,7 @@
     <div class="sidebar-sticky">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a th:class="${activeStatus=='main'?'nav-link active':'nav-link'}" th:href="@{/teacher_main.html}">
+                <a th:class="${activeStatus=='main'?'nav-link active':'nav-link'}" th:href="@{/teacherMain.html}">
                     <span data-feather="home"></span>
                     首页 <span class="sr-only">(current)</span>
                 </a>
@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a th:class="${activeStatus=='orderLab'?'nav-link active':'nav-link'}" th:href="@{/teacher/labs}">
+                <a th:class="${activeStatus=='orderLab'?'nav-link active':'nav-link'}" th:href="@{/teacher/orderLabs/1}">
                     <span data-feather="arrow-up-right"></span>
                     实验室预约
                 </a>
