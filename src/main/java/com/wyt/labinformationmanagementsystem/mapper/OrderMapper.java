@@ -40,5 +40,37 @@ public interface OrderMapper {
                     many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByOrderId", fetchType = FetchType.LAZY))
     })
     List<Order> getOrdersLimitStatus0(Integer index, Integer currentCount);
+
+    @Select("<script>" +
+                "select * from order_tbl where order_status = 0 " +
+                "<if test = 'orderDate!=null'>" +
+                "and order_date = #{orderDate} " +
+                "</if> " +
+                "<if test = 'orderTime!=null'> " +
+                "and order_time = #{orderTime} " +
+                "</if> " +
+                "limit #{index},#{currentCount} " +
+            "</script>")
+    @Results({
+            @Result(property = "lab", column = "lab_id",
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByOrderId", fetchType = FetchType.LAZY)),
+            @Result(property = "course", column = "course_id",
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByOrderId", fetchType = FetchType.LAZY))
+    })
+    List<Order> getOrdersLimitStatus0ByCondition(Integer index, Integer currentCount, String orderDate, Integer orderTime);
+
+    @Select("<script>" +
+                "select count(*) from order_tbl where order_status = 0 " +
+                "<if test = 'orderDate!=null'>" +
+                "and order_date = #{orderDate} " +
+                "</if> " +
+                "<if test = 'orderTime!=null'> " +
+                "and order_time = #{orderTime} " +
+                "</if> " +
+            "</script>")
+    Integer getTotalCountByStatus0ByCondition(String orderDate, Integer orderTime);
+
+    @Update("update order_tbl set order_status = 2 where order_id = #{orderId}")
+    void updateOrderStatusByOrderId(Integer orderId);
 }
 

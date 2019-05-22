@@ -15,7 +15,7 @@ public class Order {
     private Integer orderId;
     private Date orderDate;
     private Integer orderTime;
-    private Integer orederStatus;
+    private Integer orderStatus;
     private String orderMessage;
 
     private Lab lab;

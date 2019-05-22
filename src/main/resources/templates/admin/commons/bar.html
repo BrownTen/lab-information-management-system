@@ -13,10 +13,13 @@
                 <a class="nav-link" th:href="@{/user/logout}">退出</a>
             </li>
         </ul>
+        <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </nav>
 
     <!--side bar-->
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar" th:fragment="sidebar">
+    <nav class="col-md-2 collapse d-md-block bg-light sidebar" th:fragment="sidebar">
         <div class="sidebar-sticky">
             <ul class="nav flex-column">
                 <li class="nav-item">

@@ -33,5 +33,4 @@ dependencies {
     compile 'org.webjars:bootstrap:4.3.1'
     compile 'com.alibaba:druid:1.1.10'
     compile 'org.webjars.npm:feather-icons:4.10.0'
-
 }

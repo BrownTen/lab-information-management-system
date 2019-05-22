@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -74,5 +76,36 @@ public class TeacherService {
                 .setList(orders);
 
         return pageBean;
+    }
+
+    public PageBean<Order> getOrdersLimitStatus0ByCondition(Integer currentPage, Integer currentCount, Date orderDate, Integer orderTime) {
+        PageBean<Order> pageBean = new PageBean<>();
+
+        String formatDate = null;
+        if(orderDate!=null){
+            formatDate =  new SimpleDateFormat("yyyy-MM-dd").format(orderDate);
+        }
+
+        Integer totalCount = 0;
+        totalCount = orderMapper.getTotalCountByStatus0ByCondition(formatDate, orderTime);
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+
+        List<Order> orders = orderMapper.getOrdersLimitStatus0ByCondition(index, currentCount, formatDate, orderTime);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(orders);
+
+        return pageBean;
+    }
+
+    public void updateOrderStatusByOrderId(Integer orderId) {
+        orderMapper.updateOrderStatusByOrderId(orderId);
     }
 }
