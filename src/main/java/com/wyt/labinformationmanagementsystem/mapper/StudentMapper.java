@@ -21,4 +21,11 @@ public interface StudentMapper {
     @Options(useGeneratedKeys = true)
     void insertStudent(Student student);
 
+
+    @Select("select * from student_tbl where group_id = #{groupId}")
+    @Results({
+            @Result(property = "group", column = "group_id",
+            many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupByStuId"))
+    })
+    List<Student> getStudentsByGroupId(Integer groupId);
 }

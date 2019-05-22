@@ -16,4 +16,5 @@ public class Group {
     private String groupName;
 
     private List<Course> courses;
+    private List<Student> students;
 }

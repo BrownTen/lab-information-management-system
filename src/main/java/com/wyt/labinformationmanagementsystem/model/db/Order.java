@@ -18,6 +18,6 @@ public class Order {
     private Integer orederStatus;
     private String orderMessage;
 
-    private Integer labId;
-    private Integer courseId;
+    private Lab lab;
+    private Course course;
 }

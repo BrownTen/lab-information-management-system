@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Data
 @ToString
 @NoArgsConstructor
@@ -14,5 +16,6 @@ public class Lab {
     private String labName;
     private String labAddress;
 
-    private Integer adminId;
+    private Admin admin;
+    private List<Order> orders;
 }

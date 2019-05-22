@@ -17,4 +17,5 @@ public class Course {
 
     private List<Teacher> teachers;
     private List<Group> groups;
+    private List<Order> orders;
 }

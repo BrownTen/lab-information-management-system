@@ -20,7 +20,9 @@ public interface CourseMapper {
             @Result(property = "groups", column = "group_id",
             many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupsByCourseId")),
             @Result(property = "teachers", column = "teacher_id",
-            many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.TeacherMapper.getTeachersByCourseId"))
+            many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.TeacherMapper.getTeachersByCourseId")),
+            @Result(property = "orders", column = "order_id",
+            one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.getOrdersByCourseId"))
     })
     List<Course> getCoursesByGroupId(Integer groupId);
 
@@ -30,21 +32,37 @@ public interface CourseMapper {
             @Result(property = "teachers", column = "teacher_id",
             many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.TeacherMapper.getTeachersByCourseId")),
             @Result(property = "groups", column = "group_id",
-                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupsByCourseId"))
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupsByCourseId")),
+            @Result(property = "orders", column = "order_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.getOrdersByCourseId"))
     })
     List<Course> getCoursesByTeacherid(Integer teacherId);
 
     @Select("select * from course_tbl where course_id in " +
             "(select course_id from course_tbl where teacher_id = #{teacherId}) " +
-            "and teacher_id = #{teacherId} limit ${index},${currentCount}")
+            "limit ${index},${currentCount}")
     @Results({
             @Result(property = "teachers", column = "teacher_id",
                     many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.TeacherMapper.getTeachersByCourseId")),
             @Result(property = "groups", column = "group_id",
-                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupsByCourseId"))
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupsByCourseId")),
+            @Result(property = "orders", column = "order_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.getOrdersByCourseId"))
     })
     List<Course> getCoursesLimitByTeacherId(Integer index, Integer currentCount, Integer teacherId);
 
     @Select("select * from course_tbl limit ${index},${currentCount}")
     List<Course> getCoursesLimit(Integer index, Integer currentCount);
+
+    @Select("select * from course_tbl where course_id in " +
+            "(select course_id from order_tbl where order_id = #{orderId})")
+    @Results({
+            @Result(property = "teachers", column = "teacher_id",
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.TeacherMapper.getTeachersByCourseId")),
+            @Result(property = "groups", column = "group_id",
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupsByCourseId")),
+            @Result(property = "orders", column = "order_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.getOrdersByCourseId"))
+    })
+    Course getCourseByOrderId(Integer orderId);
 }
