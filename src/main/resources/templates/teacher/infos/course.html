@@ -22,10 +22,36 @@
         <div th:replace="teacher/commons/bar::sidebar(activeStatus='courseInfo')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">该功能尚未开通</h1>
-            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">序号</th>
+                    <th scope="col">授课名称</th>
+                    <th scope="col">授课班级</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="course,courseStat:${pageBean.getList()}">
+                    <th scope="row" th:text="${courseStat.count}"></th>
+                    <td th:text="${course.courseName}"></td>
+                    <td th:text="${course.groups[0].groupName}"></td>
+                </tr>
+                </tbody>
+            </table>
 
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li th:class="${pageBean.getCurrentPage()==1?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/teacher/courses/}+${pageBean.getCurrentPage()-1}" tabindex="-1" aria-disabled="true">上一页</a>
+                    </li>
+                    <li th:each="index:${pageBean.getTotalPage()}" th:class="${pageBean.getCurrentPage()==index?'page-item active':'page-item'}">
+                        <a th:text="${index}" class="page-link" th:href="@{/teacher/courses/}+${index}"></a>
+                    </li>
+                    <li th:class="${pageBean.getCurrentPage()==pageBean.getTotalPage()?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/teacher/courses/}+${pageBean.getCurrentPage()+1}">下一页</a>
+                    </li>
+                </ul>
+            </nav>
         </main>
     </div>
 </div>

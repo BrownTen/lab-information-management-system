@@ -95,9 +95,9 @@ public class AdminController {
         return "admin/infos/course";
     }
 
-    @GetMapping("/classes/{currentPage}")
-    public String classInfos(@PathVariable Integer currentPage, Model model){
+    @GetMapping("/groups/{currentPage}")
+    public String groupInfos(@PathVariable Integer currentPage, Model model){
         //TODO
-        return "admin/infos/class";
+        return "group";
     }
 }

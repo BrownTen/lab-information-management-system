@@ -2,6 +2,7 @@ package com.wyt.labinformationmanagementsystem.mapper;
 
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 
@@ -45,4 +46,12 @@ public interface TeacherMapper {
                 "</if>" +
             "</script>")
     List<Teacher> getTeachersByCondition(Teacher teacher);
+
+    @Select("select * from teacher_tbl where teacher_id in " +
+            "(select teacher_id from course_tbl where course_id = #{courseId})")
+    @Results({
+            @Result(property = "courses", column = "course_id",
+            many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCoursesByTeacherId", fetchType = FetchType.LAZY))
+    })
+    List<Teacher> getTeachersByCourseId(Integer courseId);
 }

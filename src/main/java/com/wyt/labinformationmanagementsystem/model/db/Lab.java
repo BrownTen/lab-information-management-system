@@ -14,5 +14,5 @@ public class Lab {
     private String labName;
     private String labAddress;
 
-    private Admin admin;
+    private Integer adminId;
 }

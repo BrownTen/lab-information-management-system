@@ -17,5 +17,5 @@ public class Student {
     private String stuPhone;
     private String stuEmail;
 
-    private Class aClass;
+    private Integer groupId;
 }

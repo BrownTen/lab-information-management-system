@@ -32,9 +32,9 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a th:class="${activeStatus=='courseInfo'?'nav-link active':'nav-link'}" th:href="@{/teacher/courses}">
+                <a th:class="${activeStatus=='courseInfo'?'nav-link active':'nav-link'}" th:href="@{/teacher/courses/1/}+${session.loginUser.teacherId}">
                     <span data-feather="calendar"></span>
-                    课程安排
+                    授课安排
                 </a>
             </li>
             <li class="nav-item">

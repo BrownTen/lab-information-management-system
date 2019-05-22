@@ -5,11 +5,15 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Data
 @ToString
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Class {
-    private Integer classId;
-    private String className;
+public class Group {
+    private Integer groupId;
+    private String groupName;
+
+    private List<Course> courses;
 }
