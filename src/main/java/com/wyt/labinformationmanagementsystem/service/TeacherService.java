@@ -49,4 +49,8 @@ public class TeacherService {
 
         return pageBean;
     }
+
+    public List<Course> getCoursesByCondition(String courseName, String groupName, Integer teacherId) {
+        return courseMapper.getCoursesByCondition(courseName, groupName, teacherId);
+    }
 }

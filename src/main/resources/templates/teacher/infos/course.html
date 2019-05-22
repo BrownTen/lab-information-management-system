@@ -22,6 +22,16 @@
         <div th:replace="teacher/commons/bar::sidebar(activeStatus='courseInfo')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/teacher/courses/}+${session.loginUser.teacherId}">
+                <label class="sr-only" for="inlineFormInputCourseName">授课名称</label>
+                <input th:value="${conditionBody!=null}?${conditionBody[0]}" name="courseName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputCourseName" placeholder="查询授课名称">
+
+                <label class="sr-only" for="inlineFormInputGroupName">授课班级</label>
+                <input th:value="${conditionBody!=null}?${conditionBody[1]}" name="groupName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputGroupName" placeholder="查询授课班级">
+
+                <button type="submit" class="btn btn-primary mb-2">查询</button>
+            </form>
+
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -39,7 +49,7 @@
                 </tbody>
             </table>
 
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example" th:if="${conditionBody==null}">
                 <ul class="pagination justify-content-end">
                     <li th:class="${pageBean.getCurrentPage()==1?'page-item disabled':'page-item'}">
                         <a class="page-link" th:href="@{/teacher/courses/}+${pageBean.getCurrentPage()-1}" tabindex="-1" aria-disabled="true">上一页</a>

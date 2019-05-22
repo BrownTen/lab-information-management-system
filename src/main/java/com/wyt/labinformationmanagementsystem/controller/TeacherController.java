@@ -4,15 +4,15 @@ import com.wyt.labinformationmanagementsystem.model.db.Course;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import com.wyt.labinformationmanagementsystem.service.TeacherService;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("/teacher")
@@ -27,9 +27,7 @@ public class TeacherController {
     }
 
     @PutMapping
-    public String updateTeacher(Teacher teacher,
-                                Model model,
-                                HttpSession session){
+    public String updateTeacher(Teacher teacher, Model model, HttpSession session){
         teacherService.updateTeacher(teacher);
         session.setAttribute("loginUser",teacher);
         model.addAttribute("msg","信息修改成功");
@@ -37,11 +35,32 @@ public class TeacherController {
     }
 
     @GetMapping("/courses/{currentPage}/{teacherId}")
-    public String findAllCoursesByTeacherId(@PathVariable Integer currentPage,
-                                            @PathVariable Integer teacherId,
-                                            Model model){
+    public String findCoursesByTeacherId(@PathVariable Integer currentPage,
+                                         @PathVariable Integer teacherId,
+                                         Model model){
         Integer currentCount = 10;
         PageBean<Course> pageBean = teacherService.getCoursesLimitsByTeacherId(currentPage, currentCount, teacherId);
+        model.addAttribute("pageBean", pageBean);
+        return "teacher/infos/course";
+    }
+
+    @GetMapping("/courses/{teacherId}")
+    public String findCoursesByCondition(@PathVariable Integer teacherId,
+                                         @RequestParam("courseName") String courseName,
+                                         @RequestParam("groupName") String  groupName,
+                                         Model model){
+
+        if (Strings.isEmpty(courseName) && Strings.isEmpty(groupName)){
+            return "redirect:/teacher/courses/1/"+teacherId;
+        }
+
+        List<Course> courseList = teacherService.getCoursesByCondition(courseName, groupName, teacherId);
+        PageBean<Course> pageBean = new PageBean<>();
+        pageBean.setList(courseList);
+
+        List<String> conditionBody = Arrays.asList(courseName, groupName);
+
+        model.addAttribute("conditionBody", conditionBody);
         model.addAttribute("pageBean", pageBean);
         return "teacher/infos/course";
     }

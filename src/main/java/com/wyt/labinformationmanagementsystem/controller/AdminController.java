@@ -48,7 +48,7 @@ public class AdminController {
     }
 
     @GetMapping("/teachers/{currentPage}")
-    public String teacherInfos(@PathVariable Integer currentPage, Model model){
+    public String findAllTeacherInfos(@PathVariable Integer currentPage, Model model){
         Integer currentCount = 10;
         PageBean<Teacher> pageBean = adminService.getTeachersLimits(currentPage, currentCount);
         model.addAttribute("pageBean", pageBean);
@@ -56,7 +56,7 @@ public class AdminController {
     }
 
     @GetMapping("/teachers")
-    public String teacherInfos(Teacher teacher, Model model){
+    public String findTeacherInfosByCondition(Teacher teacher, Model model){
 
         if ((teacher.getTeacherName()==null && teacher.getTeacherNumber()==null)
             || ("".equals(teacher.getTeacherNumber()) && "".equals(teacher.getTeacherName()))){

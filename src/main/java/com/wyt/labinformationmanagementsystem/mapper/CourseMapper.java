@@ -65,4 +65,25 @@ public interface CourseMapper {
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.getOrdersByCourseId"))
     })
     Course getCourseByOrderId(Integer orderId);
+
+    @Select("<script>" +
+            "select * from course_tbl where course_id in " +
+            "(select course_id from course_tbl where teacher_id = #{teacherId}) " +
+            "<if test = 'courseName!=null'>" +
+            "and course_name like concat('%',#{courseName},'%') " +
+            "</if>" +
+            "<if test = 'groupName!=null'>" +
+            "and group_id in " +
+            "(select group_id from group_tbl where group_name like concat('%',#{groupName},'%')) " +
+            "</if>" +
+            "</script>")
+    @Results({
+            @Result(property = "teachers", column = "teacher_id",
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.TeacherMapper.getTeachersByCourseId")),
+            @Result(property = "groups", column = "group_id",
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupsByCourseId")),
+            @Result(property = "orders", column = "order_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.getOrdersByCourseId"))
+    })
+    List<Course> getCoursesByCondition(String courseName, String groupName, Integer teacherId);
 }
