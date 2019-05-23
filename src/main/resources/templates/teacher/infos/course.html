@@ -51,7 +51,7 @@
                     <td th:text="${course.courseName}"></td>
                     <td th:text="${course.groups[0].groupName}"></td>
                     <td th:if="${session.orderId!=null}">
-                        <button th:attr="updateUri=@{/teacher/order/}+${session.orderId}" type="button" class="btn btn-sm btn-primary updateBtn">预约</button>
+                        <button th:attr="updateUri=@{/teacher/order/}+${session.orderId}+'/'+${course.courseId}+'/'+${session.loginUser.teacherId}" type="button" class="btn btn-sm btn-primary updateBtn">预约</button>
                         <a th:href="@{/teacher/orderLabs/1}" class="btn btn-sm btn-secondary">取消</a>
                     </td>
                 </tr>
@@ -65,13 +65,13 @@
             <nav aria-label="Page navigation example" th:if="${conditionBody==null}">
                 <ul class="pagination justify-content-end">
                     <li th:class="${pageBean.getCurrentPage()==1?'page-item disabled':'page-item'}">
-                        <a class="page-link" th:href="@{/teacher/courses/}+${pageBean.getCurrentPage()-1}" tabindex="-1" aria-disabled="true">上一页</a>
+                        <a class="page-link" th:href="@{/teacher/courses/}+${pageBean.getCurrentPage()-1}+'/'+${session.loginUser.teacherId}" tabindex="-1" aria-disabled="true">上一页</a>
                     </li>
                     <li th:each="index:${#numbers.sequence(1, pageBean.totalPage)}" th:class="${pageBean.getCurrentPage()==index?'page-item active':'page-item'}">
-                        <a th:text="${index}" class="page-link" th:href="@{/teacher/courses/}+${index}"></a>
+                        <a th:text="${index}" class="page-link" th:href="@{/teacher/courses/}+${index}+'/'+${session.loginUser.teacherId}"></a>
                     </li>
                     <li th:class="${pageBean.getCurrentPage()==pageBean.getTotalPage()?'page-item disabled':'page-item'}">
-                        <a class="page-link" th:href="@{/teacher/courses/}+${pageBean.getCurrentPage()+1}">下一页</a>
+                        <a class="page-link" th:href="@{/teacher/courses/}+${pageBean.getCurrentPage()+1}+'/'+${session.loginUser.teacherId}">下一页</a>
                     </li>
                 </ul>
             </nav>

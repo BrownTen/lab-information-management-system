@@ -70,7 +70,22 @@ public interface OrderMapper {
             "</script>")
     Integer getTotalCountByStatus0ByCondition(String orderDate, Integer orderTime);
 
-    @Update("update order_tbl set order_status = 2 where order_id = #{orderId}")
-    void updateOrderStatusByOrderId(Integer orderId);
+    @Update("update order_tbl set order_status = 2, course_id = #{courseId} where order_id = #{orderId}")
+    void updateOrderStatusByOrderId(Integer orderId, Integer courseId);
+
+    @Select("select count(*) from order_tbl where order_status != 0 and " +
+            "course_id in (select course_id from course_tbl where teacher_id = #{teacherId})")
+    Integer getTotalCountByStatus123ByTeacherId(Integer teacherId);
+
+    @Select("select * from order_tbl where order_status != 0 and " +
+            "course_id in (select course_id from course_tbl where teacher_id = #{teacherId}) " +
+            "limit #{index},#{currentCount}")
+    @Results({
+            @Result(property = "lab", column = "lab_id",
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByOrderId", fetchType = FetchType.LAZY)),
+            @Result(property = "course", column = "course_id",
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByOrderId", fetchType = FetchType.LAZY))
+    })
+    List<Order> getOrdersLimitStatus123ByTeacherId(Integer index, Integer currentCount, Integer teacherId);
 }
 

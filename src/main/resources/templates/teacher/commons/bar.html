@@ -47,7 +47,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a th:class="${activeStatus=='orderRecord'?'nav-link active':'nav-link'}" th:href="@{/teacher/orderedLabs}">
+                <a th:class="${activeStatus=='orderRecord'?'nav-link active':'nav-link'}" th:href="@{/teacher/orderedLabs/1/}+${session.loginUser.teacherId}">
                     <span data-feather="check-circle"></span>
                     预约记录
                 </a>

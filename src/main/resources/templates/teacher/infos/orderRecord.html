@@ -22,10 +22,82 @@
         <div th:replace="teacher/commons/bar::sidebar(activeStatus='orderRecord')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">该功能尚未开通</h1>
-            </div>
+            <!--<form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/teacher/conditionOrderLabs/1}">-->
+                <!--<label class="sr-only" for="inlineFormInputDate">使用日期</label>-->
+                <!--<input th:value="${conditionParm!=null}?${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}" name="orderDate" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputDate" placeholder="查询可用日期">-->
 
+                <!--<select th:name="orderTime" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect1">-->
+                    <!--<option value="">查询可用时间</option>-->
+                    <!--<option th:if="${conditionParm==null}" value="0">上午</option>-->
+                    <!--<option th:if="${conditionParm==null}" value="1">下午</option>-->
+                    <!--<option th:if="${conditionParm!=null && conditionParm.orderTime==0}" value="0" selected>上午</option>-->
+                    <!--<option th:if="${conditionParm!=null && conditionParm.orderTime!=0}" value="0">上午</option>-->
+                    <!--<option th:if="${conditionParm!=null && conditionParm.orderTime==1}" value="1" selected>下午</option>-->
+                    <!--<option th:if="${conditionParm!=null && conditionParm.orderTime!=1}" value="1">下午</option>-->
+                <!--</select>-->
+
+                <!--<button type="submit" class="btn btn-primary mb-2">查询</button>-->
+            <!--</form>-->
+
+            <table class="table table-sm table-striped text-center">
+                <thead>
+                <tr>
+                    <th scope="col">序号</th>
+                    <th scope="col">实验室名称</th>
+                    <th scope="col">实验室地址</th>
+                    <th scope="col">管理员姓名</th>
+                    <th scope="col">实验室可用时间</th>
+                    <th scope="col">实验室预约课程</th>
+                    <th scope="col">实验室预约班级</th>
+                    <th scope="col">实验室预约状态</th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${pageBean.totalCount==0}">
+                    <td colspan="6" rowspan="2">暂无预约记录无记录</td>
+                </tr>
+                <tr th:each="order,orderStat:${pageBean.getList()}">
+                    <th scope="row" th:text="${orderStat.count}"></th>
+                    <td th:text="${order.lab.labName}"></td>
+                    <td th:text="${order.lab.labAddress}"></td>
+                    <td th:text="${order.lab.admin.admUsername}"></td>
+                    <td th:text="${#dates.format(order.orderDate,'yyyy-MM-dd')}+''+${order.orderTime==0?'/上午':'/下午'}"></td>
+                    <td th:text="${order.course.courseName}"></td>
+                    <td th:text="${order.course.groups[0].groupName}"></td>
+                    <td th:if="${order.orderStatus==2}" th:text="预约中"></td>
+                    <td th:if="${order.orderStatus==1}" th:text="已预约"></td>
+                    <td th:if="${order.orderStatus==3}" th:text="预约中止/失败"></td>
+                    <td>
+                        <button type="button" th:if="${order.orderStatus==2}" class="btn btn-sm btn-primary">取消预约</button>
+                        <button type="button" th:if="${order.orderStatus!=2}" class="btn btn-sm btn-secondary disabled">取消预约</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li th:class="${pageBean.getCurrentPage()==1?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/teacher/orderedLabs/}+${pageBean.currentPage-1}+'/'+${session.loginUser.teacherId}" th:if="${conditionParm==null}" tabindex="-1" aria-disabled="true">上一页</a>
+                        <!--<a class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${pageBean.currentPage-1}+'?orderDate='+${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}" tabindex="-1" aria-disabled="true">上一页</a>-->
+                    </li>
+                    <li th:if="${pageBean.totalCount!=0}" th:each="index:${#numbers.sequence(1, pageBean.totalPage)}" th:class="${pageBean.currentPage==index?'page-item active':'page-item'}">
+                        <a th:text="${index}" class="page-link" th:href="@{/teacher/orderedLabs/}+${index}+'/'+${session.loginUser.teacherId}" th:if="${conditionParm==null}"></a>
+                        <!--<a th:text="${index}" class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${index}+'?orderDate='+${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}"></a>-->
+                    </li>
+                    <li th:if="${pageBean.totalCount!=0}" th:class="${pageBean.getCurrentPage()==pageBean.getTotalPage()?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/teacher/orderedLabs/}+${pageBean.currentPage+1}+'/'+${session.loginUser.teacherId}" th:if="${conditionParm==null}">下一页</a>
+                        <!--<a class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${pageBean.currentPage+1}+'?orderDate='+${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}">下一页</a>-->
+                    </li>
+                    <li th:if="${pageBean.totalCount==0}" class="page-item active">
+                        <a th:text="0" class="page-link" href="javascript:void(0)"></a>
+                    </li>
+                    <li th:if="${pageBean.totalCount==0}" class="page-item disabled">
+                        <a class="page-link" href="javascript:void(0)">下一页</a>
+                    </li>
+                </ul>
+            </nav>
         </main>
     </div>
 </div>

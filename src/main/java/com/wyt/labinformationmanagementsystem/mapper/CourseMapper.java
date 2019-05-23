@@ -86,4 +86,5 @@ public interface CourseMapper {
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.getOrdersByCourseId"))
     })
     List<Course> getCoursesByCondition(String courseName, String groupName, Integer teacherId);
+
 }

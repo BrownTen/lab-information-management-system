@@ -52,7 +52,7 @@
                 </thead>
                 <tbody>
                 <tr th:if="${pageBean.totalCount==0}">
-                    <td colspan="6" rowspan="2">无记录</td>
+                    <td colspan="6" rowspan="2">无可预约教室</td>
                 </tr>
                 <tr th:each="order,orderStat:${pageBean.getList()}">
                     <th scope="row" th:text="${orderStat.count}"></th>

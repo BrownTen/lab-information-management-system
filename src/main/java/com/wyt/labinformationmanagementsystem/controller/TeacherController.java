@@ -66,16 +66,22 @@ public class TeacherController {
         return "teacher/infos/course";
     }
 
-    @PutMapping("/order/{orderId}")
-    public String updateOrderStatusByOrderId(@PathVariable Integer orderId){
-        teacherService.updateOrderStatusByOrderId(orderId);
-        return "redirect:/teacher/orderedLabs";
-    }
-
     @GetMapping("/order/{orderId}/{teacherId}")
     public String toOrderLabSelectGroup(@PathVariable Integer orderId, @PathVariable Integer teacherId, HttpSession session){
         session.setAttribute("orderId", orderId);
         return "redirect:/teacher/courses/1/"+teacherId;
+    }
+
+    @PutMapping("/order/{orderId}/{courseId}/{teacherId}")
+    public String updateOrderStatusByOrderId(@PathVariable Integer orderId,
+                                             @PathVariable Integer courseId,
+                                             @PathVariable Integer teacherId,
+                                             HttpSession session){
+        teacherService.updateOrderStatusByOrderId(orderId, courseId);
+        if(session.getAttribute("orderId")!=null){
+            session.removeAttribute("orderId");
+        }
+        return "redirect:/teacher/orderedLabs/1/"+teacherId;
     }
 
     @GetMapping("/orderLabs/{currentPage}")
@@ -103,8 +109,13 @@ public class TeacherController {
         return "teacher/infos/orderLab";
     }
 
-    @GetMapping("/orderedLabs")
-    public String findAllOrderedLabs(){
+    @GetMapping("/orderedLabs/{currentPage}/{teacherId}")
+    public String findOrderedLabsLimitStatus123ByTeacherId(@PathVariable Integer currentPage,
+                                                           @PathVariable Integer teacherId,
+                                                           Model model){
+        Integer currentCount = 8;
+        PageBean<Order> pageBean = teacherService.getOrderedLabsLimitStatus123ByTeacherId(currentPage, currentCount, teacherId);
+        model.addAttribute("pageBean", pageBean);
         return "teacher/infos/orderRecord";
     }
 
