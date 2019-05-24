@@ -74,11 +74,11 @@ public class TeacherController {
     }
 
     @PutMapping("/order/{orderId}/{courseId}/{teacherId}")
-    public String updateOrderStatusByOrderId(@PathVariable Integer orderId,
+    public String updateOrderStatus2ByOrderId(@PathVariable Integer orderId,
                                              @PathVariable Integer courseId,
                                              @PathVariable Integer teacherId,
                                              HttpSession session){
-        teacherService.updateOrderStatusByOrderId(orderId, courseId);
+        teacherService.updateOrderStatus2ByOrderId(orderId, courseId);
         if(session.getAttribute("orderId")!=null){
             session.removeAttribute("orderId");
         }
@@ -130,6 +130,14 @@ public class TeacherController {
         model.addAttribute("pageBean", pageBean);
         model.addAttribute("orderRecordCondition",orderRecordCondition);
         return "teacher/infos/orderRecord";
+    }
+
+    @PostMapping("/orderRecord/{orderId}/{teacherId}")
+    public String updateOrderRecordStatus3ByOrderId(@PathVariable Integer orderId, @PathVariable Integer teacherId, String orderMessage){
+        teacherService.updateOrderStatus3ByOrderId(orderId, orderMessage);
+        Order order = teacherService.findOrderByOrderId(orderId);
+        teacherService.insertOrder(order);
+        return "redirect:/teacher/orderedLabs/1/"+teacherId;
     }
 
     @GetMapping("/reports")

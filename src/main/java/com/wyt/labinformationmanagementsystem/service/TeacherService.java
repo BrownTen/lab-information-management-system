@@ -106,8 +106,8 @@ public class TeacherService {
         return pageBean;
     }
 
-    public void updateOrderStatusByOrderId(Integer orderId, Integer courseId) {
-        orderMapper.updateOrderStatusByOrderId(orderId, courseId);
+    public void updateOrderStatus2ByOrderId(Integer orderId, Integer courseId) {
+        orderMapper.updateOrderStatus2ByOrderId(orderId, courseId);
     }
 
     public PageBean<Order> getOrderedLabsLimitStatus123ByTeacherId(Integer currentPage, Integer currentCount, Integer teacherId) {
@@ -155,5 +155,17 @@ public class TeacherService {
                 .setList(orders);
 
         return pageBean;
+    }
+
+    public void updateOrderStatus3ByOrderId(Integer orderId, String orderMessage) {
+        orderMapper.updateOrderStatus3ByOrderId(orderId, orderMessage);
+    }
+
+    public void insertOrder(Order order) {
+        orderMapper.insertOrder(order);
+    }
+
+    public Order findOrderByOrderId(Integer orderId) {
+        return orderMapper.findOrderByOrderId(orderId);
     }
 }

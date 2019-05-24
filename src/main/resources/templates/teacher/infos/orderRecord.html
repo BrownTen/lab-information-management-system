@@ -91,12 +91,59 @@
                     <td th:if="${order.orderStatus==1}" th:text="已预约"></td>
                     <td th:if="${order.orderStatus==3}" th:text="预约中止+'/'+失败"></td>
                     <td>
-                        <button type="button" th:if="${order.orderStatus==2}" class="btn btn-sm btn-primary">取消预约</button>
-                        <button type="button" th:if="${order.orderStatus!=2}" class="btn btn-sm btn-secondary disabled">取消预约</button>
+                        <button th:attr="cancelUri=@{/teacher/orderRecord/}+${order.orderId}+'/'+${session.loginUser.teacherId}" type="button" th:if="${order.orderStatus==2}" class="btn btn-sm btn-danger cancelBtn" data-toggle="modal" data-target="#exampleModalCenter">取消预约</button>
+                        <button type="button" th:if="${order.orderStatus==1}" class="btn btn-sm btn-success disabled">预约成功</button>
+                        <button th:attr="message=${order.orderMessage}" type="button" th:if="${order.orderStatus==3}" class="btn btn-sm btn-primary showMessageBtn" data-toggle="modal" data-target="#exampleModalCenter2">查看信息</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
+
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">友情提示</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p style="color: red">确认是否取消预约</p>
+                            <form id="cancelOrderForm" method="post">
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">取消缘由</label>
+                                    <textarea class="form-control" id="message-text" name="orderMessage"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-sm btn-danger" id="cancelConfirmBtn">确认取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle2">友情提示</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="messageArea" class="col-form-label">预约中止/失败缘由</label> <br>
+                            <textarea id="messageArea" readonly></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-end">
@@ -138,6 +185,18 @@
 <script>
     laydate.render({
         elem: '#inlineFormInputDate'
+    });
+
+    $(".cancelBtn").click(function () {
+        $("#cancelConfirmBtn").attr("cancelUri",$(this).attr("cancelUri"));
+    });
+
+    $("#cancelConfirmBtn").click(function () {
+        $("#cancelOrderForm").attr("action",$(this).attr("cancelUri")).submit();
+    });
+
+    $(".showMessageBtn").click(function () {
+        $("#messageArea").val($(this).attr("message"));
     });
 </script>
 

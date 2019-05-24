@@ -53,7 +53,10 @@ public interface OrderMapper {
 
     /////////////////////////////////////////////////////
     @Update("update order_tbl set order_status = 2, course_id = #{courseId} where order_id = #{orderId}")
-    void updateOrderStatusByOrderId(Integer orderId, Integer courseId);
+    void updateOrderStatus2ByOrderId(Integer orderId, Integer courseId);
+
+    @Update("update order_tbl set order_status = 3, order_message = #{orderMessage} where order_id = #{orderId}")
+    void updateOrderStatus3ByOrderId(Integer orderId, String orderMessage);
 
     /////////////////////////////////////////////////////
     @Select("select count(*) from order_tbl where order_status != 0 and " +
@@ -132,5 +135,16 @@ public interface OrderMapper {
                     many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByCourseId"))
     })
     List<Order> getOrdersLimitByConditionByTeacherId(Integer index, Integer currentCount, OrderRecordCondition orderRecordCondition, Integer teacherId, String orderDate);
+
+    @Insert("insert into order_tbl(order_date,order_time,order_status,lab_id) " +
+            "values(#{orderDate},#{orderTime},0,#{lab.labId})")
+    void insertOrder(Order order);
+
+    @Select("select * from order_tbl where order_id = #{orderId}")
+    @Results({
+            @Result(property = "lab", column = "lab_id",
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId")),
+    })
+    Order findOrderByOrderId(Integer orderId);
 }
 
