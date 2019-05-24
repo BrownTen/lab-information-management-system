@@ -71,18 +71,18 @@
                 <ul class="pagination justify-content-end">
                     <li th:class="${pageBean.getCurrentPage()==1?'page-item disabled':'page-item'}">
                         <a class="page-link" th:href="@{/teacher/orderLabs/}+${pageBean.currentPage-1}" th:if="${conditionParm==null}" tabindex="-1" aria-disabled="true">上一页</a>
-                        <a class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${pageBean.currentPage-1}+'?orderDate='+${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}" tabindex="-1" aria-disabled="true">上一页</a>
+                        <a class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${pageBean.currentPage-1}+'?orderDate='+${conditionParm.orderDate!=null?#dates.format(conditionParm.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}" tabindex="-1" aria-disabled="true">上一页</a>
                     </li>
                     <li th:if="${pageBean.totalCount!=0}" th:each="index:${#numbers.sequence(1, pageBean.totalPage)}" th:class="${pageBean.currentPage==index?'page-item active':'page-item'}">
                         <a th:text="${index}" class="page-link" th:href="@{/teacher/orderLabs/}+${index}" th:if="${conditionParm==null}"></a>
-                        <a th:text="${index}" class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${index}+'?orderDate='+${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}"></a>
-                    </li>
-                    <li th:if="${pageBean.totalCount==0}" class="page-item active">
-                        <a th:text="0" class="page-link" href="javascript:void(0)"></a>
+                        <a th:text="${index}" class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${index}+'?orderDate='+${conditionParm.orderDate!=null?#dates.format(conditionParm.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}"></a>
                     </li>
                     <li th:if="${pageBean.totalCount!=0}" th:class="${pageBean.getCurrentPage()==pageBean.getTotalPage()?'page-item disabled':'page-item'}">
                         <a class="page-link" th:href="@{/teacher/orderLabs/}+${pageBean.currentPage+1}" th:if="${conditionParm==null}">下一页</a>
-                        <a class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${pageBean.currentPage+1}+'?orderDate='+${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}">下一页</a>
+                        <a class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${pageBean.currentPage+1}+'?orderDate='+${conditionParm.orderDate!=null?#dates.format(conditionParm.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}">下一页</a>
+                    </li>
+                    <li th:if="${pageBean.totalCount==0}" class="page-item active">
+                        <a th:text="0" class="page-link" href="javascript:void(0)"></a>
                     </li>
                     <li th:if="${pageBean.totalCount==0}" class="page-item disabled">
                         <a class="page-link" href="javascript:void(0)" th:if="${conditionParm!=null}">下一页</a>

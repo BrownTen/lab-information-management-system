@@ -39,7 +39,7 @@
                     <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderTime!=1}" value="1">下午</option>
                 </select>
 
-                <select th:name="orderTime" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect2">
+                <select th:name="orderStatus" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect2">
                     <option value="">查询预约状态</option>
                     <option th:if="${orderRecordCondition==null}" value="1">已预约</option>
                     <option th:if="${orderRecordCondition==null}" value="2">预约中</option>
@@ -101,16 +101,16 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-end">
                     <li th:class="${pageBean.getCurrentPage()==1?'page-item disabled':'page-item'}">
-                        <a class="page-link" th:href="@{/teacher/orderedLabs/}+${pageBean.currentPage-1}+'/'+${session.loginUser.teacherId}" th:if="${conditionParm==null}" tabindex="-1" aria-disabled="true">上一页</a>
-                        <!--<a class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${pageBean.currentPage-1}+'?orderDate='+${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}" tabindex="-1" aria-disabled="true">上一页</a>-->
+                        <a class="page-link" th:href="@{/teacher/orderedLabs/}+${pageBean.currentPage-1}+'/'+${session.loginUser.teacherId}" th:if="${orderRecordCondition==null}" tabindex="-1" aria-disabled="true">上一页</a>
+                        <a class="page-link" th:href="@{/teacher/conditionOrderRecords/}+${pageBean.currentPage-1}+'/'+${session.loginUser.teacherId}+'?labName='+${orderRecordCondition.labName}+'&orderDate='+${orderRecordCondition.orderDate!=null?#dates.format(orderRecordCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${orderRecordCondition.orderTime!=null?orderRecordCondition.orderTime:''}+'&orderStatus='+${orderRecordCondition.orderStatus!=null?orderRecordCondition.orderStatus:''}+'&courseName='+${orderRecordCondition.courseName}+'&groupName='+${orderRecordCondition.groupName}" th:if="${orderRecordCondition!=null}" tabindex="-1" aria-disabled="true">上一页</a>
                     </li>
                     <li th:if="${pageBean.totalCount!=0}" th:each="index:${#numbers.sequence(1, pageBean.totalPage)}" th:class="${pageBean.currentPage==index?'page-item active':'page-item'}">
-                        <a th:text="${index}" class="page-link" th:href="@{/teacher/orderedLabs/}+${index}+'/'+${session.loginUser.teacherId}" th:if="${conditionParm==null}"></a>
-                        <!--<a th:text="${index}" class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${index}+'?orderDate='+${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}"></a>-->
+                        <a th:text="${index}" class="page-link" th:href="@{/teacher/orderedLabs/}+${index}+'/'+${session.loginUser.teacherId}" th:if="${orderRecordCondition==null}"></a>
+                        <a th:text="${index}" class="page-link" th:href="@{/teacher/conditionOrderRecords/}+${index}+'/'+${session.loginUser.teacherId}+'?labName='+${orderRecordCondition.labName}+'&orderDate='+${orderRecordCondition.orderDate!=null?#dates.format(orderRecordCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${orderRecordCondition.orderTime!=null?orderRecordCondition.orderTime:''}+'&orderStatus='+${orderRecordCondition.orderStatus!=null?orderRecordCondition.orderStatus:''}+'&courseName='+${orderRecordCondition.courseName}+'&groupName='+${orderRecordCondition.groupName}" th:if="${orderRecordCondition!=null}"></a>
                     </li>
                     <li th:if="${pageBean.totalCount!=0}" th:class="${pageBean.getCurrentPage()==pageBean.getTotalPage()?'page-item disabled':'page-item'}">
-                        <a class="page-link" th:href="@{/teacher/orderedLabs/}+${pageBean.currentPage+1}+'/'+${session.loginUser.teacherId}" th:if="${conditionParm==null}">下一页</a>
-                        <!--<a class="page-link" th:href="@{/teacher/conditionOrderLabs/}+${pageBean.currentPage+1}+'?orderDate='+${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}+'&orderTime='+${conditionParm.orderTime}" th:if="${conditionParm!=null}">下一页</a>-->
+                        <a class="page-link" th:href="@{/teacher/orderedLabs/}+${pageBean.currentPage+1}+'/'+${session.loginUser.teacherId}" th:if="${orderRecordCondition==null}">下一页</a>
+                        <a class="page-link" th:href="@{/teacher/conditionOrderRecords/}+${pageBean.currentPage+1}+'/'+${session.loginUser.teacherId}+'?labName='+${orderRecordCondition.labName}+'&orderDate='+${orderRecordCondition.orderDate!=null?#dates.format(orderRecordCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${orderRecordCondition.orderTime!=null?orderRecordCondition.orderTime:''}+'&orderStatus='+${orderRecordCondition.orderStatus!=null?orderRecordCondition.orderStatus:''}+'&courseName='+${orderRecordCondition.courseName}+'&groupName='+${orderRecordCondition.groupName}" th:if="${orderRecordCondition!=null}">下一页</a>
                     </li>
                     <li th:if="${pageBean.totalCount==0}" class="page-item active">
                         <a th:text="0" class="page-link" href="javascript:void(0)"></a>

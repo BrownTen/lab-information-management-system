@@ -2,9 +2,8 @@ package com.wyt.labinformationmanagementsystem.service;
 
 import com.wyt.labinformationmanagementsystem.mapper.StudentMapper;
 import com.wyt.labinformationmanagementsystem.mapper.TeacherMapper;
-import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
-import com.wyt.labinformationmanagementsystem.model.db.Student;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
+import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +19,6 @@ public class AdminService {
 
     @Autowired
     TeacherMapper teacherMapper;
-
-    public List<Student> findAllStus(){
-        return studentMapper.findAllStudents();
-    }
-
-    public List<Teacher> findAllTeachers(){
-        return teacherMapper.findAllTeachers();
-    }
 
     public PageBean<Teacher> getTeachersLimits(Integer currentPage, Integer currentCount) {
         PageBean<Teacher> pageBean = new PageBean<>();
