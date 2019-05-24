@@ -22,22 +22,44 @@
         <div th:replace="teacher/commons/bar::sidebar(activeStatus='orderRecord')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <!--<form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/teacher/conditionOrderLabs/1}">-->
-                <!--<label class="sr-only" for="inlineFormInputDate">使用日期</label>-->
-                <!--<input th:value="${conditionParm!=null}?${#dates.format(conditionParm.orderDate,'yyyy-MM-dd')}" name="orderDate" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputDate" placeholder="查询可用日期">-->
+            <form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/teacher/conditionOrderRecords/1/}+${session.loginUser.teacherId}">
+                <label class="sr-only" for="inlineFormInputLabName">授课名称</label>
+                <input th:value="${orderRecordCondition!=null}?${orderRecordCondition.labName}" name="labName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputLabName" placeholder="查询实验室名称">
 
-                <!--<select th:name="orderTime" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect1">-->
-                    <!--<option value="">查询可用时间</option>-->
-                    <!--<option th:if="${conditionParm==null}" value="0">上午</option>-->
-                    <!--<option th:if="${conditionParm==null}" value="1">下午</option>-->
-                    <!--<option th:if="${conditionParm!=null && conditionParm.orderTime==0}" value="0" selected>上午</option>-->
-                    <!--<option th:if="${conditionParm!=null && conditionParm.orderTime!=0}" value="0">上午</option>-->
-                    <!--<option th:if="${conditionParm!=null && conditionParm.orderTime==1}" value="1" selected>下午</option>-->
-                    <!--<option th:if="${conditionParm!=null && conditionParm.orderTime!=1}" value="1">下午</option>-->
-                <!--</select>-->
+                <label class="sr-only" for="inlineFormInputDate">使用日期</label>
+                <input th:value="${orderRecordCondition!=null}?${#dates.format(orderRecordCondition.orderDate,'yyyy-MM-dd')}" name="orderDate" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputDate" placeholder="查询可用日期">
 
-                <!--<button type="submit" class="btn btn-primary mb-2">查询</button>-->
-            <!--</form>-->
+                <select th:name="orderTime" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect1">
+                    <option value="">查询可用时间</option>
+                    <option th:if="${orderRecordCondition==null}" value="0">上午</option>
+                    <option th:if="${orderRecordCondition==null}" value="1">下午</option>
+                    <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderTime==0}" value="0" selected>上午</option>
+                    <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderTime!=0}" value="0">上午</option>
+                    <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderTime==1}" value="1" selected>下午</option>
+                    <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderTime!=1}" value="1">下午</option>
+                </select>
+
+                <select th:name="orderTime" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect2">
+                    <option value="">查询预约状态</option>
+                    <option th:if="${orderRecordCondition==null}" value="1">已预约</option>
+                    <option th:if="${orderRecordCondition==null}" value="2">预约中</option>
+                    <option th:if="${orderRecordCondition==null}" value="3">预约中止/失败</option>
+                    <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus==1}" value="1" selected>已预约</option>
+                    <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus!=1}" value="1">已预约</option>
+                    <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus==2}" value="2" selected>预约中</option>
+                    <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus!=2}" value="2">预约中</option>
+                    <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus==3}" value="3" selected>预约中止/失败</option>
+                    <option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus!=3}" value="3">预约中止/失败</option>
+                </select>
+
+                <label class="sr-only" for="inlineFormInputCourseName">查询实验室预约课程</label>
+                <input th:value="${orderRecordCondition!=null}?${orderRecordCondition.courseName}" name="courseName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputCourseName" placeholder="查询实验室预约课程">
+
+                <label class="sr-only" for="inlineFormInputGroupName">查询实验室预约班级</label>
+                <input th:value="${orderRecordCondition!=null}?${orderRecordCondition.groupName}" name="groupName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputGroupName" placeholder="查询实验室预约班级">
+
+                <button type="submit" class="btn btn-primary mb-2">查询</button>
+            </form>
 
             <table class="table table-sm table-striped text-center">
                 <thead>
@@ -55,7 +77,7 @@
                 </thead>
                 <tbody>
                 <tr th:if="${pageBean.totalCount==0}">
-                    <td colspan="6" rowspan="2">暂无预约记录无记录</td>
+                    <td colspan="9" rowspan="2">暂无预约记录无记录</td>
                 </tr>
                 <tr th:each="order,orderStat:${pageBean.getList()}">
                     <th scope="row" th:text="${orderStat.count}"></th>
@@ -67,7 +89,7 @@
                     <td th:text="${order.course.groups[0].groupName}"></td>
                     <td th:if="${order.orderStatus==2}" th:text="预约中"></td>
                     <td th:if="${order.orderStatus==1}" th:text="已预约"></td>
-                    <td th:if="${order.orderStatus==3}" th:text="预约中止/失败"></td>
+                    <td th:if="${order.orderStatus==3}" th:text="预约中止+'/'+失败"></td>
                     <td>
                         <button type="button" th:if="${order.orderStatus==2}" class="btn btn-sm btn-primary">取消预约</button>
                         <button type="button" th:if="${order.orderStatus!=2}" class="btn btn-sm btn-secondary disabled">取消预约</button>
@@ -108,9 +130,16 @@
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}" type="text/javascript"></script>
 <script th:src="@{/webjars/popper.js/1.14.3/popper.min.js}" type="text/javascript"></script>
 <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}" type="text/javascript"></script>
-
 <script th:src="@{/webjars/feather-icons/4.10.0/dist/feather.min.js}" type="text/javascript"></script>
+
 <script th:src="@{/js/dashboard.js}" type="text/javascript"></script>
+<script th:src="@{/laydate/laydate.js}"></script>
+
+<script>
+    laydate.render({
+        elem: '#inlineFormInputDate'
+    });
+</script>
 
 </body>
 </html>

@@ -6,6 +6,7 @@ import com.wyt.labinformationmanagementsystem.mapper.TeacherMapper;
 import com.wyt.labinformationmanagementsystem.model.db.Course;
 import com.wyt.labinformationmanagementsystem.model.db.Order;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
+import com.wyt.labinformationmanagementsystem.model.vo.OrderRecordCondition;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -119,6 +120,32 @@ public class TeacherService {
 
         Integer index = (currentPage - 1) * currentCount;
         List<Order> orders = orderMapper.getOrdersLimitStatus123ByTeacherId(index, currentCount, teacherId);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(orders);
+
+        return pageBean;
+    }
+
+    public PageBean<Order> getOrderedLabsLimitByConditionByTeacherId(Integer currentPage, Integer currentCount, OrderRecordCondition orderRecordCondition, Integer teacherId) {
+        PageBean<Order> pageBean = new PageBean<>();
+
+        String formatDate = null;
+        if(orderRecordCondition.getOrderDate()!=null){
+            formatDate =  new SimpleDateFormat("yyyy-MM-dd").format(orderRecordCondition.getOrderDate());
+        }
+
+        Integer totalCount = 0;
+        totalCount = orderMapper.getTotalCountByConditionByTeacherId(orderRecordCondition, teacherId, formatDate);
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Order> orders = orderMapper.getOrdersLimitByConditionByTeacherId(index, currentCount, orderRecordCondition, teacherId, formatDate);
 
         pageBean
                 .setCurrentPage(currentPage)

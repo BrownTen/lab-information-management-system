@@ -9,11 +9,14 @@ public interface AdminMapper {
     @Select("select * from admin_tbl where adm_username = #{number}")
     Admin findAdminByAdminUsername(String number);
 
+    @Select("select * from admin_tbl where adm_id = #{admiD}")
+    Admin getAdminByAdmId(Integer admId);
+
     @Select("select * from admin_tbl where adm_id in " +
             "(select adm_id from lab_tbl where lab_id = #{labId})")
     @Results({
-            @Result(property = "labs", column = "lab_id",
-            one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabsByAdminId", fetchType = FetchType.LAZY))
+            @Result(property = "labs", column = "adm_id",
+            many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabsByAdminId", fetchType = FetchType.LAZY))
     })
     Admin getAdminByLabId(Integer labId);
 }

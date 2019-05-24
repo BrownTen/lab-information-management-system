@@ -40,3 +40,8 @@ spring:
   # default configuration:
   mvc:
     date-format: yyyy-MM-dd
+
+# show sql in console
+logging:
+  level:
+    com.wyt.labinformationmanagementsystem.mapper.*: debug

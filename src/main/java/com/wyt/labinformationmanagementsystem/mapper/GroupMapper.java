@@ -11,6 +11,13 @@ import java.util.List;
 @Mapper
 public interface GroupMapper {
 
+    @Select("select * from group_tbl where group_id = #{groupID}")
+    @Results({
+            @Result(property = "students", column = "stu_id", javaType = Student.class,
+                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.StudentMapper.getStudentByStuId"))
+    })
+    Group getGroupByGroupId(Integer groupId);
+
     @Select("select * from group_tbl where group_id in " +
             "(select group_id from course_tbl where course_id = #{courseId})")
     @Results({

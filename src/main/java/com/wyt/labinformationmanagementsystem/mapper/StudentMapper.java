@@ -7,6 +7,10 @@ import java.util.List;
 
 @Mapper
 public interface StudentMapper {
+
+    @Select("select * from student_tbl where stu_id = #{stuId}")
+    Student getStudentByStuId(Integer student);
+
     @Select("select * from student_tbl where stu_number = #{number}")
     Student findStudentByStuNumber(String number);
 
@@ -20,7 +24,6 @@ public interface StudentMapper {
             "values(#{stuNumber},#{stuPassword},#{stuName},#{stuPhone},#{stuEmail},#{classId})")
     @Options(useGeneratedKeys = true)
     void insertStudent(Student student);
-
 
     @Select("select * from student_tbl where group_id = #{groupId}")
     @Results({

@@ -3,6 +3,7 @@ package com.wyt.labinformationmanagementsystem.controller;
 import com.wyt.labinformationmanagementsystem.model.db.Course;
 import com.wyt.labinformationmanagementsystem.model.db.Order;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
+import com.wyt.labinformationmanagementsystem.model.vo.OrderRecordCondition;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import com.wyt.labinformationmanagementsystem.service.TeacherService;
 import org.apache.logging.log4j.util.Strings;
@@ -116,6 +117,18 @@ public class TeacherController {
         Integer currentCount = 8;
         PageBean<Order> pageBean = teacherService.getOrderedLabsLimitStatus123ByTeacherId(currentPage, currentCount, teacherId);
         model.addAttribute("pageBean", pageBean);
+        return "teacher/infos/orderRecord";
+    }
+
+    @GetMapping("/conditionOrderRecords/{currentPage}/{teacherId}")
+    public String findOrderRecordsLimitByCondition(@PathVariable Integer currentPage,
+                                                   @PathVariable Integer teacherId,
+                                                   OrderRecordCondition orderRecordCondition,
+                                                   Model model){
+        Integer currentCount = 8;
+        PageBean<Order> pageBean = teacherService.getOrderedLabsLimitByConditionByTeacherId(currentPage, currentCount, orderRecordCondition, teacherId);
+        model.addAttribute("pageBean", pageBean);
+        model.addAttribute("orderRecordCondition",orderRecordCondition);
         return "teacher/infos/orderRecord";
     }
 

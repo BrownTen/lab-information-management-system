@@ -8,12 +8,19 @@ import java.util.List;
 @Mapper
 public interface LabMapper {
 
+    @Select("select * from lab_tbl where lab_id = #{labId}")
+    @Results({
+            @Result(property = "admin", column = "adm_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.AdminMapper.getAdminByAdmId")),
+    })
+    Lab getLabByLabId(Integer labId);
+
     @Select("select * from lab_tbl where adm_id = #{admId}")
     @Results({
             @Result(property = "admin", column = "adm_id",
-            many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.AdminMapper.getAdminByLabId")),
+            one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.AdminMapper.getAdminByLabId")),
             @Result(property = "orders", column = "order_id",
-            one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.getOrdersByLabId"))
+            many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.getOrdersByLabId"))
     })
     List<Lab> getLabsByAdmId(Integer admId);
 
