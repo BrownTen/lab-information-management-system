@@ -13,6 +13,8 @@ public interface CourseMapper {
     @Results({
             @Result(property = "group", column = "group_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupByGroupId")),
+            @Result(property = "teacher", column = "teacher_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.TeacherMapper.findTeacherByTeacherId"))
     })
     Course getCourseByCourseId(Integer courseId);
 

@@ -33,8 +33,8 @@ public class TeacherController {
     @PutMapping
     public String updateTeacher(Teacher teacher, Model model, HttpSession session){
         teacherService.updateTeacher(teacher);
-        session.setAttribute("loginUser",teacher);
-        model.addAttribute("msg","信息修改成功");
+        session.setAttribute("loginUser", teacher);
+        model.addAttribute("msg", "信息修改成功");
         return "teacher/infos/self";
     }
 
@@ -130,7 +130,7 @@ public class TeacherController {
         Integer currentCount = 8;
         PageBean<Order> pageBean = teacherService.getOrderedLabsLimitByConditionByTeacherId(currentPage, currentCount, orderRecordCondition, teacherId);
         model.addAttribute("pageBean", pageBean);
-        model.addAttribute("orderRecordCondition",orderRecordCondition);
+        model.addAttribute("orderRecordCondition", orderRecordCondition);
         return "teacher/infos/orderRecord";
     }
 
@@ -158,7 +158,20 @@ public class TeacherController {
         Integer currentCount = 8;
         PageBean<Report> pageBean = teacherService.getReportsLimitByConditionByTeacherId(currentPage, currentCount, reportCondition, teacherId);
         model.addAttribute("pageBean", pageBean);
-        model.addAttribute("reportCondition",reportCondition);
+        model.addAttribute("reportCondition", reportCondition);
         return "teacher/infos/report";
+    }
+
+    @GetMapping("/report/{reportId}")
+    public String toReportContent(@PathVariable Integer reportId, Model model){
+        Report report = teacherService.getReportByReportId(reportId);
+        model.addAttribute("report", report);
+        return "teacher/addOrEdit/report";
+    }
+
+    @PutMapping("/report/{teacherId}")
+    public String updateReportScoreAndStatus(Report report, @PathVariable Integer teacherId){
+        teacherService.updateReportScoreAndStatus(report);
+        return "redirect:/teacher/reports/1/"+teacherId;
     }
 }

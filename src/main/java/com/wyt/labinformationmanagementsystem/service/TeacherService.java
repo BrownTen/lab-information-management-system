@@ -221,4 +221,12 @@ public class TeacherService {
 
         return pageBean;
     }
+
+    public Report getReportByReportId(Integer reportId) {
+        return reportMapper.getReportByReportId(reportId);
+    }
+
+    public void updateReportScoreAndStatus(Report report) {
+        reportMapper.updateReportScoreAndStatus(report);
+    }
 }
