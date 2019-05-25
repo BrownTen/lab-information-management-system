@@ -6,6 +6,7 @@ import com.wyt.labinformationmanagementsystem.model.db.Report;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.OrderRecordCondition;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
+import com.wyt.labinformationmanagementsystem.model.vo.ReportCondition;
 import com.wyt.labinformationmanagementsystem.service.TeacherService;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,10 +143,22 @@ public class TeacherController {
     }
 
     @GetMapping("/reports/{currentPage}/{teacherId}")
-    public String findAllReports(@PathVariable Integer currentPage, @PathVariable Integer teacherId, Model model){
+    public String findReportsLimitByTeacherId(@PathVariable Integer currentPage, @PathVariable Integer teacherId, Model model){
         Integer currentCount = 8;
         PageBean<Report> pageBean = teacherService.getReportsLimitByTeacherId(currentPage, currentCount, teacherId);
         model.addAttribute("pageBean", pageBean);
+        return "teacher/infos/report";
+    }
+
+    @GetMapping("/conditionReports/{currentPage}/{teacherId}")
+    public String findReportsLimitByCondition(@PathVariable Integer currentPage,
+                                              @PathVariable Integer teacherId,
+                                              ReportCondition reportCondition,
+                                              Model model){
+        Integer currentCount = 8;
+        PageBean<Report> pageBean = teacherService.getReportsLimitByConditionByTeacherId(currentPage, currentCount, reportCondition, teacherId);
+        model.addAttribute("pageBean", pageBean);
+        model.addAttribute("reportCondition",reportCondition);
         return "teacher/infos/report";
     }
 }

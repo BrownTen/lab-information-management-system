@@ -26,7 +26,7 @@ public interface OrderMapper {
     @Select("<script>" +
                 "select * from order_tbl where order_status = 0 " +
                 "<if test = 'orderDate!=null'>" +
-                "and order_date = #{orderDate} " +
+                "and order_date like concat('%',#{orderDate},'%') " +
                 "</if> " +
                 "<if test = 'orderTime!=null'> " +
                 "and order_time = #{orderTime} " +
@@ -43,7 +43,7 @@ public interface OrderMapper {
     @Select("<script>" +
                 "select count(*) from order_tbl where order_status = 0 " +
                 "<if test = 'orderDate!=null'>" +
-                "and order_date = #{orderDate} " +
+                "and order_date like concat('%',#{orderDate},'%') " +
                 "</if> " +
                 "<if test = 'orderTime!=null'> " +
                 "and order_time = #{orderTime} " +
@@ -84,7 +84,7 @@ public interface OrderMapper {
                 "and lab_id in (select lab_id from lab_tbl where lab_name like concat('%',#{orderRecordCondition.labName},'%')) " +
                 "</if> " +
                 "<if test = 'orderDate!=null'> " +
-                "and order_date = #{orderDate} " +
+                "and order_date like concat('%',#{orderDate},'%') " +
                 "</if> " +
                 "<if test = 'orderRecordCondition.orderTime!=null'> " +
                 "and order_time = #{orderRecordCondition.orderTime} " +
@@ -111,7 +111,7 @@ public interface OrderMapper {
                 "and lab_id in (select lab_id from lab_tbl where lab_name like concat('%',#{orderRecordCondition.labName},'%')) " +
                 "</if> " +
                 "<if test = 'orderDate!=null'> " +
-                "and order_date = #{orderDate} " +
+                "and order_date like concat('%',#{orderDate},'%') " +
                 "</if> " +
                 "<if test = 'orderRecordCondition.orderTime!=null'> " +
                 "and order_time = #{orderRecordCondition.orderTime} " +

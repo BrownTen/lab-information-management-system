@@ -10,6 +10,7 @@ import com.wyt.labinformationmanagementsystem.model.db.Report;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.OrderRecordCondition;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
+import com.wyt.labinformationmanagementsystem.model.vo.ReportCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -178,12 +179,38 @@ public class TeacherService {
         PageBean<Report> pageBean = new PageBean<>();
 
         Integer totalCount = 0;
-        totalCount = reportMapper.getTotalCountByTeacherId(teacherId);
+        totalCount = reportMapper.getReportTotalCountByTeacherId(teacherId);
 
         Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
 
         Integer index = (currentPage - 1) * currentCount;
         List<Report> reports = reportMapper.getReportsLimitByTeacherId(index, currentCount, teacherId);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(reports);
+
+        return pageBean;
+    }
+
+    public PageBean<Report> getReportsLimitByConditionByTeacherId(Integer currentPage, Integer currentCount, ReportCondition reportCondition, Integer teacherId) {
+        PageBean<Report> pageBean = new PageBean<>();
+
+        String formatDate = null;
+        if(reportCondition.getOrderDate()!=null){
+            formatDate =  new SimpleDateFormat("yyyy-MM-dd").format(reportCondition.getOrderDate());
+        }
+
+        Integer totalCount = 0;
+        totalCount = reportMapper.getTotalCountByConditionByTeacherId(reportCondition, teacherId, formatDate);
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Report> reports = reportMapper.getReportsLimitByConditionByTeacherId(index, currentCount, reportCondition, teacherId, formatDate);
 
         pageBean
                 .setCurrentPage(currentPage)
