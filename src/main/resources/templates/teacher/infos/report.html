@@ -22,10 +22,163 @@
         <div th:replace="teacher/commons/bar::sidebar(activeStatus='reportReview')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">该功能尚未开通</h1>
-            </div>
+            <!--<form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/teacher/conditionOrderRecords/1/}+${session.loginUser.teacherId}">-->
+                <!--<label class="sr-only" for="inlineFormInputLabName">授课名称</label>-->
+                <!--<input th:value="${orderRecordCondition!=null}?${orderRecordCondition.labName}" name="labName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputLabName" placeholder="查询实验室名称">-->
 
+                <!--<label class="sr-only" for="inlineFormInputDate">使用日期</label>-->
+                <!--<input th:value="${orderRecordCondition!=null}?${#dates.format(orderRecordCondition.orderDate,'yyyy-MM-dd')}" name="orderDate" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputDate" placeholder="查询可用日期">-->
+
+                <!--<select th:name="orderTime" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect1">-->
+                    <!--<option value="">查询可用时间</option>-->
+                    <!--<option th:if="${orderRecordCondition==null}" value="0">上午</option>-->
+                    <!--<option th:if="${orderRecordCondition==null}" value="1">下午</option>-->
+                    <!--<option th:if="${orderRecordCondition!=null && orderRecordCondition.orderTime==0}" value="0" selected>上午</option>-->
+                    <!--<option th:if="${orderRecordCondition!=null && orderRecordCondition.orderTime!=0}" value="0">上午</option>-->
+                    <!--<option th:if="${orderRecordCondition!=null && orderRecordCondition.orderTime==1}" value="1" selected>下午</option>-->
+                    <!--<option th:if="${orderRecordCondition!=null && orderRecordCondition.orderTime!=1}" value="1">下午</option>-->
+                <!--</select>-->
+
+                <!--<select th:name="orderStatus" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect2">-->
+                    <!--<option value="">查询预约状态</option>-->
+                    <!--<option th:if="${orderRecordCondition==null}" value="1">已预约</option>-->
+                    <!--<option th:if="${orderRecordCondition==null}" value="2">预约中</option>-->
+                    <!--<option th:if="${orderRecordCondition==null}" value="3">预约中止/失败</option>-->
+                    <!--<option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus==1}" value="1" selected>已预约</option>-->
+                    <!--<option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus!=1}" value="1">已预约</option>-->
+                    <!--<option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus==2}" value="2" selected>预约中</option>-->
+                    <!--<option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus!=2}" value="2">预约中</option>-->
+                    <!--<option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus==3}" value="3" selected>预约中止/失败</option>-->
+                    <!--<option th:if="${orderRecordCondition!=null && orderRecordCondition.orderStatus!=3}" value="3">预约中止/失败</option>-->
+                <!--</select>-->
+
+                <!--<label class="sr-only" for="inlineFormInputCourseName">查询实验室预约课程</label>-->
+                <!--<input th:value="${orderRecordCondition!=null}?${orderRecordCondition.courseName}" name="courseName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputCourseName" placeholder="查询实验室预约课程">-->
+
+                <!--<label class="sr-only" for="inlineFormInputGroupName">查询实验室预约班级</label>-->
+                <!--<input th:value="${orderRecordCondition!=null}?${orderRecordCondition.groupName}" name="groupName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputGroupName" placeholder="查询实验室预约班级">-->
+
+                <!--<button type="submit" class="btn btn-primary mb-2">查询</button>-->
+            <!--</form>-->
+
+            <table class="table table-sm table-striped text-center">
+                <thead>
+                <tr>
+                    <th scope="col">序号</th>
+                    <th scope="col">学生学号</th>
+                    <th scope="col">学生姓名</th>
+                    <th scope="col">学生班级</th>
+                    <th scope="col">实验课程</th>
+                    <th scope="col">实验地点</th>
+                    <th scope="col">实验时间</th>
+                    <th scope="col">实验成绩</th>
+                    <th scope="col">批阅状态</th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${pageBean.totalCount==0}">
+                    <td colspan="10" rowspan="2">暂无学生实验报告记录</td>
+                </tr>
+                <tr th:each="report,reportStat:${pageBean.getList()}">
+                    <th scope="row" th:text="${reportStat.count}"></th>
+                    <td th:text="${report.student.stuNumber}"></td>
+                    <td th:text="${report.student.stuName}"></td>
+                    <td th:text="${report.student.group.groupName}"></td>
+                    <td th:text="${report.order.course.courseName}"></td>
+                    <td th:text="${report.order.lab.labAddress}+'/'+${report.order.lab.labName}"></td>
+                    <td th:text="${#dates.format(report.order.orderDate,'yyyy-MM-dd')}+'/'+${report.order.orderTime==0?'上午':'下午'}"></td>
+
+                    <td th:if="${report.reportStatus!=1}"></td>
+                    <td th:if="${report.reportStatus==1 && (report.reportScorePart1+report.reportScorePart2>=180) && (report.reportScorePart1+report.reportScorePart2<200)}" th:text="优秀"></td>
+                    <td th:if="${report.reportStatus==1 && (report.reportScorePart1+report.reportScorePart2>=160) && (report.reportScorePart1+report.reportScorePart2<180)}" th:text="良好"></td>
+                    <td th:if="${report.reportStatus==1 && (report.reportScorePart1+report.reportScorePart2>=140) && (report.reportScorePart1+report.reportScorePart2<160)}" th:text="中等"></td>
+                    <td th:if="${report.reportStatus==1 && (report.reportScorePart1+report.reportScorePart2>=120) && (report.reportScorePart1+report.reportScorePart2<140)}" th:text="合格"></td>
+                    <td th:if="${report.reportStatus==1 && (report.reportScorePart1+report.reportScorePart2>=180) && (report.reportScorePart1+report.reportScorePart2<120)}" th:text="不合格"></td>
+
+                    <td th:if="${report.reportStatus==0}" th:text="待批阅"></td>
+                    <td th:if="${report.reportStatus==1}" th:text="已批阅"></td>
+                    <td th:if="${report.reportStatus==2}" th:text="报告暂未完成"></td>
+
+                    <td>
+                        <!--<button th:attr="cancelUri=@{/teacher/orderRecord/}+${order.orderId}+'/'+${session.loginUser.teacherId}" type="button" th:if="${order.orderStatus==2}" class="btn btn-sm btn-danger cancelBtn" data-toggle="modal" data-target="#exampleModalCenter">取消预约</button>-->
+                        <button type="button" th:if="${report.reportStatus==0}" class="btn btn-sm btn-primary">查阅</button>
+                        <button type="button" th:if="${report.reportStatus==1}" class="btn btn-sm btn-success">查阅</button>
+                        <button type="button" th:if="${report.reportStatus==2}" class="btn btn-sm btn-success disabled">查阅</button>
+                        <!--<button th:attr="message=${order.orderMessage}" type="button" th:if="${order.orderStatus==3}" class="btn btn-sm btn-primary showMessageBtn" data-toggle="modal" data-target="#exampleModalCenter2">查看信息</button>-->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+                <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+                    <!--<div class="modal-content">-->
+                        <!--<div class="modal-header">-->
+                            <!--<h5 class="modal-title" id="exampleModalCenterTitle">友情提示</h5>-->
+                            <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                                <!--<span aria-hidden="true">&times;</span>-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="modal-body">-->
+                            <!--<p style="color: red">确认是否取消预约</p>-->
+                            <!--<form id="cancelOrderForm" method="post">-->
+                                <!--<div class="form-group">-->
+                                    <!--<label for="message-text" class="col-form-label">取消缘由</label>-->
+                                    <!--<textarea class="form-control" id="message-text" name="orderMessage"></textarea>-->
+                                <!--</div>-->
+                            <!--</form>-->
+                        <!--</div>-->
+                        <!--<div class="modal-footer">-->
+                            <!--<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">关闭</button>-->
+                            <!--<button type="button" class="btn btn-sm btn-danger" id="cancelConfirmBtn">确认取消</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+                <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+                    <!--<div class="modal-content">-->
+                        <!--<div class="modal-header">-->
+                            <!--<h5 class="modal-title" id="exampleModalCenterTitle2">友情提示</h5>-->
+                            <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                                <!--<span aria-hidden="true">&times;</span>-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="modal-body">-->
+                            <!--<label for="messageArea" class="col-form-label">预约中止/失败缘由</label> <br>-->
+                            <!--<textarea id="messageArea" readonly></textarea>-->
+                        <!--</div>-->
+                        <!--<div class="modal-footer">-->
+                            <!--<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">关闭</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li th:class="${pageBean.getCurrentPage()==1?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/teacher/reports/}+${pageBean.currentPage-1}+'/'+${session.loginUser.teacherId}" tabindex="-1" aria-disabled="true">上一页</a>
+                        <!--<a class="page-link" th:href="@{/teacher/conditionOrderRecords/}+${pageBean.currentPage-1}+'/'+${session.loginUser.teacherId}+'?labName='+${orderRecordCondition.labName}+'&orderDate='+${orderRecordCondition.orderDate!=null?#dates.format(orderRecordCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${orderRecordCondition.orderTime!=null?orderRecordCondition.orderTime:''}+'&orderStatus='+${orderRecordCondition.orderStatus!=null?orderRecordCondition.orderStatus:''}+'&courseName='+${orderRecordCondition.courseName}+'&groupName='+${orderRecordCondition.groupName}" th:if="${orderRecordCondition!=null}" tabindex="-1" aria-disabled="true">上一页</a>-->
+                    </li>
+                    <li th:if="${pageBean.totalCount!=0}" th:each="index:${#numbers.sequence(1, pageBean.totalPage)}" th:class="${pageBean.currentPage==index?'page-item active':'page-item'}">
+                        <a th:text="${index}" class="page-link" th:href="@{/teacher/reports/}+${index}+'/'+${session.loginUser.teacherId}"></a>
+                        <!--<a th:text="${index}" class="page-link" th:href="@{/teacher/conditionOrderRecords/}+${index}+'/'+${session.loginUser.teacherId}+'?labName='+${orderRecordCondition.labName}+'&orderDate='+${orderRecordCondition.orderDate!=null?#dates.format(orderRecordCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${orderRecordCondition.orderTime!=null?orderRecordCondition.orderTime:''}+'&orderStatus='+${orderRecordCondition.orderStatus!=null?orderRecordCondition.orderStatus:''}+'&courseName='+${orderRecordCondition.courseName}+'&groupName='+${orderRecordCondition.groupName}" th:if="${orderRecordCondition!=null}"></a>-->
+                    </li>
+                    <li th:if="${pageBean.totalCount!=0}" th:class="${pageBean.getCurrentPage()==pageBean.getTotalPage()?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/teacher/reports/}+${pageBean.currentPage+1}+'/'+${session.loginUser.teacherId}">下一页</a>
+                        <!--<a class="page-link" th:href="@{/teacher/conditionOrderRecords/}+${pageBean.currentPage+1}+'/'+${session.loginUser.teacherId}+'?labName='+${orderRecordCondition.labName}+'&orderDate='+${orderRecordCondition.orderDate!=null?#dates.format(orderRecordCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${orderRecordCondition.orderTime!=null?orderRecordCondition.orderTime:''}+'&orderStatus='+${orderRecordCondition.orderStatus!=null?orderRecordCondition.orderStatus:''}+'&courseName='+${orderRecordCondition.courseName}+'&groupName='+${orderRecordCondition.groupName}" th:if="${orderRecordCondition!=null}">下一页</a>-->
+                    </li>
+                    <li th:if="${pageBean.totalCount==0}" class="page-item active">
+                        <a th:text="0" class="page-link" href="javascript:void(0)"></a>
+                    </li>
+                    <li th:if="${pageBean.totalCount==0}" class="page-item disabled">
+                        <a class="page-link" href="javascript:void(0)">下一页</a>
+                    </li>
+                </ul>
+            </nav>
         </main>
     </div>
 </div>

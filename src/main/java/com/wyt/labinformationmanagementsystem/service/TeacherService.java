@@ -2,9 +2,11 @@ package com.wyt.labinformationmanagementsystem.service;
 
 import com.wyt.labinformationmanagementsystem.mapper.CourseMapper;
 import com.wyt.labinformationmanagementsystem.mapper.OrderMapper;
+import com.wyt.labinformationmanagementsystem.mapper.ReportMapper;
 import com.wyt.labinformationmanagementsystem.mapper.TeacherMapper;
 import com.wyt.labinformationmanagementsystem.model.db.Course;
 import com.wyt.labinformationmanagementsystem.model.db.Order;
+import com.wyt.labinformationmanagementsystem.model.db.Report;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.OrderRecordCondition;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
@@ -28,6 +30,9 @@ public class TeacherService {
 
     @Autowired
     OrderMapper orderMapper;
+
+    @Autowired
+    ReportMapper reportMapper;
 
     public void updateTeacher(Teacher teacher) {
         teacherMapper.updateTeacherInfo(teacher);
@@ -167,5 +172,26 @@ public class TeacherService {
 
     public Order findOrderByOrderId(Integer orderId) {
         return orderMapper.findOrderByOrderId(orderId);
+    }
+
+    public PageBean<Report> getReportsLimitByTeacherId(Integer currentPage, Integer currentCount, Integer teacherId) {
+        PageBean<Report> pageBean = new PageBean<>();
+
+        Integer totalCount = 0;
+        totalCount = reportMapper.getTotalCountByTeacherId(teacherId);
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Report> reports = reportMapper.getReportsLimitByTeacherId(index, currentCount, teacherId);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(reports);
+
+        return pageBean;
     }
 }

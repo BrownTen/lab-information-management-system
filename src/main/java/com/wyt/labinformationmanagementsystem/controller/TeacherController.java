@@ -2,6 +2,7 @@ package com.wyt.labinformationmanagementsystem.controller;
 
 import com.wyt.labinformationmanagementsystem.model.db.Course;
 import com.wyt.labinformationmanagementsystem.model.db.Order;
+import com.wyt.labinformationmanagementsystem.model.db.Report;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.OrderRecordCondition;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
@@ -140,8 +141,11 @@ public class TeacherController {
         return "redirect:/teacher/orderedLabs/1/"+teacherId;
     }
 
-    @GetMapping("/reports")
-    public String findAllReports(){
+    @GetMapping("/reports/{currentPage}/{teacherId}")
+    public String findAllReports(@PathVariable Integer currentPage, @PathVariable Integer teacherId, Model model){
+        Integer currentCount = 8;
+        PageBean<Report> pageBean = teacherService.getReportsLimitByTeacherId(currentPage, currentCount, teacherId);
+        model.addAttribute("pageBean", pageBean);
         return "teacher/infos/report";
     }
 }

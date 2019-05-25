@@ -49,7 +49,7 @@
                 <tr th:each="course,courseStat:${pageBean.getList()}">
                     <th scope="row" th:text="${courseStat.count}"></th>
                     <td th:text="${course.courseName}"></td>
-                    <td th:text="${course.groups[0].groupName}"></td>
+                    <td th:text="${course.group.groupName}"></td>
                     <td th:if="${session.orderId!=null}">
                         <button th:attr="updateUri=@{/teacher/order/}+${session.orderId}+'/'+${course.courseId}+'/'+${session.loginUser.teacherId}" type="button" class="btn btn-sm btn-primary updateBtn">预约</button>
                         <a th:href="@{/teacher/orderLabs/1}" class="btn btn-sm btn-secondary">取消</a>

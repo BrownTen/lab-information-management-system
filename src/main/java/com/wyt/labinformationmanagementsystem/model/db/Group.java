@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 @Data
 @ToString
 @NoArgsConstructor
@@ -14,7 +12,4 @@ import java.util.List;
 public class Group {
     private Integer groupId;
     private String groupName;
-
-    private List<Course> courses;
-    private List<Student> students;
 }

@@ -18,7 +18,7 @@ public interface OrderMapper {
     @Select("select * from order_tbl where order_status = 0 limit #{index},#{currentCount}")
     @Results({
             @Result(property = "lab", column = "lab_id",
-                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId")),
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId")),
     })
     List<Order> getOrdersLimitStatus0(Integer index, Integer currentCount);
 
@@ -35,7 +35,7 @@ public interface OrderMapper {
             "</script>")
     @Results({
             @Result(property = "lab", column = "lab_id",
-                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId", fetchType = FetchType.LAZY)),
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId", fetchType = FetchType.LAZY)),
     })
     List<Order> getOrdersLimitStatus0ByCondition(Integer index, Integer currentCount, String orderDate, Integer orderTime);
 
@@ -130,9 +130,9 @@ public interface OrderMapper {
             "</script>")
     @Results({
             @Result(property = "lab", column = "lab_id",
-                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId")),
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId")),
             @Result(property = "course", column = "course_id",
-                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByCourseId"))
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByCourseId"))
     })
     List<Order> getOrdersLimitByConditionByTeacherId(Integer index, Integer currentCount, OrderRecordCondition orderRecordCondition, Integer teacherId, String orderDate);
 
@@ -143,7 +143,9 @@ public interface OrderMapper {
     @Select("select * from order_tbl where order_id = #{orderId}")
     @Results({
             @Result(property = "lab", column = "lab_id",
-                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId")),
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId")),
+            @Result(property = "course", column = "course_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByCourseId"))
     })
     Order findOrderByOrderId(Integer orderId);
 }

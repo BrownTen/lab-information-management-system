@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 @Data
 @ToString
 @NoArgsConstructor
@@ -18,6 +16,4 @@ public class Teacher {
     private String teacherName;
     private String teacherPhone;
     private String teacherEmail;
-
-    private List<Course> courses;
 }

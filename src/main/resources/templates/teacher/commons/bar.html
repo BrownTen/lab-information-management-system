@@ -53,7 +53,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a th:class="${activeStatus=='reportReview'?'nav-link active':'nav-link'}" th:href="@{/teacher/reports}">
+                <a th:class="${activeStatus=='reportReview'?'nav-link active':'nav-link'}" th:href="@{/teacher/reports/1/}+${session.loginUser.teacherId}">
                     <span data-feather="edit-3"></span>
                     报告批阅
                 </a>

@@ -11,8 +11,8 @@ public interface CourseMapper {
     /////////////////////////////////////////////////////
     @Select("select * from course_tbl where course_id = #{courseId}")
     @Results({
-            @Result(property = "groups", column = "group_id",
-                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupByGroupId")),
+            @Result(property = "group", column = "group_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupByGroupId")),
     })
     Course getCourseByCourseId(Integer courseId);
 
@@ -25,8 +25,8 @@ public interface CourseMapper {
             "(select course_id from course_tbl where teacher_id = #{teacherId}) " +
             "limit ${index},${currentCount}")
     @Results({
-            @Result(property = "groups", column = "group_id",
-                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupByGroupId")),
+            @Result(property = "group", column = "group_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupByGroupId")),
     })
     List<Course> getCoursesLimitByTeacherId(Integer index, Integer currentCount, Integer teacherId);
 
@@ -43,8 +43,8 @@ public interface CourseMapper {
                 "</if>" +
             "</script>")
     @Results({
-            @Result(property = "groups", column = "group_id",
-                    many = @Many(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupByGroupId")),
+            @Result(property = "group", column = "group_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.GroupMapper.getGroupByGroupId")),
     })
     List<Course> getCoursesByCondition(String courseName, String groupName, Integer teacherId);
 
