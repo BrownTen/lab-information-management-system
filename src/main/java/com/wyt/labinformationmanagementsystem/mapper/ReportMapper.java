@@ -166,4 +166,8 @@ public interface ReportMapper {
 
     @Update("update report_tbl set report_status = 1, report_score_part1 = #{reportScorePart1}, report_score_part2 = #{reportScorePart2} where report_id = #{reportId}")
     void updateReportScoreAndStatus(Report report);
+
+    @Update("update report_tbl set report_status = 0, report_content_part1 = #{reportContentPart1}, report_content_part2 = #{reportContentPart2}, " +
+            "report_content_part3 = #{reportContentPart3} where report_id = #{reportId}")
+    void updateReportContent(Report report);
 }

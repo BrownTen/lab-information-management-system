@@ -95,9 +95,9 @@
                     <td th:if="${report.reportStatus==2}" th:text="报告暂未完成"></td>
 
                     <td>
-                        <a th:href="@{#}" type="button" th:if="${report.reportStatus==0}" class="btn btn-sm btn-success">修改报告</a>
-                        <a th:href="@{#}" type="button" th:if="${report.reportStatus==2}" class="btn btn-sm btn-primary">编辑报告</a>
-                        <button type="button" th:if="${report.reportStatus==1}" class="btn btn-sm btn-secondary disabled">已批阅</button>
+                        <a th:href="@{/student/report/}+${report.reportId}" type="button" th:if="${report.reportStatus==0}" class="btn btn-sm btn-success">修改报告</a>
+                        <a th:href="@{/student/report/}+${report.reportId}" type="button" th:if="${report.reportStatus==2}" class="btn btn-sm btn-primary">编辑报告</a>
+                        <a th:href="@{/student/report/}+${report.reportId}" type="button" th:if="${report.reportStatus==1}" class="btn btn-sm btn-info">查看成绩</a>
                     </td>
                 </tr>
                 </tbody>

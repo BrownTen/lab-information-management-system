@@ -74,4 +74,12 @@ public class StudentService {
 
         return pageBean;
     }
+
+    public Report getReportByReportId(Integer reportId) {
+        return reportMapper.getReportByReportId(reportId);
+    }
+
+    public void updateReportContent(Report report) {
+        reportMapper.updateReportContent(report);
+    }
 }

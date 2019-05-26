@@ -52,10 +52,17 @@ public class StudentController {
         return "student/infos/orderRecord";
     }
 
-    @GetMapping("/reports/{currentPage}/{stuId}")
-    public  String findReportsLimitByStuId(@PathVariable Integer currentPage, @PathVariable Integer stuId, Model model){
-        //TODO
+    @GetMapping("/report/{reportId}")
+    public String toReportContent(@PathVariable Integer reportId, Model model){
+        Report report = studentService.getReportByReportId(reportId);
+        model.addAttribute("report", report);
         return "student/infos/report";
+    }
+
+    @PutMapping("/report/{stuId}")
+    public  String updateReportContent(@PathVariable Integer stuId, Report report){
+        studentService.updateReportContent(report);
+        return "redirect:/student/orders/1/"+stuId;
     }
 
 }

@@ -22,10 +22,79 @@
         <div th:replace="student/commons/bar::sidebar(activeStatus='report')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">该功能尚未开通</h1>
-            </div>
+            <form method="post" th:action="@{/student/report/}+${session.loginUser.stuId}" style="padding-top: 15px">
 
+                <input type="hidden" name="_method" value="put">
+                <input type="hidden" name="reportId" th:value="${report.reportId}">
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputCourseName">实验课程</label>
+                            <input th:value="${report.order.course.courseName}" type="text" class="form-control" id="inputCourseName" placeholder="实验课程" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputLabAddressAndName">实验地点</label>
+                            <input th:value="${report.order.lab.labAddress}+'/'+${report.order.lab.labName}" type="text" class="form-control" id="inputLabAddressAndName" placeholder="实验地点" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputOrderDateAndTime">实验时间</label>
+                            <input th:value="${#dates.format(report.order.orderDate,'yyyy-MM-dd')}+'/'+${report.order.orderTime==0?'上午':'下午'}" type="text" class="form-control" id="inputOrderDateAndTime" placeholder="实验时间" required readonly
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputGroupName">班级</label>
+                            <input th:value="${report.student.group.groupName}" type="text" class="form-control" id="inputGroupName" placeholder="班级" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputStudentName">姓名</label>
+                            <input th:value="${report.student.stuName}" type="text" class="form-control" id="inputStudentName" placeholder="姓名" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputStudentNumber">学号</label>
+                            <input th:value="${report.student.stuNumber}" type="text" class="form-control" id="inputStudentNumber" placeholder="学号" required readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputGroupName">指导老师</label>
+                            <input th:value="${report.order.course.teacher.teacherName}" type="text" class="form-control" id="inputGroupName" placeholder="班级" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputReportScorePart1">课堂成绩</label>
+                            <input th:value="${report.reportStatus==1}?${report.reportScorePart1}:''" type="text" class="form-control" id="inputReportScorePart1" placeholder="请录入课堂成绩" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputReportScorePart2">报告成绩</label>
+                            <input th:value="${report.reportStatus==1}?${report.reportScorePart2}:''" type="text" class="form-control" id="inputReportScorePart2" placeholder="请录入报告成绩" required readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">实验内容</label>
+                    <textarea name="reportContentPart1" th:text="${report.reportContentPart1}" class="form-control" id="exampleFormControlTextarea1" rows="5" required th:if="${report.reportStatus!=1}"></textarea>
+                    <textarea name="reportContentPart1" th:text="${report.reportContentPart1}" class="form-control" id="exampleFormControlTextarea1" rows="5" required disabled th:if="${report.reportStatus==1}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea2">实验步骤/源程序</label>
+                    <textarea name="reportContentPart2" th:text="${report.reportContentPart2}" class="form-control" id="exampleFormControlTextarea2" rows="5" required th:if="${report.reportStatus!=1}"></textarea>
+                    <textarea name="reportContentPart2" th:text="${report.reportContentPart2}" class="form-control" id="exampleFormControlTextarea2" rows="5" required disabled th:if="${report.reportStatus==1}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea3">实验心得</label>
+                    <textarea name="reportContentPart3" th:text="${report.reportContentPart3}" class="form-control" id="exampleFormControlTextarea3" rows="5" required th:if="${report.reportStatus!=1}"></textarea>
+                    <textarea name="reportContentPart3" th:text="${report.reportContentPart3}" class="form-control" id="exampleFormControlTextarea3" rows="5" required disabled th:if="${report.reportStatus==1}"></textarea>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-sm btn-primary" th:text="${report.reportStatus==0?'修改报告':'提交报告'}" th:if="${report.reportStatus!=1}"></button>&nbsp;&nbsp;
+                    <a th:href="@{/student/orders/1/}+${session.loginUser.stuId}" class="btn btn-sm btn-secondary" th:text="取消"></a>
+                </div>
+            </form>
         </main>
     </div>
 </div>
