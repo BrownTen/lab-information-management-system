@@ -22,10 +22,105 @@
         <div th:replace="admin/commons/bar::sidebar(activeStatus='groupInfos')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">该功能尚未开通</h1>
+            <form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/admin/conditionGroups/1}">
+                <h2 class="mb-2 mr-sm-2">
+                    <a class="btn btn-sm btn-success" th:href="@{/admin/group}">添加班级</a>
+                </h2>
+                <label class="sr-only" for="inlineFormInputGroupName">班级</label>
+                <input th:value="${group!=null}?${group.groupName}" name="groupName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputGroupName" placeholder="查询班级">
+
+                <button type="submit" class="btn btn-primary mb-2">查询</button>
+            </form>
+
+            <table class="table table-striped text-center table-sm">
+                <thead>
+                <tr>
+                    <th scope="col">序号</th>
+                    <th scope="col">班级名称</th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${pageBean.totalCount==0}">
+                    <td colspan="10" rowspan="2">暂无班级信息记录</td>
+                </tr>
+                <tr th:each="group,groupStat:${pageBean.getList()}">
+                    <td th:text="${groupStat.count}"></td>
+                    <td th:text="${group.groupName}"></td>
+                    <td>
+                        <a th:href="@{/admin/group/}+${group.groupId}" class="btn btn-sm btn-primary">编辑</a>
+                        <button th:attr="delUri=@{/admin/group/}+${group.groupId}" type="button" class="btn btn-sm btn-danger deleteBtn" data-toggle="modal" data-target="#exampleModalCenter">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">友情提示</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            确认是否删除此条记录
+                            <p style="color: red">(将会删除与该班级相关的所有记录)</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-sm btn-danger" id="deleteConfirmBtn">确认删除</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <form id="deleteGroupForm" method="post">
+                <input type="hidden" name="_method" value="delete">
+            </form>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li th:class="${pageBean.currentPage==1?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage-1}" th:if="${group==null}" tabindex="-1" aria-disabled="true">上一页</a>
+                        <a class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage-1}+'?groupName='+${group.groupName}" th:if="${group!=null}" tabindex="-1" aria-disabled="true">上一页</a>
+                    </li>
+
+                    <li th:class="page-item" th:if="${pageBean.currentPage-2 >= 1}">
+                        <a th:text="${pageBean.currentPage-2}" class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage-2}" th:if="${group==null}"></a>
+                        <a th:text="${pageBean.currentPage-2}" class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage-2}+'?groupName='+${group.groupName}" th:if="${group!=null}"></a>
+                    </li>
+                    <li th:class="page-item" th:if="${pageBean.currentPage-1 >= 1}">
+                        <a th:text="${pageBean.currentPage-1}" class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage-1}" th:if="${group==null}"></a>
+                        <a th:text="${pageBean.currentPage-1}" class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage-1}+'?groupName='+${group.groupName}" th:if="${group!=null}"></a>
+                    </li>
+                    <li class="page-item active">
+                        <a th:text="${pageBean.currentPage}" class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage}" th:if="${group==null}"></a>
+                        <a th:text="${pageBean.currentPage}" class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage}+'?groupName='+${group.groupName}" th:if="${group!=null}"></a>
+                    </li>
+                    <li th:class="page-item" th:if="${pageBean.currentPage+1 <= pageBean.getTotalPage()}">
+                        <a th:text="${pageBean.currentPage+1}" class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage+1}" th:if="${group==null}"></a>
+                        <a th:text="${pageBean.currentPage+1}" class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage+1}+'?groupName='+${group.groupName}" th:if="${group!=null}"></a>
+                    </li>
+                    <li th:class="page-item" th:if="${pageBean.currentPage+2 <= pageBean.getTotalPage()}">
+                        <a th:text="${pageBean.currentPage+2}" class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage+2}" th:if="${group==null}"></a>
+                        <a th:text="${pageBean.currentPage+2}" class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage+2}+'?groupName='+${group.groupName}" th:if="${group!=null}"></a>
+                    </li>
+
+                    <li th:class="${pageBean.currentPage==pageBean.totalPage?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage+1}" th:if="${group==null}">下一页</a>
+                        <a class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage+1}+'?groupName='+${group.groupName}" th:if="${group!=null}">下一页</a>
+                    </li>
+
+                    <li th:if="${pageBean.totalCount==0}" class="page-item active">
+                        <a th:text="0" class="page-link" href="javascript:void(0)"></a>
+                    </li>
+                    <li th:if="${pageBean.totalCount==0}" class="page-item disabled">
+                        <a class="page-link" href="javascript:void(0)">下一页</a>
+                    </li>
+                </ul>
+            </nav>
         </main>
     </div>
 </div>
@@ -36,9 +131,20 @@
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}" type="text/javascript"></script>
 <script th:src="@{/webjars/popper.js/1.14.3/popper.min.js}" type="text/javascript"></script>
 <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}" type="text/javascript"></script>
-
 <script th:src="@{/webjars/feather-icons/4.10.0/dist/feather.min.js}" type="text/javascript"></script>
+
 <script th:src="@{/js/dashboard.js}" type="text/javascript"></script>
 
+<script>
+
+    $(".deleteBtn").click(function(){
+        $("#deleteConfirmBtn").attr("delUri",$(this).attr("delUri"));
+    });
+
+    $("#deleteConfirmBtn").click(function(){
+        $("#deleteGroupForm").attr("action",$(this).attr("delUri")).submit();
+    });
+
+</script>
 </body>
 </html>

@@ -31,7 +31,7 @@ public interface TeacherMapper {
 
     /////////////////////////////////////////////////////
     @Select("select * from teacher_tbl limit ${index}, ${currentCount}")
-    List<Teacher> getTeachersLimits(Integer index, Integer currentCount);
+    List<Teacher> getTeachersLimit(Integer index, Integer currentCount);
 
     /////////////////////////////////////////////////////
     @Update("update teacher_tbl set teacher_number=#{teacherNumber}, teacher_password=#{teacherPassword}, " +

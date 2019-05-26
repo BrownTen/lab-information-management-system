@@ -1,5 +1,6 @@
 package com.wyt.labinformationmanagementsystem.controller;
 
+import com.wyt.labinformationmanagementsystem.model.db.Group;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import com.wyt.labinformationmanagementsystem.service.AdminService;
@@ -50,7 +51,7 @@ public class AdminController {
     @GetMapping("/teachers/{currentPage}")
     public String findAllTeacherInfos(@PathVariable Integer currentPage, Model model){
         Integer currentCount = 8;
-        PageBean<Teacher> pageBean = adminService.getTeachersLimits(currentPage, currentCount);
+        PageBean<Teacher> pageBean = adminService.getTeachersLimit(currentPage, currentCount);
         model.addAttribute("pageBean", pageBean);
         return "admin/infos/teacher";
     }
@@ -69,6 +70,53 @@ public class AdminController {
         model.addAttribute("conditionParam", teacher);
         model.addAttribute("pageBean", pageBean);
         return "admin/infos/teacher";
+    }
+
+    @GetMapping("/groups/{currentPage}")
+    public String groupInfos(@PathVariable Integer currentPage, Model model){
+        Integer currentCount = 8;
+        PageBean<Group> pageBean = adminService.getGroupsLimit(currentPage, currentCount);
+        model.addAttribute("pageBean", pageBean);
+        return "admin/infos/group";
+    }
+
+    @GetMapping("/group/{groupId}")
+    public String toGroupEditPage(@PathVariable Integer groupId, Model model){
+        Group group = adminService.getGroupByGroupId(groupId);
+        model.addAttribute("group", group);
+        return "admin/addOrEdit/group";
+    }
+
+    @PutMapping("/group")
+    public String updateGroupInfo(Group group){
+        adminService.updateGroupInfo(group);
+        return "redirect:/admin/groups/1";
+    }
+
+    @DeleteMapping("/group/{groupId}")
+    public String deleteGroupInfo(@PathVariable Integer groupId){
+        adminService.deleteGroupInfoByGroupId(groupId);
+        return "redirect:/admin/groups/1";
+    }
+
+    @GetMapping("/group")
+    public String toGroupAddPage(){
+        return "admin/addOrEdit/group";
+    }
+
+    @PostMapping("/group")
+    public String insertTeacher(Group group){
+        adminService.insertGroup(group);
+        return "redirect:/admin/groups/1";
+    }
+
+    @GetMapping("/conditionGroups/{currentPage}")
+    public String findTeacherInfosByCondition(@PathVariable Integer currentPage, Group group, Model model){
+        Integer currentCount = 8 ;
+        PageBean<Group> pageBean = adminService.getGroupsLimitByCondition(currentPage, currentCount, group);
+        model.addAttribute("group", group);
+        model.addAttribute("pageBean", pageBean);
+        return "admin/infos/group";
     }
 
     @GetMapping("/labs/{currentPage}")
@@ -93,11 +141,5 @@ public class AdminController {
     public String courseInfos(@PathVariable Integer currentPage, Model model){
         //TODO
         return "admin/infos/course";
-    }
-
-    @GetMapping("/groups/{currentPage}")
-    public String groupInfos(@PathVariable Integer currentPage, Model model){
-        //TODO
-        return "admin/infos/group";
     }
 }
