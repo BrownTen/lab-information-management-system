@@ -1,6 +1,7 @@
 package com.wyt.labinformationmanagementsystem.mapper;
 
 import com.wyt.labinformationmanagementsystem.model.db.Report;
+import com.wyt.labinformationmanagementsystem.model.vo.ReportCondition;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface ReportMapper {
     @Select("select count(*) from report_tbl where order_id in " +
             "(select order_id from order_tbl where order_status = 1 and course_id in " +
             "(select course_id from course_tbl where teacher_id = #{teacherId}))")
-    Integer getTotalCountByTeacherId(Integer teacherId);
+    Integer getReportTotalCountByTeacherId(Integer teacherId);
 
     @Select("select * from report_tbl where order_id in " +
             "(select order_id from order_tbl where order_status = 1 and course_id in " +
@@ -24,4 +25,83 @@ public interface ReportMapper {
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.StudentMapper.getStudentByStudentId"))
     })
     List<Report> getReportsLimitByTeacherId(Integer index, Integer currentCount, Integer teacherId);
+
+    @Select("<script>" +
+                "select count(*) from report_tbl where order_id in " +
+                "(select order_id from order_tbl where order_status = 1 and course_id in " +
+                "(select course_id from course_tbl where teacher_id = #{teacherId})) " +
+                "<if test = 'reportCondition.stuNumber!=null'>" +
+                "and stu_id in (select stu_id from student_tbl where stu_number like concat('%',#{reportCondition.stuNumber},'%')) " +
+                "</if> " +
+                "<if test = 'reportCondition.stuName!=null'>" +
+                "and stu_id in (select stu_id from student_tbl where stu_name like concat('%',#{reportCondition.stuName},'%')) " +
+                "</if> " +
+                "<if test = 'reportCondition.groupName!=null'>" +
+                "and stu_id in (select stu_id from student_tbl where group_id in " +
+                    "(select group_id from group_tbl where group_name like concat('%',#{reportCondition.groupName},'%'))) " +
+                "</if> " +
+                "<if test = 'reportCondition.courseName!=null'>" +
+                "and order_id in (select order_id from order_tbl where course_id in " +
+                    "(select course_id from course_tbl where course_name like concat('%',#{reportCondition.courseName},'%'))) " +
+                "</if> " +
+                "<if test = 'orderDate!=null'>" +
+                "and order_id in (select order_id from order_tbl where order_date like concat('%',#{orderDate},'%')) " +
+                "</if> " +
+                "<if test = 'reportCondition.orderTime!=null'>" +
+                "and order_id in (select order_id from order_tbl where order_time = #{reportCondition.orderTime}) " +
+                "</if> " +
+                "<if test = 'reportCondition.reportStatus!=null'>" +
+                "and report_status = #{reportCondition.reportStatus} " +
+                "</if> " +
+            "</script>")
+    Integer getTotalCountByConditionByTeacherId(ReportCondition reportCondition, Integer teacherId, String orderDate);
+
+    @Select("<script>" +
+                "select * from report_tbl where order_id in " +
+                "(select order_id from order_tbl where order_status = 1 and course_id in " +
+                "(select course_id from course_tbl where teacher_id = #{teacherId})) " +
+                "<if test = 'reportCondition.stuNumber!=null'>" +
+                "and stu_id in (select stu_id from student_tbl where stu_number like concat('%',#{reportCondition.stuNumber},'%')) " +
+                "</if> " +
+                "<if test = 'reportCondition.stuName!=null'>" +
+                "and stu_id in (select stu_id from student_tbl where stu_name like concat('%',#{reportCondition.stuName},'%')) " +
+                "</if> " +
+                "<if test = 'reportCondition.groupName!=null'>" +
+                "and stu_id in (select stu_id from student_tbl where group_id in " +
+                "(select group_id from group_tbl where group_name like concat('%',#{reportCondition.groupName},'%'))) " +
+                "</if> " +
+                "<if test = 'reportCondition.courseName!=null'>" +
+                "and order_id in (select order_id from order_tbl where course_id in " +
+                "(select course_id from course_tbl where course_name like concat('%',#{reportCondition.courseName},'%'))) " +
+                "</if> " +
+                "<if test = 'orderDate!=null'>" +
+                "and order_id in (select order_id from order_tbl where order_date like concat('%',#{orderDate},'%')) " +
+                "</if> " +
+                "<if test = 'reportCondition.orderTime!=null'>" +
+                "and order_id in (select order_id from order_tbl where order_time = #{reportCondition.orderTime}) " +
+                "</if> " +
+                "<if test = 'reportCondition.reportStatus!=null'>" +
+                "and report_status = #{reportCondition.reportStatus} " +
+                "</if> " +
+                "limit ${index},${currentCount}" +
+            "</script>")
+    @Results({
+            @Result(property = "order", column = "order_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.findOrderByOrderId")),
+            @Result(property = "student", column = "stu_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.StudentMapper.getStudentByStudentId"))
+    })
+    List<Report> getReportsLimitByConditionByTeacherId(Integer index, Integer currentCount, ReportCondition reportCondition, Integer teacherId, String orderDate);
+
+    @Select("select * from report_tbl where report_id = #{reportId}")
+    @Results({
+            @Result(property = "order", column = "order_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.findOrderByOrderId")),
+            @Result(property = "student", column = "stu_id",
+                    one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.StudentMapper.getStudentByStudentId"))
+    })
+    Report getReportByReportId(Integer reportId);
+
+    @Update("update report_tbl set report_status = 1, report_score_part1 = #{reportScorePart1}, report_score_part2 = #{reportScorePart2} where report_id = #{reportId}")
+    void updateReportScoreAndStatus(Report report);
 }
