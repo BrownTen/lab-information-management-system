@@ -19,4 +19,6 @@ public class ReportCondition {
     private Date orderDate;
     private Integer orderTime;
     private Integer reportStatus;
+
+    private String teacherName;
 }

@@ -37,13 +37,21 @@
             <li class="nav-item">
                 <a th:class="${activeStatus=='orderRecord'?'nav-link active':'nav-link'}" th:href="@{/student/orders/1/}+${session.loginUser.stuId}">
                     <span data-feather="check-circle"></span>
-                    实验预约安排
+                    实验记录
                 </a>
             </li>
+        </ul>
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Reports Review</span>
+            <a class="d-flex align-items-center text-muted" th:href="@{/student/orders/1/}+${session.loginUser.stuId}">
+                <span data-feather="eye"></span>
+            </a>
+        </h6>
+        <ul class="nav flex-column">
             <li class="nav-item">
-                <a th:class="${activeStatus=='report'?'nav-link active':'nav-link'}" th:href="@{/student/reports/1/}+${session.loginUser.stuId}">
+                <a th:class="${activeStatus=='report'?'nav-link active':'nav-link'}" th:href="@{/student/orders/1/}+${session.loginUser.stuId}">
                     <span data-feather="file-text"></span>
-                    报告撰写/成绩查看
+                    报告撰写
                 </a>
             </li>
         </ul>

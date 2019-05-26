@@ -1,6 +1,9 @@
 package com.wyt.labinformationmanagementsystem.controller;
 
+import com.wyt.labinformationmanagementsystem.model.db.Report;
 import com.wyt.labinformationmanagementsystem.model.db.Student;
+import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
+import com.wyt.labinformationmanagementsystem.model.vo.ReportCondition;
 import com.wyt.labinformationmanagementsystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,13 +36,24 @@ public class StudentController {
     }
 
     @GetMapping("/orders/{currentPage}/{stuId}")
-    public String findOrderRecordsLimitByStuId(@PathVariable Integer currentPage, @PathVariable Integer stuId){
-        //TODO
+    public String findOrderRecordsLimitByStuId(@PathVariable Integer currentPage, @PathVariable Integer stuId, Model model){
+        Integer currentCount = 8;
+        PageBean<Report> pageBean = studentService.getReportsLimitByStuId(currentPage, currentCount, stuId);
+        model.addAttribute("pageBean", pageBean);
+        return "student/infos/orderRecord";
+    }
+
+    @GetMapping("/conditionReports/{currentPage}/{stuId}")
+    public String findReportsLimitByCondition(@PathVariable Integer currentPage, @PathVariable Integer stuId, ReportCondition reportCondition, Model model){
+        Integer currentCount = 8;
+        PageBean<Report> pageBean = studentService.getReportsLimitByConditionByStuId(currentPage, currentCount, reportCondition, stuId);
+        model.addAttribute("pageBean", pageBean);
+        model.addAttribute("reportCondition", reportCondition);
         return "student/infos/orderRecord";
     }
 
     @GetMapping("/reports/{currentPage}/{stuId}")
-    public  String findReportsLimitByStuId(@PathVariable Integer currentPage, @PathVariable Integer stuId){
+    public  String findReportsLimitByStuId(@PathVariable Integer currentPage, @PathVariable Integer stuId, Model model){
         //TODO
         return "student/infos/report";
     }
