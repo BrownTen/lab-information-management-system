@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" rel="stylesheet">
+
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+
+    <title>reportAddOrEdit</title>
+</head>
+<body>
+
+<div th:replace="admin/commons/bar::topbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div th:replace="admin/commons/bar::sidebar(activeStatus='reportInfos')"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <form style="padding-top: 15px">
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputCourseName">实验课程</label>
+                            <input th:value="${report.order.course.courseName}" type="text" class="form-control" id="inputCourseName" placeholder="实验课程" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputLabAddressAndName">实验地点</label>
+                            <input th:value="${report.order.lab.labAddress}+'/'+${report.order.lab.labName}" type="text" class="form-control" id="inputLabAddressAndName" placeholder="实验地点" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputOrderDateAndTime">实验时间</label>
+                            <input th:value="${#dates.format(report.order.orderDate,'yyyy-MM-dd')}+'/'+${report.order.orderTime==0?'上午':'下午'}" type="text" class="form-control" id="inputOrderDateAndTime" placeholder="实验时间" required readonly
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputGroupName">班级</label>
+                            <input th:value="${report.student.group.groupName}" type="text" class="form-control" id="inputGroupName" placeholder="班级" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputStudentName">姓名</label>
+                            <input th:value="${report.student.stuName}" type="text" class="form-control" id="inputStudentName" placeholder="姓名" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputStudentNumber">学号</label>
+                            <input th:value="${report.student.stuNumber}" type="text" class="form-control" id="inputStudentNumber" placeholder="学号" required readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputGroupName">指导老师</label>
+                            <input th:value="${report.order.course.teacher.teacherName}" type="text" class="form-control" id="inputGroupName" placeholder="班级" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputReportScorePart1">课堂成绩</label>
+                            <input th:value="${report.reportStatus==1}?${report.reportScorePart1}:''" type="text" class="form-control" id="inputReportScorePart1" placeholder="请录入课堂成绩" required readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputReportScorePart2">报告成绩</label>
+                            <input th:value="${report.reportStatus==1}?${report.reportScorePart2}:''" type="text" class="form-control" id="inputReportScorePart2" placeholder="请录入报告成绩" required readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">实验内容</label>
+                    <textarea name="reportContentPart1" th:text="${report.reportContentPart1}" class="form-control" id="exampleFormControlTextarea1" rows="5" required readonly></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea2">实验步骤/源程序</label>
+                    <textarea name="reportContentPart2" th:text="${report.reportContentPart2}" class="form-control" id="exampleFormControlTextarea2" rows="5" required readonly></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea3">实验心得</label>
+                    <textarea name="reportContentPart3" th:text="${report.reportContentPart3}" class="form-control" id="exampleFormControlTextarea3" rows="5" required readonly></textarea>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/popper.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/feather-icons/4.10.0/dist/feather.min.js}" type="text/javascript"></script>
+
+<script th:src="@{/js/dashboard.js}" type="text/javascript"></script>
+
+</body>
+</html>

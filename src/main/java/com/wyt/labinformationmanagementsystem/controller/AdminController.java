@@ -2,6 +2,7 @@ package com.wyt.labinformationmanagementsystem.controller;
 
 import com.wyt.labinformationmanagementsystem.model.db.*;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
+import com.wyt.labinformationmanagementsystem.model.vo.ReportCondition;
 import com.wyt.labinformationmanagementsystem.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -304,6 +305,30 @@ public class AdminController {
         model.addAttribute("course", course);
         model.addAttribute("pageBean", pageBean);
         return "admin/infos/course";
+    }
+
+    @GetMapping("/reports/{currentPage}")
+    public String findOrderRecordsLimitByStuId(@PathVariable Integer currentPage, Model model){
+        Integer currentCount = 8;
+        PageBean<Report> pageBean = adminService.getReportsLimit(currentPage, currentCount);
+        model.addAttribute("pageBean", pageBean);
+        return "admin/infos/report";
+    }
+
+    @GetMapping("/report/{reportId}")
+    public String toReportContent(@PathVariable Integer reportId, Model model){
+        Report report = adminService.getReportByReportId(reportId);
+        model.addAttribute("report", report);
+        return "admin/addOrEdit/report";
+    }
+
+    @GetMapping("/conditionReports/{currentPage}")
+    public String findReportsLimitByCondition(@PathVariable Integer currentPage, ReportCondition reportCondition, Model model){
+        Integer currentCount = 8;
+        PageBean<Report> pageBean = adminService.getReportsLimitByCondition(currentPage, currentCount, reportCondition);
+        model.addAttribute("pageBean", pageBean);
+        model.addAttribute("reportCondition", reportCondition);
+        return "admin/infos/report";
     }
 
     @GetMapping("/orders/{currentPage}")

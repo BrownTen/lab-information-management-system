@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" rel="stylesheet">
+
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+
+    <title>reportInfos</title>
+</head>
+<body>
+
+<div th:replace="admin/commons/bar::topbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div th:replace="admin/commons/bar::sidebar(activeStatus='reportInfos')"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/admin/conditionReports/1}">
+
+                <label class="sr-only" for="inlineFormInputStuNumber">学生学号</label>
+                <input th:value="${reportCondition!=null}?${reportCondition.stuNumber}" name="stuNumber" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputStuNumber" placeholder="查询学生学号">
+
+                <label class="sr-only" for="inlineFormInputStuName">学生姓名</label>
+                <input th:value="${reportCondition!=null}?${reportCondition.stuName}" name="stuName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputStuName" placeholder="查询学生姓名">
+
+                <label class="sr-only" for="inlineFormInputTeacherName">实验指导老师</label>
+                <input th:value="${reportCondition!=null}?${reportCondition.teacherName}" name="teacherName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputTeacherName" placeholder="查询指导老师">
+
+                <label class="sr-only" for="inlineFormInputCourseName">实验课程</label>
+                <input th:value="${reportCondition!=null}?${reportCondition.courseName}" name="courseName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputCourseName" placeholder="查询实验课程">
+
+                <label class="sr-only" for="inlineFormInputDate">实验日期</label>
+                <input th:value="${reportCondition!=null}?${#dates.format(reportCondition.orderDate,'yyyy-MM-dd')}" name="orderDate" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputDate" placeholder="查询实验日期">
+
+                <select th:name="orderTime" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect1">
+                    <option value="">查询实验时间</option>
+                    <option th:if="${reportCondition==null}" value="0">上午</option>
+                    <option th:if="${reportCondition==null}" value="1">下午</option>
+                    <option th:if="${reportCondition!=null && reportCondition.orderTime==0}" value="0" selected>上午</option>
+                    <option th:if="${reportCondition!=null && reportCondition.orderTime!=0}" value="0">上午</option>
+                    <option th:if="${reportCondition!=null && reportCondition.orderTime==1}" value="1" selected>下午</option>
+                    <option th:if="${reportCondition!=null && reportCondition.orderTime!=1}" value="1">下午</option>
+                </select>
+
+                <select th:name="reportStatus" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect2">
+                    <option value="">报告完成状态</option>
+                    <option th:if="${reportCondition==null}" value="0">报告已完成待批阅</option>
+                    <option th:if="${reportCondition==null}" value="1">已批阅</option>
+                    <option th:if="${reportCondition==null}" value="2">报告暂未完成</option>
+                    <option th:if="${reportCondition!=null && reportCondition.reportStatus==0}" value="0" selected>报告已完成待批阅</option>
+                    <option th:if="${reportCondition!=null && reportCondition.reportStatus!=0}" value="0">报告已完成待批阅</option>
+                    <option th:if="${reportCondition!=null && reportCondition.reportStatus==1}" value="1" selected>已批阅</option>
+                    <option th:if="${reportCondition!=null && reportCondition.reportStatus!=1}" value="1">已批阅</option>
+                    <option th:if="${reportCondition!=null && reportCondition.reportStatus==2}" value="2" selected>报告暂未完成</option>
+                    <option th:if="${reportCondition!=null && reportCondition.reportStatus!=2}" value="2">报告暂未完成</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary mb-2">查询</button>
+            </form>
+
+            <table class="table table-striped text-center table-sm">
+                <thead>
+                <tr>
+                    <th scope="col">序号</th>
+                    <th scope="col">学生学号</th>
+                    <th scope="col">学生姓名</th>
+                    <th scope="col">指导老师</th>
+                    <th scope="col">实验课程</th>
+                    <th scope="col">实验室地点</th>
+                    <th scope="col">实验时间</th>
+                    <th scope="col">报告成绩</th>
+                    <th scope="col">报告状态</th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${pageBean.totalCount==0}">
+                    <td colspan="10" rowspan="2">无班级信息记录</td>
+                </tr>
+                <tr th:each="report,reportStat:${pageBean.getList()}">
+                    <td th:text="${reportStat.count}"></td>
+                    <td th:text="${report.student.stuNumber}"></td>
+                    <td th:text="${report.student.stuName}"></td>
+                    <td th:text="${report.order.course.teacher.teacherName}"></td>
+                    <td th:text="${report.order.course.courseName}"></td>
+                    <td th:text="${report.order.lab.labAddress}+'/'+${report.order.lab.labName}"></td>
+                    <td th:text="${#dates.format(report.order.orderDate,'yyyy-MM-dd')}+'/'+${report.order.orderTime==0?'上午':'下午'}"></td>
+
+                    <td th:if="${report.reportStatus!=1}"></td>
+                    <td th:if="${report.reportStatus==1 && (report.reportScorePart1+report.reportScorePart2>=180) && (report.reportScorePart1+report.reportScorePart2<200)}" th:text="优秀"></td>
+                    <td th:if="${report.reportStatus==1 && (report.reportScorePart1+report.reportScorePart2>=160) && (report.reportScorePart1+report.reportScorePart2<180)}" th:text="良好"></td>
+                    <td th:if="${report.reportStatus==1 && (report.reportScorePart1+report.reportScorePart2>=140) && (report.reportScorePart1+report.reportScorePart2<160)}" th:text="中等"></td>
+                    <td th:if="${report.reportStatus==1 && (report.reportScorePart1+report.reportScorePart2>=120) && (report.reportScorePart1+report.reportScorePart2<140)}" th:text="合格"></td>
+                    <td th:if="${report.reportStatus==1 && (report.reportScorePart1+report.reportScorePart2<120)}" th:text="不合格"></td>
+
+                    <td th:if="${report.reportStatus==0}" th:text="报告已完成待批阅"></td>
+                    <td th:if="${report.reportStatus==1}" th:text="已批阅"></td>
+                    <td th:if="${report.reportStatus==2}" th:text="报告暂未完成"></td>
+
+                    <td>
+                        <a th:href="@{/admin/report/}+${report.reportId}" type="button" class="btn btn-sm btn-info">查看</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li th:class="${pageBean.currentPage==1?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/admin/reports/}+${pageBean.currentPage-1}" th:if="${reportCondition==null}" tabindex="-1" aria-disabled="true">上一页</a>
+                        <a class="page-link" th:href="@{/admin/conditionReports/}+${pageBean.currentPage-1}+'?orderDate='+${reportCondition.orderDate!=null?#dates.format(reportCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${reportCondition.orderTime!=null?reportCondition.orderTime:''}+'&reportStatus='+${reportCondition.reportStatus!=null?reportCondition.reportStatus:''}+'&courseName='+${reportCondition.courseName}+'&teacherName='+${reportCondition.teacherName}+'&stuName='+${reportCondition.stuName}+'&stuNumber'+${reportCondition.stuNumber}" th:if="${reportCondition!=null}" tabindex="-1" aria-disabled="true">上一页</a>
+                    </li>
+
+                    <li th:class="page-item" th:if="${pageBean.currentPage-2 >= 1 && pageBean.totalCount!=0}">
+                        <a th:text="${pageBean.currentPage-2}" class="page-link" th:href="@{/admin/reports/}+${pageBean.currentPage-2}" th:if="${reportCondition==null}"></a>
+                        <a th:text="${pageBean.currentPage-2}" class="page-link" th:href="@{/admin/conditionReports/}+${pageBean.currentPage-2}+'?orderDate='+${reportCondition.orderDate!=null?#dates.format(reportCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${reportCondition.orderTime!=null?reportCondition.orderTime:''}+'&reportStatus='+${reportCondition.reportStatus!=null?reportCondition.reportStatus:''}+'&courseName='+${reportCondition.courseName}+'&teacherName='+${reportCondition.teacherName}+'&stuName='+${reportCondition.stuName}+'&stuNumber'+${reportCondition.stuNumber}" th:if="${reportCondition!=null}"></a>
+                    </li>
+                    <li th:class="page-item" th:if="${pageBean.currentPage-1 >= 1 && pageBean.totalCount!=0}">
+                        <a th:text="${pageBean.currentPage-1}" class="page-link" th:href="@{/admin/reports/}+${pageBean.currentPage-1}" th:if="${reportCondition==null}"></a>
+                        <a th:text="${pageBean.currentPage-1}" class="page-link" th:href="@{/admin/conditionReports/}+${pageBean.currentPage-1}+'?orderDate='+${reportCondition.orderDate!=null?#dates.format(reportCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${reportCondition.orderTime!=null?reportCondition.orderTime:''}+'&reportStatus='+${reportCondition.reportStatus!=null?reportCondition.reportStatus:''}+'&courseName='+${reportCondition.courseName}+'&teacherName='+${reportCondition.teacherName}+'&stuName='+${reportCondition.stuName}+'&stuNumber'+${reportCondition.stuNumber}" th:if="${reportCondition!=null}"></a>
+                    </li>
+                    <li class="page-item active" th:if="${pageBean.totalCount!=0}">
+                        <a th:text="${pageBean.currentPage}" class="page-link" th:href="@{/admin/reports/}+${pageBean.currentPage}" th:if="${reportCondition==null}"></a>
+                        <a th:text="${pageBean.currentPage}" class="page-link" th:href="@{/admin/conditionReports/}+${pageBean.currentPage}+'?orderDate='+${reportCondition.orderDate!=null?#dates.format(reportCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${reportCondition.orderTime!=null?reportCondition.orderTime:''}+'&reportStatus='+${reportCondition.reportStatus!=null?reportCondition.reportStatus:''}+'&courseName='+${reportCondition.courseName}+'&teacherName='+${reportCondition.teacherName}+'&stuName='+${reportCondition.stuName}+'&stuNumber'+${reportCondition.stuNumber}" th:if="${reportCondition!=null}"></a>
+                    </li>
+                    <li th:class="page-item" th:if="${pageBean.currentPage+1 <= pageBean.totalPage && pageBean.totalCount!=0}">
+                        <a th:text="${pageBean.currentPage+1}" class="page-link" th:href="@{/admin/reports/}+${pageBean.currentPage+1}" th:if="${reportCondition==null}"></a>
+                        <a th:text="${pageBean.currentPage+1}" class="page-link" th:href="@{/admin/conditionReports/}+${pageBean.currentPage+1}+'?orderDate='+${reportCondition.orderDate!=null?#dates.format(reportCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${reportCondition.orderTime!=null?reportCondition.orderTime:''}+'&reportStatus='+${reportCondition.reportStatus!=null?reportCondition.reportStatus:''}+'&courseName='+${reportCondition.courseName}+'&teacherName='+${reportCondition.teacherName}+'&stuName='+${reportCondition.stuName}+'&stuNumber'+${reportCondition.stuNumber}" th:if="${reportCondition!=null}"></a>
+                    </li>
+                    <li th:class="page-item" th:if="${pageBean.currentPage+2 <= pageBean.totalPage && pageBean.totalCount!=0}">
+                        <a th:text="${pageBean.currentPage+2}" class="page-link" th:href="@{/admin/reports/}+${pageBean.currentPage+2}" th:if="${reportCondition==null}"></a>
+                        <a th:text="${pageBean.currentPage+2}" class="page-link" th:href="@{/admin/conditionReports/}+${pageBean.currentPage+2}+'?orderDate='+${reportCondition.orderDate!=null?#dates.format(reportCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${reportCondition.orderTime!=null?reportCondition.orderTime:''}+'&reportStatus='+${reportCondition.reportStatus!=null?reportCondition.reportStatus:''}+'&courseName='+${reportCondition.courseName}+'&teacherName='+${reportCondition.teacherName}+'&stuName='+${reportCondition.stuName}+'&stuNumber'+${reportCondition.stuNumber}" th:if="${reportCondition!=null}"></a>
+                    </li>
+
+                    <li th:class="${pageBean.currentPage==pageBean.totalPage?'page-item disabled':'page-item'}" th:if="${pageBean.totalCount!=0}">
+                        <a class="page-link" th:href="@{/admin/reports/}+${pageBean.currentPage+1}" th:if="${reportCondition==null}">下一页</a>
+                        <a class="page-link" th:href="@{/admin/conditionReports/}+${pageBean.currentPage+1}+'?orderDate='+${reportCondition.orderDate!=null?#dates.format(reportCondition.orderDate,'yyyy-MM-dd'):''}+'&orderTime='+${reportCondition.orderTime!=null?reportCondition.orderTime:''}+'&reportStatus='+${reportCondition.reportStatus!=null?reportCondition.reportStatus:''}+'&courseName='+${reportCondition.courseName}+'&teacherName='+${reportCondition.teacherName}+'&stuName='+${reportCondition.stuName}+'&stuNumber'+${reportCondition.stuNumber}" th:if="${reportCondition!=null}">下一页</a>
+                    </li>
+
+                    <li th:if="${pageBean.totalCount==0}" class="page-item active">
+                        <a th:text="0" class="page-link" href="javascript:void(0)"></a>
+                    </li>
+                    <li th:if="${pageBean.totalCount==0}" class="page-item disabled">
+                        <a class="page-link" href="javascript:void(0)">下一页</a>
+                    </li>
+                </ul>
+            </nav>
+        </main>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/popper.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/feather-icons/4.10.0/dist/feather.min.js}" type="text/javascript"></script>
+
+<script th:src="@{/js/dashboard.js}" type="text/javascript"></script>
+<script th:src="@{/laydate/laydate.js}" type="text/javascript"></script>
+
+<script>
+    laydate.render({
+        elem: '#inlineFormInputDate'
+    });
+</script>
+
+</body>
+</html>

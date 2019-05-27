@@ -3,10 +3,12 @@ package com.wyt.labinformationmanagementsystem.service;
 import com.wyt.labinformationmanagementsystem.mapper.*;
 import com.wyt.labinformationmanagementsystem.model.db.*;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
+import com.wyt.labinformationmanagementsystem.model.vo.ReportCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -30,6 +32,9 @@ public class AdminService {
 
     @Autowired
     OrderMapper orderMapper;
+
+    @Autowired
+    ReportMapper reportMapper;
 
     public PageBean<Teacher> getTeachersLimit(Integer currentPage, Integer currentCount) {
         PageBean<Teacher> pageBean = new PageBean<>();
@@ -316,6 +321,57 @@ public class AdminService {
                 .setTotalCount(totalCount)
                 .setTotalPage(totalPage)
                 .setList(courses);
+
+        return pageBean;
+    }
+
+    public PageBean<Report> getReportsLimit(Integer currentPage, Integer currentCount) {
+        PageBean<Report> pageBean = new PageBean<>();
+
+        Integer totalCount = 0;
+        totalCount = reportMapper.getReportTotalCount();
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Report> reports = reportMapper.getReportsLimit(index, currentCount);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(reports);
+
+        return pageBean;
+    }
+
+    public Report getReportByReportId(Integer reportId) {
+        return reportMapper.getReportByReportId(reportId);
+    }
+
+    public PageBean<Report> getReportsLimitByCondition(Integer currentPage, Integer currentCount, ReportCondition reportCondition) {
+        PageBean<Report> pageBean = new PageBean<>();
+
+        String formatDate = null;
+        if(reportCondition.getOrderDate()!=null){
+            formatDate =  new SimpleDateFormat("yyyy-MM-dd").format(reportCondition.getOrderDate());
+        }
+
+        Integer totalCount = 0;
+        totalCount = reportMapper.getTotalCountByCondition(reportCondition, formatDate);
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Report> reports = reportMapper.getReportsLimitByCondition(index, currentCount, reportCondition, formatDate);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(reports);
 
         return pageBean;
     }

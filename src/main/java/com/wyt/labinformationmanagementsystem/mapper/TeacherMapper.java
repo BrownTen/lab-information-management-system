@@ -51,5 +51,10 @@ public interface TeacherMapper {
             "</script>")
     List<Teacher> getTeachersByCondition(Teacher teacher);
 
+    @Select("select count(*) from teacher_tbl where teacher_name like concat('%', #{teacherName}, '%')")
+    Integer getTotalTeacherCountByTeacherName(String teacherName);
+
+    @Select("select teacher_id from teacher_tbl where teacher_name like concat('%', #{teacherName}, '%')")
+    Integer getTeacherIdByTeacherName(String teacherName);
 }
 

@@ -64,6 +64,12 @@
                         授课信息管理
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a th:class="${activeStatus=='reportInfos'?'nav-link active':'nav-link'}" th:href="@{/admin/reports/1}">
+                        <span data-feather="file-text"></span>
+                        报告信息管理
+                    </a>
+                </li>
             </ul>
 
         </div>

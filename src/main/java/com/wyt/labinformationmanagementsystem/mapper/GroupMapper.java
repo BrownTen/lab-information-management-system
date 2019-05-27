@@ -49,5 +49,5 @@ public interface GroupMapper {
     Integer getTotalGroupCountByGroupName(String groupName);
 
     @Select("select group_id from group_tbl where group_name like concat('%', #{groupName}, '%')")
-    Integer getGroupByGroupName(String groupName);
+    Integer getGroupIdByGroupName(String groupName);
 }

@@ -41,6 +41,7 @@
             <table class="table table-striped text-center table-sm">
                 <thead>
                 <tr>
+                    <th scope="col">序号</th>
                     <th scope="col">学号</th>
                     <th scope="col">密码</th>
                     <th scope="col">姓名</th>
@@ -55,6 +56,7 @@
                     <td colspan="7" rowspan="2">无学生信息记录</td>
                 </tr>
                 <tr th:each="stu,stuStat:${pageBean.getList()}">
+                    <td th:text="${stuStat.count}"></td>
                     <td th:text="${stu.stuNumber}"></td>
                     <td th:text="${stu.stuPassword}"></td>
                     <td th:text="${stu.stuName}"></td>

@@ -27,8 +27,8 @@
                 <label class="sr-only" for="inlineFormInputCourseName">实验课程</label>
                 <input th:value="${reportCondition!=null}?${reportCondition.courseName}" name="courseName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputCourseName" placeholder="查询实验课程">
 
-                <label class="sr-only" for="inlineFormInputCourseName">实验指导老师</label>
-                <input th:value="${reportCondition!=null}?${reportCondition.teacherName}" name="teacherName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputCourseName" placeholder="查询指导老师">
+                <label class="sr-only" for="inlineFormInputTeacherName">实验指导老师</label>
+                <input th:value="${reportCondition!=null}?${reportCondition.teacherName}" name="teacherName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputTeacherName" placeholder="查询指导老师">
 
                 <label class="sr-only" for="inlineFormInputDate">实验日期</label>
                 <input th:value="${reportCondition!=null}?${#dates.format(reportCondition.orderDate,'yyyy-MM-dd')}" name="orderDate" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputDate" placeholder="查询实验日期">
@@ -74,7 +74,7 @@
                 </thead>
                 <tbody>
                 <tr th:if="${pageBean.totalCount==0}">
-                    <td colspan="10" rowspan="2">暂无实验记录</td>
+                    <td colspan="8" rowspan="2">暂无实验记录</td>
                 </tr>
                 <tr th:each="report,reportStat:${pageBean.getList()}">
                     <th scope="row" th:text="${reportStat.count}"></th>
