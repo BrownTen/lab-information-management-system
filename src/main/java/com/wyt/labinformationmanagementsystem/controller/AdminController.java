@@ -1,9 +1,6 @@
 package com.wyt.labinformationmanagementsystem.controller;
 
-import com.wyt.labinformationmanagementsystem.model.db.Group;
-import com.wyt.labinformationmanagementsystem.model.db.Lab;
-import com.wyt.labinformationmanagementsystem.model.db.Student;
-import com.wyt.labinformationmanagementsystem.model.db.Teacher;
+import com.wyt.labinformationmanagementsystem.model.db.*;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import com.wyt.labinformationmanagementsystem.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,9 +182,10 @@ public class AdminController {
 
     @PutMapping("/stu")
     public String updateStuInfo(Student stu, Model model){
-        Integer groupId = adminService.getGroupbyGroupName(stu.getGroup().getGroupName());
+        Integer groupId = adminService.getGroupIdByGroupName(stu.getGroup().getGroupName());
         if (groupId == null){
             model.addAttribute("msg","请输入准确班级");
+            model.addAttribute("stu",stu);
             return "admin/addOrEdit/stu";
         }
         stu.getGroup().setGroupId(groupId);
@@ -210,9 +208,10 @@ public class AdminController {
     @PostMapping("/stu")
     public String insertStu(Student stu, Model model){
 
-        Integer groupId = adminService.getGroupbyGroupName(stu.getGroup().getGroupName());
+        Integer groupId = adminService.getGroupIdByGroupName(stu.getGroup().getGroupName());
         if (groupId == null){
             model.addAttribute("msg","请输入准确班级");
+            model.addAttribute("student",null);
             return "admin/addOrEdit/stu";
         }
         stu.getGroup().setGroupId(groupId);
@@ -230,15 +229,86 @@ public class AdminController {
         return "admin/infos/stu";
     }
 
+    @GetMapping("/courses/{currentPage}")
+    public String courseInfos(@PathVariable Integer currentPage, Model model){
+        Integer currentCount = 8;
+        PageBean<Course> pageBean = adminService.getCoursesLimit(currentPage, currentCount);
+        model.addAttribute("pageBean", pageBean);
+        return "admin/infos/course";
+    }
+
+    @GetMapping("/course/{courseId}")
+    public String toCourseEditPage(@PathVariable Integer courseId, Model model){
+        Course course = adminService.getCourseByCourseId(courseId);
+        model.addAttribute("course", course);
+        return "admin/addOrEdit/course";
+    }
+
+    @PutMapping("/course")
+    public String updateCourseInfo(Course course, Model model){
+        Integer teacherId = adminService.getTeacherIdByTeacherName(course.getTeacher().getTeacherName());
+        Integer groupId = adminService.getGroupIdByGroupName(course.getGroup().getGroupName());
+        if (groupId == null || teacherId == null){
+            if (teacherId == null){
+                model.addAttribute("teacherMsg","请输入准确教师名称");
+            }
+            if (groupId == null){
+                model.addAttribute("groupMsg","请输入准确班级");
+            }
+            model.addAttribute("course", course);
+            return "admin/addOrEdit/course";
+        }
+        course.getTeacher().setTeacherId(teacherId);
+        course.getGroup().setGroupId(groupId);
+
+        adminService.updateCourseInfo(course);
+        return "redirect:/admin/courses/1";
+    }
+
+    @DeleteMapping("/course/{courseId}")
+    public String deleteCourseInfo(@PathVariable Integer courseId){
+        adminService.deleteCourseInfoByCourseId(courseId);
+        return "redirect:/admin/courses/1";
+    }
+
+    @GetMapping("/course")
+    public String toCourseAddPage(){
+        return "admin/addOrEdit/course";
+    }
+
+    @PostMapping("/course")
+    public String insertCourse(Course course, Model model){
+        Integer teacherId = adminService.getTeacherIdByTeacherName(course.getTeacher().getTeacherName());
+        Integer groupId = adminService.getGroupIdByGroupName(course.getGroup().getGroupName());
+        if (groupId == null || teacherId == null){
+            if (teacherId == null){
+                model.addAttribute("teacherMsg","请输入准确教师名称");
+            }
+            if (groupId == null){
+                model.addAttribute("groupMsg","请输入准确班级");
+            }
+            model.addAttribute("course",null);
+            return "/admin/addOrEdit/course";
+        }
+        course.getTeacher().setTeacherId(teacherId);
+        course.getGroup().setGroupId(groupId);
+
+        adminService.insertCourse(course);
+        return "redirect:/admin/courses/1";
+    }
+
+    @GetMapping("/conditionCourses/{currentPage}")
+    public String findCourseInfosByCondition(@PathVariable Integer currentPage, Course course, Model model){
+        Integer currentCount = 8 ;
+        PageBean<Course> pageBean = adminService.getCoursesLimitByCondition(currentPage, currentCount, course);
+        model.addAttribute("course", course);
+        model.addAttribute("pageBean", pageBean);
+        return "admin/infos/course";
+    }
+
     @GetMapping("/orders/{currentPage}")
     public String orderInfos(@PathVariable Integer currentPage, Model model){
         //TODO
         return "admin/infos/order";
-    }
-
-    @GetMapping("/courses/{currentPage}")
-    public String courseInfos(@PathVariable Integer currentPage, Model model){
-        //TODO
-        return "admin/infos/course";
     }
 }

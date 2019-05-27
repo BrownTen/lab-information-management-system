@@ -1,10 +1,7 @@
 package com.wyt.labinformationmanagementsystem.service;
 
 import com.wyt.labinformationmanagementsystem.mapper.*;
-import com.wyt.labinformationmanagementsystem.model.db.Group;
-import com.wyt.labinformationmanagementsystem.model.db.Lab;
-import com.wyt.labinformationmanagementsystem.model.db.Student;
-import com.wyt.labinformationmanagementsystem.model.db.Teacher;
+import com.wyt.labinformationmanagementsystem.model.db.*;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -249,11 +246,77 @@ public class AdminService {
         return pageBean;
     }
 
-    public Integer getGroupbyGroupName(String groupName) {
+    public Integer getGroupIdByGroupName(String groupName) {
         Integer onlyOne = groupMapper.getTotalGroupCountByGroupName(groupName);
         if(onlyOne != 1){
             return null;
         }
-        return groupMapper.getGroupByGroupName(groupName);
+        return groupMapper.getGroupIdByGroupName(groupName);
+    }
+
+    public PageBean<Course> getCoursesLimit(Integer currentPage, Integer currentCount) {
+        PageBean<Course> pageBean = new PageBean<>();
+
+        Integer totalCount = 0;
+        totalCount = courseMapper.getTotalCourseCount();
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Course> courses = courseMapper.getCourseLimit(index, currentCount);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(courses);
+
+        return pageBean;
+    }
+
+    public Course getCourseByCourseId(Integer courseId) {
+        return courseMapper.getCourseByCourseId(courseId);
+    }
+
+    public Integer getTeacherIdByTeacherName(String teacherName) {
+        Integer onlyOne = teacherMapper.getTotalTeacherCountByTeacherName(teacherName);
+        if(onlyOne != 1){
+            return null;
+        }
+        return teacherMapper.getTeacherIdByTeacherName(teacherName);
+    }
+
+    public void updateCourseInfo(Course course) {
+        courseMapper.updateCourseInfo(course);
+    }
+
+    public void deleteCourseInfoByCourseId(Integer courseId) {
+        courseMapper.deleteCourseInfoByCourseId(courseId);
+    }
+
+    public void insertCourse(Course course) {
+        courseMapper.insertCourse(course);
+    }
+
+    public PageBean<Course> getCoursesLimitByCondition(Integer currentPage, Integer currentCount, Course course) {
+        PageBean<Course> pageBean = new PageBean<>();
+
+        Integer totalCount = 0;
+        totalCount = courseMapper.getTotalCourseCountByCondition(course);
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Course> courses = courseMapper.getCoursesLimitByCondition(index, currentCount, course);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(courses);
+
+        return pageBean;
     }
 }
