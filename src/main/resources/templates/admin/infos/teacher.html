@@ -49,7 +49,7 @@
                 </thead>
                 <tbody>
                 <tr th:if="${pageBean.totalCount==0}">
-                    <td colspan="10" rowspan="2">暂无教师信息记录</td>
+                    <td colspan="7" rowspan="2">无教师信息记录</td>
                 </tr>
                 <tr th:each="teacher,teacherStat:${pageBean.getList()}">
                     <td th:text="${teacherStat.count}"></td>

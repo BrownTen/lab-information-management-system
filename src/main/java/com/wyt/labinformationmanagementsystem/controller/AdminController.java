@@ -2,6 +2,7 @@ package com.wyt.labinformationmanagementsystem.controller;
 
 import com.wyt.labinformationmanagementsystem.model.db.Group;
 import com.wyt.labinformationmanagementsystem.model.db.Lab;
+import com.wyt.labinformationmanagementsystem.model.db.Student;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import com.wyt.labinformationmanagementsystem.service.AdminService;
@@ -169,7 +170,63 @@ public class AdminController {
 
     @GetMapping("/stus/{currentPage}")
     public String stuInfos(@PathVariable Integer currentPage, Model model){
-        //TODO
+        Integer currentCount = 8;
+        PageBean<Student> pageBean = adminService.getStusLimit(currentPage, currentCount);
+        model.addAttribute("pageBean", pageBean);
+        return "admin/infos/stu";
+    }
+
+    @GetMapping("/stu/{stuId}")
+    public String toStuEditPage(@PathVariable Integer stuId, Model model){
+        Student stu = adminService.getStuByStuId(stuId);
+        model.addAttribute("stu", stu);
+        return "admin/addOrEdit/stu";
+    }
+
+    @PutMapping("/stu")
+    public String updateStuInfo(Student stu, Model model){
+        Integer groupId = adminService.getGroupbyGroupName(stu.getGroup().getGroupName());
+        if (groupId == null){
+            model.addAttribute("msg","请输入准确班级");
+            return "admin/addOrEdit/stu";
+        }
+        stu.getGroup().setGroupId(groupId);
+
+        adminService.updateStuInfo(stu);
+        return "redirect:/admin/stus/1";
+    }
+
+    @DeleteMapping("/stu/{stuId}")
+    public String deleteStuInfo(@PathVariable Integer stuId){
+        adminService.deleteStuInfoByStuId(stuId);
+        return "redirect:/admin/stus/1";
+    }
+
+    @GetMapping("/stu")
+    public String toStuAddPage(){
+        return "admin/addOrEdit/stu";
+    }
+
+    @PostMapping("/stu")
+    public String insertStu(Student stu, Model model){
+
+        Integer groupId = adminService.getGroupbyGroupName(stu.getGroup().getGroupName());
+        if (groupId == null){
+            model.addAttribute("msg","请输入准确班级");
+            return "admin/addOrEdit/stu";
+        }
+        stu.getGroup().setGroupId(groupId);
+
+        adminService.insertStu(stu);
+        return "redirect:/admin/stus/1";
+    }
+
+    @GetMapping("/conditionStus/{currentPage}")
+    public String findStuInfosByCondition(@PathVariable Integer currentPage, Student stu, Model model){
+        Integer currentCount = 8 ;
+        PageBean<Student> pageBean = adminService.getStusLimitByCondition(currentPage, currentCount, stu);
+        model.addAttribute("stu", stu);
+        model.addAttribute("pageBean", pageBean);
         return "admin/infos/stu";
     }
 

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" rel="stylesheet">
+
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+
+    <title>stuAddOrEdit</title>
+</head>
+<body>
+
+<div th:replace="admin/commons/bar::topbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div th:replace="admin/commons/bar::sidebar(activeStatus='stuInfos')"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <form method="post" th:action="@{/admin/stu}" style="padding-top: 15px">
+
+                <input type="hidden" name="_method" value="put" th:if="${stu!=null}">
+                <input type="hidden" name="stuId" th:value="${stu!=null}?${stu.stuId}">
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputStuNumber">学号</label>
+                        <input name="stuNumber" th:value="${stu!=null}?${stu.stuNumber}" type="text" class="form-control" id="inputStuNumber" placeholder="请填写学号" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputStuPassword4">密码</label>
+                        <input name="stuPassword" th:value="${stu!=null}?${stu.stuPassword}" type="password" class="form-control" id="inputStuPassword4" placeholder="请填写密码" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputStuName">姓名</label>
+                        <input name="stuName" th:value="${stu!=null}?${stu.stuName}" type="text" class="form-control" id="inputStuName" placeholder="请填写姓名" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputGroupName">班级</label>
+                        <input name="group.groupName" th:value="${stu!=null}?${stu.group.groupName}" type="text" class="form-control" id="inputGroupName" placeholder="请填写班级" required>
+                        <p style="color: red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputStuPhone">联系方式</label>
+                        <input name="stuPhone" th:value="${stu!=null}?${stu.stuPhone}" type="text" class="form-control" id="inputStuPhone" placeholder="请填写联系方式" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputStuEmail">邮箱</label>
+                        <input name="stuEmail" th:value="${stu!=null}?${stu.stuEmail}" type="email" class="form-control" id="inputStuEmail" placeholder="请填写邮箱">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-sm btn-primary" th:text="${stu!=null?'更新':'录入'}"></button>&nbsp;&nbsp;
+                    <a th:href="@{/admin/stus/1}" class="btn btn-sm btn-secondary" th:text="取消"></a>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/popper.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/feather-icons/4.10.0/dist/feather.min.js}" type="text/javascript"></script>
+
+<script th:src="@{/js/dashboard.js}" type="text/javascript"></script>
+
+</body>
+</html>

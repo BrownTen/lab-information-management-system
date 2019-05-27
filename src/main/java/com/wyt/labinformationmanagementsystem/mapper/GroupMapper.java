@@ -44,4 +44,10 @@ public interface GroupMapper {
                 "limit ${index},${currentCount}" +
             "</script>")
     List<Group> getGroupsLimitByCondition(Integer index, Integer currentCount, Group group);
+
+    @Select("select count(*) from group_tbl where group_name like concat('%', #{groupName}, '%')")
+    Integer getTotalGroupCountByGroupName(String groupName);
+
+    @Select("select group_id from group_tbl where group_name like concat('%', #{groupName}, '%')")
+    Integer getGroupByGroupName(String groupName);
 }

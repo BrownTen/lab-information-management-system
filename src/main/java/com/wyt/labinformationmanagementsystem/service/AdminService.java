@@ -3,6 +3,7 @@ package com.wyt.labinformationmanagementsystem.service;
 import com.wyt.labinformationmanagementsystem.mapper.*;
 import com.wyt.labinformationmanagementsystem.model.db.Group;
 import com.wyt.labinformationmanagementsystem.model.db.Lab;
+import com.wyt.labinformationmanagementsystem.model.db.Student;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -188,5 +189,71 @@ public class AdminService {
                 .setList(labs);
 
         return pageBean;
+    }
+
+    public PageBean<Student> getStusLimit(Integer currentPage, Integer currentCount) {
+        PageBean<Student> pageBean = new PageBean<>();
+
+        Integer totalCount = 0;
+        totalCount = studentMapper.getTotalStuCount();
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Student> stus = studentMapper.getStusLimit(index, currentCount);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(stus);
+
+        return pageBean;
+    }
+
+    public Student getStuByStuId(Integer stuId) {
+        return studentMapper.getStudentByStudentId(stuId);
+    }
+
+    public void updateStuInfo(Student stu) {
+        studentMapper.updateStudentInfo(stu);
+    }
+
+    public void deleteStuInfoByStuId(Integer stuId) {
+        studentMapper.deleteStuInfoByStuid(stuId);
+    }
+
+    public void insertStu(Student stu) {
+        studentMapper.insertStu(stu);
+    }
+
+    public PageBean<Student> getStusLimitByCondition(Integer currentPage, Integer currentCount, Student stu) {
+        PageBean<Student> pageBean = new PageBean<>();
+
+        Integer totalCount = 0;
+        totalCount = studentMapper.getTotalStuCountByCondition(stu);
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Student> stus = studentMapper.getStusLimitByCondition(index, currentCount, stu);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(stus);
+
+        return pageBean;
+    }
+
+    public Integer getGroupbyGroupName(String groupName) {
+        Integer onlyOne = groupMapper.getTotalGroupCountByGroupName(groupName);
+        if(onlyOne != 1){
+            return null;
+        }
+        return groupMapper.getGroupByGroupName(groupName);
     }
 }

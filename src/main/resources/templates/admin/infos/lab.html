@@ -24,7 +24,7 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/admin/conditionLabs/1}">
                 <h2 class="mb-2 mr-sm-2">
-                    <a class="btn btn-sm btn-success" th:href="@{/admin/lab}">添加班级</a>
+                    <a class="btn btn-sm btn-success" th:href="@{/admin/lab}">添加实验室</a>
                 </h2>
                 <label class="sr-only" for="inlineFormInputLabName">班级</label>
                 <input th:value="${lab!=null}?${lab.labName}" name="labName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputLabName" placeholder="查询实验室名称">
@@ -47,7 +47,7 @@
                 </thead>
                 <tbody>
                 <tr th:if="${pageBean.totalCount==0}">
-                    <td colspan="10" rowspan="2">暂无班级信息记录</td>
+                    <td colspan="5" rowspan="2">无班级信息记录</td>
                 </tr>
                 <tr th:each="lab,labStat:${pageBean.getList()}">
                     <td th:text="${labStat.count}"></td>

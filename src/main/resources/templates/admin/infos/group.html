@@ -42,7 +42,7 @@
                 </thead>
                 <tbody>
                 <tr th:if="${pageBean.totalCount==0}">
-                    <td colspan="10" rowspan="2">暂无班级信息记录</td>
+                    <td colspan="3" rowspan="2">无班级信息记录</td>
                 </tr>
                 <tr th:each="group,groupStat:${pageBean.getList()}">
                     <td th:text="${groupStat.count}"></td>
