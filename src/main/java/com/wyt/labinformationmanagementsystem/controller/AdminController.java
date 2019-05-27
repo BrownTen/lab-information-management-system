@@ -1,6 +1,7 @@
 package com.wyt.labinformationmanagementsystem.controller;
 
 import com.wyt.labinformationmanagementsystem.model.db.Group;
+import com.wyt.labinformationmanagementsystem.model.db.Lab;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import com.wyt.labinformationmanagementsystem.service.AdminService;
@@ -105,13 +106,13 @@ public class AdminController {
     }
 
     @PostMapping("/group")
-    public String insertTeacher(Group group){
+    public String insertGroup(Group group){
         adminService.insertGroup(group);
         return "redirect:/admin/groups/1";
     }
 
     @GetMapping("/conditionGroups/{currentPage}")
-    public String findTeacherInfosByCondition(@PathVariable Integer currentPage, Group group, Model model){
+    public String findGroupInfosByCondition(@PathVariable Integer currentPage, Group group, Model model){
         Integer currentCount = 8 ;
         PageBean<Group> pageBean = adminService.getGroupsLimitByCondition(currentPage, currentCount, group);
         model.addAttribute("group", group);
@@ -121,7 +122,48 @@ public class AdminController {
 
     @GetMapping("/labs/{currentPage}")
     public String labInfos(@PathVariable Integer currentPage, Model model){
-        //TODO
+        Integer currentCount = 8;
+        PageBean<Lab> pageBean = adminService.getLabsLimit(currentPage, currentCount);
+        model.addAttribute("pageBean", pageBean);
+        return "admin/infos/lab";
+    }
+
+    @GetMapping("/lab/{labId}")
+    public String toLabEditPage(@PathVariable Integer labId, Model model){
+        Lab lab = adminService.getLabByLabId(labId);
+        model.addAttribute("lab", lab);
+        return "admin/addOrEdit/lab";
+    }
+
+    @PutMapping("/lab")
+    public String updateLabInfo(Lab lab){
+        adminService.updateLabInfo(lab);
+        return "redirect:/admin/labs/1";
+    }
+
+    @DeleteMapping("/lab/{labId}")
+    public String deleteLabInfo(@PathVariable Integer labId){
+        adminService.deleteLabInfoByLabId(labId);
+        return "redirect:/admin/labs/1";
+    }
+
+    @GetMapping("/lab")
+    public String toLabAddPage(){
+        return "admin/addOrEdit/lab";
+    }
+
+    @PostMapping("/lab")
+    public String insertLab(Lab lab){
+        adminService.insertLab(lab);
+        return "redirect:/admin/labs/1";
+    }
+
+    @GetMapping("/conditionLabs/{currentPage}")
+    public String findLabInfosByCondition(@PathVariable Integer currentPage, Lab lab, Model model){
+        Integer currentCount = 8 ;
+        PageBean<Lab> pageBean = adminService.getLabsLimitByCondition(currentPage, currentCount, lab);
+        model.addAttribute("lab", lab);
+        model.addAttribute("pageBean", pageBean);
         return "admin/infos/lab";
     }
 

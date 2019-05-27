@@ -10,7 +10,7 @@
 
     <link th:href="@{/css/dashboard.css}" rel="stylesheet">
 
-    <title>groupAddOrEdit</title>
+    <title>labAddOrEdit</title>
 </head>
 <body>
 
@@ -19,23 +19,29 @@
 <div class="container-fluid">
     <div class="row">
 
-        <div th:replace="admin/commons/bar::sidebar(activeStatus='groupInfos')"></div>
+        <div th:replace="admin/commons/bar::sidebar(activeStatus='labInfos')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <form method="post" th:action="@{/admin/group}" style="padding-top: 15px">
+            <form method="post" th:action="@{/admin/lab}" style="padding-top: 15px">
 
-                <input type="hidden" name="_method" value="put" th:if="${group!=null}">
-                <input type="hidden" name="groupId" th:value="${group!=null}?${group.groupId}">
+                <input type="hidden" name="_method" value="put" th:if="${lab!=null}">
+                <input type="hidden" name="labId" th:value="${lab!=null}?${lab.labId}">
 
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="inputGroupName">班级名称</label>
-                        <input name="groupName" th:value="${group!=null}?${group.groupName}" type="text" class="form-control" id="inputGroupName" placeholder="请填写班级名称" required>
+                        <label for="inputLabName">实验室名称</label>
+                        <input name="labName" th:value="${lab!=null}?${lab.labName}" type="text" class="form-control" id="inputLabName" placeholder="请填写实验室名称" required>
                     </div>
                 </div>
                 <div class="form-row">
-                    <button type="submit" class="btn btn-sm btn-primary" th:text="${group!=null?'更新':'录入'}"></button>&nbsp;&nbsp;
-                    <a th:href="@{/admin/groups/1}" class="btn btn-sm btn-secondary" th:text="取消"></a>
+                    <div class="form-group col-md-12">
+                        <label for="inputLabAddress">实验室地址</label>
+                        <input name="labAddress" th:value="${lab!=null}?${lab.labAddress}" type="text" class="form-control" id="inputLabAddress" placeholder="请填写实验室地址" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-sm btn-primary" th:text="${lab!=null?'更新':'录入'}"></button>&nbsp;&nbsp;
+                    <a th:href="@{/admin/labs/1}" class="btn btn-sm btn-secondary" th:text="取消"></a>
                 </div>
             </form>
         </main>

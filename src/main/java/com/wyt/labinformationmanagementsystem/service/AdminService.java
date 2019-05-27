@@ -2,6 +2,7 @@ package com.wyt.labinformationmanagementsystem.service;
 
 import com.wyt.labinformationmanagementsystem.mapper.*;
 import com.wyt.labinformationmanagementsystem.model.db.Group;
+import com.wyt.labinformationmanagementsystem.model.db.Lab;
 import com.wyt.labinformationmanagementsystem.model.db.Teacher;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,6 +128,64 @@ public class AdminService {
                 .setTotalCount(totalCount)
                 .setTotalPage(totalPage)
                 .setList(groups);
+
+        return pageBean;
+    }
+
+    public PageBean<Lab> getLabsLimit(Integer currentPage, Integer currentCount) {
+        PageBean<Lab> pageBean = new PageBean<>();
+
+        Integer totalCount = 0;
+        totalCount = labMapper.getTotalLabCount();
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Lab> labs = labMapper.getLabsLimit(index, currentCount);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(labs);
+
+        return pageBean;
+    }
+
+    public Lab getLabByLabId(Integer labId) {
+        return labMapper.getLabByLabId(labId);
+    }
+
+    public void updateLabInfo(Lab lab) {
+        labMapper.updateLabInfo(lab);
+    }
+
+    public void deleteLabInfoByLabId(Integer labId) {
+        labMapper.deleteLabInfoByLabId(labId);
+    }
+
+    public void insertLab(Lab lab) {
+        labMapper.insertLab(lab);
+    }
+
+    public PageBean<Lab> getLabsLimitByCondition(Integer currentPage, Integer currentCount, Lab lab) {
+        PageBean<Lab> pageBean = new PageBean<>();
+
+        Integer totalCount = 0;
+        totalCount = labMapper.getTotalLabCountByCondition(lab);
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Lab> labs = labMapper.getLabsLimitByCondition(index, currentCount, lab);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(labs);
 
         return pageBean;
     }

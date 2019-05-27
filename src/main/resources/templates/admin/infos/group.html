@@ -87,28 +87,28 @@
                         <a class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage-1}+'?groupName='+${group.groupName}" th:if="${group!=null}" tabindex="-1" aria-disabled="true">上一页</a>
                     </li>
 
-                    <li th:class="page-item" th:if="${pageBean.currentPage-2 >= 1}">
+                    <li th:class="page-item" th:if="${pageBean.currentPage-2 >= 1 && pageBean.totalCount!=0}">
                         <a th:text="${pageBean.currentPage-2}" class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage-2}" th:if="${group==null}"></a>
                         <a th:text="${pageBean.currentPage-2}" class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage-2}+'?groupName='+${group.groupName}" th:if="${group!=null}"></a>
                     </li>
-                    <li th:class="page-item" th:if="${pageBean.currentPage-1 >= 1}">
+                    <li th:class="page-item" th:if="${pageBean.currentPage-1 >= 1 && pageBean.totalCount!=0}">
                         <a th:text="${pageBean.currentPage-1}" class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage-1}" th:if="${group==null}"></a>
                         <a th:text="${pageBean.currentPage-1}" class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage-1}+'?groupName='+${group.groupName}" th:if="${group!=null}"></a>
                     </li>
-                    <li class="page-item active">
+                    <li class="page-item active"  th:if="${pageBean.totalCount!=0}">
                         <a th:text="${pageBean.currentPage}" class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage}" th:if="${group==null}"></a>
                         <a th:text="${pageBean.currentPage}" class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage}+'?groupName='+${group.groupName}" th:if="${group!=null}"></a>
                     </li>
-                    <li th:class="page-item" th:if="${pageBean.currentPage+1 <= pageBean.getTotalPage()}">
+                    <li th:class="page-item" th:if="${pageBean.currentPage+1 <= pageBean.getTotalPage() && pageBean.totalCount!=0}">
                         <a th:text="${pageBean.currentPage+1}" class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage+1}" th:if="${group==null}"></a>
                         <a th:text="${pageBean.currentPage+1}" class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage+1}+'?groupName='+${group.groupName}" th:if="${group!=null}"></a>
                     </li>
-                    <li th:class="page-item" th:if="${pageBean.currentPage+2 <= pageBean.getTotalPage()}">
+                    <li th:class="page-item" th:if="${pageBean.currentPage+2 <= pageBean.getTotalPage() && pageBean.totalCount!=0}">
                         <a th:text="${pageBean.currentPage+2}" class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage+2}" th:if="${group==null}"></a>
                         <a th:text="${pageBean.currentPage+2}" class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage+2}+'?groupName='+${group.groupName}" th:if="${group!=null}"></a>
                     </li>
 
-                    <li th:class="${pageBean.currentPage==pageBean.totalPage?'page-item disabled':'page-item'}">
+                    <li th:class="${pageBean.currentPage==pageBean.totalPage?'page-item disabled':'page-item'}"  th:if="${pageBean.totalCount!=0}">
                         <a class="page-link" th:href="@{/admin/groups/}+${pageBean.currentPage+1}" th:if="${group==null}">下一页</a>
                         <a class="page-link" th:href="@{/admin/conditionGroups/}+${pageBean.currentPage+1}+'?groupName='+${group.groupName}" th:if="${group!=null}">下一页</a>
                     </li>

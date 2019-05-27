@@ -22,10 +22,112 @@
         <div th:replace="admin/commons/bar::sidebar(activeStatus='labInfos')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">该功能尚未开通</h1>
+            <form class="form-inline" style="padding-top: 15px" method="get" th:action="@{/admin/conditionLabs/1}">
+                <h2 class="mb-2 mr-sm-2">
+                    <a class="btn btn-sm btn-success" th:href="@{/admin/lab}">添加班级</a>
+                </h2>
+                <label class="sr-only" for="inlineFormInputLabName">班级</label>
+                <input th:value="${lab!=null}?${lab.labName}" name="labName" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputLabName" placeholder="查询实验室名称">
+
+                <label class="sr-only" for="inlineFormInputLabAddress">班级</label>
+                <input th:value="${lab!=null}?${lab.labAddress}" name="labAddress" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputLabAddress" placeholder="查询实验室地址">
+
+                <button type="submit" class="btn btn-primary mb-2">查询</button>
+            </form>
+
+            <table class="table table-striped text-center table-sm">
+                <thead>
+                <tr>
+                    <th scope="col">序号</th>
+                    <th scope="col">实验室名称</th>
+                    <th scope="col">实验室地址</th>
+                    <th scope="col">管理员姓名</th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${pageBean.totalCount==0}">
+                    <td colspan="10" rowspan="2">暂无班级信息记录</td>
+                </tr>
+                <tr th:each="lab,labStat:${pageBean.getList()}">
+                    <td th:text="${labStat.count}"></td>
+                    <td th:text="${lab.labName}"></td>
+                    <td th:text="${lab.labAddress}"></td>
+                    <td th:text="${lab.admin.admUsername}"></td>
+                    <td>
+                        <a th:href="@{/admin/lab/}+${lab.labId}" class="btn btn-sm btn-primary">编辑</a>
+                        <button th:attr="delUri=@{/admin/lab/}+${lab.labId}" type="button" class="btn btn-sm btn-danger deleteBtn" data-toggle="modal" data-target="#exampleModalCenter">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">友情提示</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            确认是否删除此条记录
+                            <p style="color: red">(将会删除与该实验室相关的所有记录)</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-sm btn-danger" id="deleteConfirmBtn">确认删除</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <form id="deleteLabForm" method="post">
+                <input type="hidden" name="_method" value="delete">
+            </form>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li th:class="${pageBean.currentPage==1?'page-item disabled':'page-item'}">
+                        <a class="page-link" th:href="@{/admin/labs/}+${pageBean.currentPage-1}" th:if="${lab==null}" tabindex="-1" aria-disabled="true">上一页</a>
+                        <a class="page-link" th:href="@{/admin/conditionLabs/}+${pageBean.currentPage-1}+'?labName='+${lab.labName}+'&labAddress='+${lab.labAddress}" th:if="${lab!=null}" tabindex="-1" aria-disabled="true">上一页</a>
+                    </li>
+
+                    <li th:class="page-item" th:if="${pageBean.currentPage-2 >= 1 && pageBean.totalCount!=0}">
+                        <a th:text="${pageBean.currentPage-2}" class="page-link" th:href="@{/admin/labs/}+${pageBean.currentPage-2}" th:if="${lab==null}"></a>
+                        <a th:text="${pageBean.currentPage-2}" class="page-link" th:href="@{/admin/conditionLabs/}+${pageBean.currentPage-2}+'?labName='+${lab.labName}+'&labAddress='+${lab.labAddress}" th:if="${lab!=null}"></a>
+                    </li>
+                    <li th:class="page-item" th:if="${pageBean.currentPage-1 >= 1 && pageBean.totalCount!=0}">
+                        <a th:text="${pageBean.currentPage-1}" class="page-link" th:href="@{/admin/labs/}+${pageBean.currentPage-1}" th:if="${lab==null}"></a>
+                        <a th:text="${pageBean.currentPage-1}" class="page-link" th:href="@{/admin/conditionLabs/}+${pageBean.currentPage-1}+'?labName='+${lab.labName}+'&labAddress='+${lab.labAddress}" th:if="${lab!=null}"></a>
+                    </li>
+                    <li class="page-item active" th:if="${pageBean.totalCount!=0}">
+                        <a th:text="${pageBean.currentPage}" class="page-link" th:href="@{/admin/labs/}+${pageBean.currentPage}" th:if="${lab==null}"></a>
+                        <a th:text="${pageBean.currentPage}" class="page-link" th:href="@{/admin/conditionLabs/}+${pageBean.currentPage}+'?labName='+${lab.labName}+'&labAddress='+${lab.labAddress}" th:if="${lab!=null}"></a>
+                    </li>
+                    <li th:class="page-item" th:if="${pageBean.currentPage+1 <= pageBean.totalPage && pageBean.totalCount!=0}">
+                        <a th:text="${pageBean.currentPage+1}" class="page-link" th:href="@{/admin/labs/}+${pageBean.currentPage+1}" th:if="${lab==null}"></a>
+                        <a th:text="${pageBean.currentPage+1}" class="page-link" th:href="@{/admin/conditionLabs/}+${pageBean.currentPage+1}+'?labName='+${lab.labName}+'&labAddress='+${lab.labAddress}" th:if="${lab!=null}"></a>
+                    </li>
+                    <li th:class="page-item" th:if="${pageBean.currentPage+2 <= pageBean.totalPage && pageBean.totalCount!=0}">
+                        <a th:text="${pageBean.currentPage+2}" class="page-link" th:href="@{/admin/labs/}+${pageBean.currentPage+2}" th:if="${lab==null}"></a>
+                        <a th:text="${pageBean.currentPage+2}" class="page-link" th:href="@{/admin/conditionLabs/}+${pageBean.currentPage+2}+'?labName='+${lab.labName}+'&labAddress='+${lab.labAddress}" th:if="${lab!=null}"></a>
+                    </li>
+
+                    <li th:class="${pageBean.currentPage==pageBean.totalPage?'page-item disabled':'page-item'}" th:if="${pageBean.totalCount!=0}">
+                        <a class="page-link" th:href="@{/admin/labs/}+${pageBean.currentPage+1}" th:if="${lab==null}">下一页</a>
+                        <a class="page-link" th:href="@{/admin/conditionLabs/}+${pageBean.currentPage+1}+'?labName='+${lab.labName}+'&labAddress='+${lab.labAddress}" th:if="${lab!=null}">下一页</a>
+                    </li>
+
+                    <li th:if="${pageBean.totalCount==0}" class="page-item active">
+                        <a th:text="0" class="page-link" href="javascript:void(0)"></a>
+                    </li>
+                    <li th:if="${pageBean.totalCount==0}" class="page-item disabled">
+                        <a class="page-link" href="javascript:void(0)">下一页</a>
+                    </li>
+                </ul>
+            </nav>
         </main>
     </div>
 </div>
@@ -36,10 +138,19 @@
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}" type="text/javascript"></script>
 <script th:src="@{/webjars/popper.js/1.14.3/popper.min.js}" type="text/javascript"></script>
 <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}" type="text/javascript"></script>
-
 <script th:src="@{/webjars/feather-icons/4.10.0/dist/feather.min.js}" type="text/javascript"></script>
+
 <script th:src="@{/js/dashboard.js}" type="text/javascript"></script>
 
+<script>
+    $(".deleteBtn").click(function(){
+        $("#deleteConfirmBtn").attr("delUri",$(this).attr("delUri"));
+    });
+
+    $("#deleteConfirmBtn").click(function(){
+        $("#deleteLabForm").attr("action",$(this).attr("delUri")).submit();
+    });
+</script>
 
 </body>
 </html>
