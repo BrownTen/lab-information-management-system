@@ -2,7 +2,7 @@
 server:
   servlet:
     context-path: /lims
-  port: 80
+  port: 8888
 
 # spring Configuration
 spring:
