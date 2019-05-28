@@ -309,9 +309,9 @@ public class AdminController {
     }
 
     @GetMapping("/reports/{currentPage}")
-    public String findOrderRecordsLimitByStuId(@PathVariable Integer currentPage, Model model){
+    public String findOrderRecordsLimitOrderByStatus(@PathVariable Integer currentPage, Model model){
         Integer currentCount = 8;
-        PageBean<Report> pageBean = adminService.getReportsLimit(currentPage, currentCount);
+        PageBean<Report> pageBean = adminService.getReportsLimitOrderByStatus(currentPage, currentCount);
         model.addAttribute("pageBean", pageBean);
         return "admin/infos/report";
     }
@@ -324,9 +324,9 @@ public class AdminController {
     }
 
     @GetMapping("/conditionReports/{currentPage}")
-    public String findReportsLimitByCondition(@PathVariable Integer currentPage, ReportCondition reportCondition, Model model){
+    public String findReportsLimitByConditionOrderByStatus(@PathVariable Integer currentPage, ReportCondition reportCondition, Model model){
         Integer currentCount = 8;
-        PageBean<Report> pageBean = adminService.getReportsLimitByCondition(currentPage, currentCount, reportCondition);
+        PageBean<Report> pageBean = adminService.getReportsLimitByConditionOrderByStatus(currentPage, currentCount, reportCondition);
         model.addAttribute("pageBean", pageBean);
         model.addAttribute("reportCondition", reportCondition);
         return "admin/infos/report";
@@ -335,7 +335,7 @@ public class AdminController {
     @GetMapping("/orders/{currentPage}")
     public String orderInfos(@PathVariable Integer currentPage, Model model){
         Integer currentCount = 8;
-        PageBean<Order> pageBean = adminService.getOrdersLimit(currentPage, currentCount);
+        PageBean<Order> pageBean = adminService.getOrdersLimitOrderByStatus(currentPage, currentCount);
         model.addAttribute("pageBean", pageBean);
         return "admin/infos/order";
     }
@@ -345,7 +345,7 @@ public class AdminController {
                                                    OrderRecordCondition orderRecordCondition,
                                                    Model model){
         Integer currentCount = 8;
-        PageBean<Order> pageBean = adminService.getOrdersLimitByCondition(currentPage, currentCount, orderRecordCondition);
+        PageBean<Order> pageBean = adminService.getOrdersLimitByConditionOrderByStatus(currentPage, currentCount, orderRecordCondition);
         model.addAttribute("pageBean", pageBean);
         model.addAttribute("orderRecordCondition", orderRecordCondition);
         return "admin/infos/order";

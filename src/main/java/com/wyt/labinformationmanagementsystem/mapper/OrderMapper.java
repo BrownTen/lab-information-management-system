@@ -69,14 +69,14 @@ public interface OrderMapper {
 
     @Select("select * from order_tbl where order_status != 0 and " +
             "course_id in (select course_id from course_tbl where teacher_id = #{teacherId}) " +
-            "limit #{index},#{currentCount}")
+            "order by order_status limit #{index},#{currentCount} ")
     @Results({
             @Result(property = "lab", column = "lab_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId")),
             @Result(property = "course", column = "course_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByCourseId"))
     })
-    List<Order> getOrdersLimitStatus123ByTeacherId(Integer index, Integer currentCount, Integer teacherId);
+    List<Order> getOrdersLimitStatus123ByTeacherIdOrderByStatus(Integer index, Integer currentCount, Integer teacherId);
     /////////////////////////////////////////////////////
 
     @Select("<script>" +
@@ -129,7 +129,7 @@ public interface OrderMapper {
                 "<if test = 'orderRecordCondition.orderStatus!=null'> " +
                 "and order_status = #{orderRecordCondition.orderStatus} " +
                 "</if> " +
-                "limit #{index},#{currentCount} " +
+                "order by order_status limit #{index},#{currentCount} " +
             "</script>")
     @Results({
             @Result(property = "lab", column = "lab_id",
@@ -137,7 +137,7 @@ public interface OrderMapper {
             @Result(property = "course", column = "course_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByCourseId"))
     })
-    List<Order> getOrdersLimitByConditionByTeacherId(Integer index, Integer currentCount, OrderRecordCondition orderRecordCondition, Integer teacherId, String orderDate);
+    List<Order> getOrdersLimitByConditionByTeacherIdOrderByStatus(Integer index, Integer currentCount, OrderRecordCondition orderRecordCondition, Integer teacherId, String orderDate);
 
     @Insert("insert into order_tbl(order_date,order_time,order_status,lab_id) " +
             "values(#{orderDate},#{order.orderTime},0,#{order.lab.labId})")
@@ -156,14 +156,14 @@ public interface OrderMapper {
     @Select("select count(*) from order_tbl")
     Integer getTotalOrderCount();
 
-    @Select("select * from order_tbl limit #{index},#{currentCount}")
+    @Select("select * from order_tbl order by order_Status desc limit #{index},#{currentCount} ")
     @Results({
             @Result(property = "lab", column = "lab_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.LabMapper.getLabByLabId")),
             @Result(property = "course", column = "course_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByCourseId"))
     })
-    List<Order> getOrdersLimit(Integer index, Integer currentCount);
+    List<Order> getOrdersLimitOrderByStatus(Integer index, Integer currentCount);
 
     @Select("<script>" +
                 "select count(*) from order_tbl where 1=1 " +
@@ -218,7 +218,7 @@ public interface OrderMapper {
                     "and course_id in (select course_id from course_tbl where teacher_id in " +
                         "(select teacher_id from teacher_tbl where teacher_name like concat('%', #{orderRecordCondition.teacherName}, '%'))) " +
                 "</if> " +
-                "limit ${index},${currentCount}" +
+                "order by order_Status desc limit ${index},${currentCount}" +
             "</script>")
     @Results({
             @Result(property = "lab", column = "lab_id",
@@ -226,7 +226,7 @@ public interface OrderMapper {
             @Result(property = "course", column = "course_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.CourseMapper.getCourseByCourseId"))
     })
-    List<Order> getOrdersLimitByCondition(Integer index, Integer currentCount, OrderRecordCondition orderRecordCondition, String orderDate);
+    List<Order> getOrdersLimitByConditionOrderByStatus(Integer index, Integer currentCount, OrderRecordCondition orderRecordCondition, String orderDate);
 
     @Delete("delete from order_tbl where order_id = #{orderId}")
     void deleteOrderInfoByOrderId(Integer orderId);

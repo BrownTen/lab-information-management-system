@@ -27,7 +27,7 @@ public class StudentService {
         studentMapper.updateStudentInfo(student);
     }
 
-    public PageBean<Report> getReportsLimitByStuId(Integer currentPage, Integer currentCount, Integer stuId) {
+    public PageBean<Report> getReportsLimitByStuIdOrderByStatusDesc(Integer currentPage, Integer currentCount, Integer stuId) {
         PageBean<Report> pageBean = new PageBean<>();
 
         Integer totalCount = 0;
@@ -36,7 +36,7 @@ public class StudentService {
         Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
 
         Integer index = (currentPage - 1) * currentCount;
-        List<Report> reports = reportMapper.getReportsLimitByStuId(index, currentCount, stuId);
+        List<Report> reports = reportMapper.getReportsLimitByStuIdOrderByStatusDesc(index, currentCount, stuId);
 
         pageBean
                 .setCurrentPage(currentPage)
@@ -49,7 +49,7 @@ public class StudentService {
 
     }
 
-    public PageBean<Report> getReportsLimitByConditionByStuId(Integer currentPage, Integer currentCount, ReportCondition reportCondition, Integer stuId) {
+    public PageBean<Report> getReportsLimitByConditionByStuIdOrderByStatusDesc(Integer currentPage, Integer currentCount, ReportCondition reportCondition, Integer stuId) {
         PageBean<Report> pageBean = new PageBean<>();
 
         String formatDate = null;
@@ -63,7 +63,7 @@ public class StudentService {
         Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
 
         Integer index = (currentPage - 1) * currentCount;
-        List<Report> reports = reportMapper.getReportsLimitByConditionByStuId(index, currentCount, reportCondition, stuId, formatDate);
+        List<Report> reports = reportMapper.getReportsLimitByConditionByStuIdOrderByStatusDesc(index, currentCount, reportCondition, stuId, formatDate);
 
         pageBean
                 .setCurrentPage(currentPage)

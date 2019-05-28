@@ -30,12 +30,12 @@ public interface ReportMapper {
     List<Report> getReportsLimitByTeacherId(Integer index, Integer currentCount, Integer teacherId);
 
     @Select("select * from report_tbl where stu_id = #{stuId} " +
-            "limit ${index},${currentCount}")
+            "order by report_status desc limit ${index},${currentCount}")
     @Results({
             @Result(property = "order", column = "order_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.findOrderByOrderId")),
     })
-    List<Report> getReportsLimitByStuId(Integer index, Integer currentCount, Integer stuId);
+    List<Report> getReportsLimitByStuIdOrderByStatusDesc(Integer index, Integer currentCount, Integer stuId);
 
     @Select("<script>" +
                 "select count(*) from report_tbl where order_id in " +
@@ -117,7 +117,7 @@ public interface ReportMapper {
                 "<if test = 'reportCondition.reportStatus!=null'>" +
                 "and report_status = #{reportCondition.reportStatus} " +
                 "</if> " +
-                "limit ${index},${currentCount}" +
+                "order by report_status limit ${index},${currentCount}" +
             "</script>")
     @Results({
             @Result(property = "order", column = "order_id",
@@ -125,7 +125,7 @@ public interface ReportMapper {
             @Result(property = "student", column = "stu_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.StudentMapper.getStudentByStudentId"))
     })
-    List<Report> getReportsLimitByConditionByTeacherId(Integer index, Integer currentCount, ReportCondition reportCondition, Integer teacherId, String orderDate);
+    List<Report> getReportsLimitByConditionByTeacherIdOrderByStatus(Integer index, Integer currentCount, ReportCondition reportCondition, Integer teacherId, String orderDate);
 
     @Select("<script>" +
                 "select * from report_tbl where stu_id = #{stuId} " +
@@ -147,13 +147,13 @@ public interface ReportMapper {
                 "<if test = 'reportCondition.reportStatus!=null'>" +
                 "and report_status = #{reportCondition.reportStatus} " +
                 "</if> " +
-                "limit ${index},${currentCount}" +
+                "order by report_status limit ${index},${currentCount}" +
             "</script>")
     @Results({
             @Result(property = "order", column = "order_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.findOrderByOrderId")),
     })
-    List<Report> getReportsLimitByConditionByStuId(Integer index, Integer currentCount, ReportCondition reportCondition, Integer stuId, String orderDate);
+    List<Report> getReportsLimitByConditionByStuIdOrderByStatusDesc(Integer index, Integer currentCount, ReportCondition reportCondition, Integer stuId, String orderDate);
 
     @Select("select * from report_tbl where report_id = #{reportId}")
     @Results({
@@ -174,14 +174,14 @@ public interface ReportMapper {
     @Select("select count(*) from report_tbl")
     Integer getReportTotalCount();
 
-    @Select("select * from report_tbl limit ${index},${currentCount}")
+    @Select("select * from report_tbl order by report_status limit ${index},${currentCount}")
     @Results({
             @Result(property = "order", column = "order_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.OrderMapper.findOrderByOrderId")),
             @Result(property = "student", column = "stu_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.StudentMapper.getStudentByStudentId"))
     })
-    List<Report> getReportsLimit(Integer index, Integer currentCount);
+    List<Report> getReportsLimitOrderByStatus(Integer index, Integer currentCount);
 
     @Select("<script>" +
                 "select count(*) from report_tbl where 1=1 " +
@@ -239,7 +239,7 @@ public interface ReportMapper {
                 "<if test = 'reportCondition.stuNumber!=null'>" +
                     "and stu_id in (select stu_id from student_tbl where stu_number like concat('%', #{reportCondition.stuNumber},'%')) " +
                 "</if> " +
-                "limit ${index},${currentCount}" +
+                "order by report_status limit ${index},${currentCount}" +
             "</script>")
     @Results({
             @Result(property = "order", column = "order_id",
@@ -247,7 +247,7 @@ public interface ReportMapper {
             @Result(property = "student", column = "stu_id",
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.StudentMapper.getStudentByStudentId"))
     })
-    List<Report> getReportsLimitByCondition(Integer index, Integer currentCount, ReportCondition reportCondition, String orderDate);
+    List<Report> getReportsLimitByConditionOrderByStatus(Integer index, Integer currentCount, ReportCondition reportCondition, String orderDate);
 
     @Insert("insert into report_tbl(report_status, order_id, stu_id) values(2, #{order.orderId}, #{student.stuId})")
     @Options(useGeneratedKeys = true)

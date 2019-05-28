@@ -36,17 +36,17 @@ public class StudentController {
     }
 
     @GetMapping("/orders/{currentPage}/{stuId}")
-    public String findOrderRecordsLimitByStuId(@PathVariable Integer currentPage, @PathVariable Integer stuId, Model model){
+    public String findOrderRecordsLimitByStuIdOrderByStatusDesc(@PathVariable Integer currentPage, @PathVariable Integer stuId, Model model){
         Integer currentCount = 8;
-        PageBean<Report> pageBean = studentService.getReportsLimitByStuId(currentPage, currentCount, stuId);
+        PageBean<Report> pageBean = studentService.getReportsLimitByStuIdOrderByStatusDesc(currentPage, currentCount, stuId);
         model.addAttribute("pageBean", pageBean);
         return "student/infos/orderRecord";
     }
 
     @GetMapping("/conditionReports/{currentPage}/{stuId}")
-    public String findReportsLimitByCondition(@PathVariable Integer currentPage, @PathVariable Integer stuId, ReportCondition reportCondition, Model model){
+    public String findReportsLimitByConditionOrderByStatusDesc(@PathVariable Integer currentPage, @PathVariable Integer stuId, ReportCondition reportCondition, Model model){
         Integer currentCount = 8;
-        PageBean<Report> pageBean = studentService.getReportsLimitByConditionByStuId(currentPage, currentCount, reportCondition, stuId);
+        PageBean<Report> pageBean = studentService.getReportsLimitByConditionByStuIdOrderByStatusDesc(currentPage, currentCount, reportCondition, stuId);
         model.addAttribute("pageBean", pageBean);
         model.addAttribute("reportCondition", reportCondition);
         return "student/infos/orderRecord";

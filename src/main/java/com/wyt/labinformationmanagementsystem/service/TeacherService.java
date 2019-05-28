@@ -116,7 +116,7 @@ public class TeacherService {
         orderMapper.updateOrderStatus2ByOrderId(orderId, courseId);
     }
 
-    public PageBean<Order> getOrderedLabsLimitStatus123ByTeacherId(Integer currentPage, Integer currentCount, Integer teacherId) {
+    public PageBean<Order> getOrderedLabsLimitStatus123ByTeacherIdOrderByStatus(Integer currentPage, Integer currentCount, Integer teacherId) {
         PageBean<Order> pageBean = new PageBean<>();
 
         Integer totalCount = 0;
@@ -125,7 +125,7 @@ public class TeacherService {
         Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
 
         Integer index = (currentPage - 1) * currentCount;
-        List<Order> orders = orderMapper.getOrdersLimitStatus123ByTeacherId(index, currentCount, teacherId);
+        List<Order> orders = orderMapper.getOrdersLimitStatus123ByTeacherIdOrderByStatus(index, currentCount, teacherId);
 
         pageBean
                 .setCurrentPage(currentPage)
@@ -137,7 +137,7 @@ public class TeacherService {
         return pageBean;
     }
 
-    public PageBean<Order> getOrderedLabsLimitByConditionByTeacherId(Integer currentPage, Integer currentCount, OrderRecordCondition orderRecordCondition, Integer teacherId) {
+    public PageBean<Order> getOrderedLabsLimitByConditionByTeacherIdOrderByStatus(Integer currentPage, Integer currentCount, OrderRecordCondition orderRecordCondition, Integer teacherId) {
         PageBean<Order> pageBean = new PageBean<>();
 
         String formatDate = null;
@@ -151,7 +151,7 @@ public class TeacherService {
         Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
 
         Integer index = (currentPage - 1) * currentCount;
-        List<Order> orders = orderMapper.getOrdersLimitByConditionByTeacherId(index, currentCount, orderRecordCondition, teacherId, formatDate);
+        List<Order> orders = orderMapper.getOrdersLimitByConditionByTeacherIdOrderByStatus(index, currentCount, orderRecordCondition, teacherId, formatDate);
 
         pageBean
                 .setCurrentPage(currentPage)
@@ -197,7 +197,7 @@ public class TeacherService {
         return pageBean;
     }
 
-    public PageBean<Report> getReportsLimitByConditionByTeacherId(Integer currentPage, Integer currentCount, ReportCondition reportCondition, Integer teacherId) {
+    public PageBean<Report> getReportsLimitByConditionByTeacherIdOrderByStatus(Integer currentPage, Integer currentCount, ReportCondition reportCondition, Integer teacherId) {
         PageBean<Report> pageBean = new PageBean<>();
 
         String formatDate = null;
@@ -211,7 +211,7 @@ public class TeacherService {
         Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
 
         Integer index = (currentPage - 1) * currentCount;
-        List<Report> reports = reportMapper.getReportsLimitByConditionByTeacherId(index, currentCount, reportCondition, teacherId, formatDate);
+        List<Report> reports = reportMapper.getReportsLimitByConditionByTeacherIdOrderByStatus(index, currentCount, reportCondition, teacherId, formatDate);
 
         pageBean
                 .setCurrentPage(currentPage)

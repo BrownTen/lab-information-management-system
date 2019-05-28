@@ -113,22 +113,22 @@ public class TeacherController {
     }
 
     @GetMapping("/orderedLabs/{currentPage}/{teacherId}")
-    public String findOrderedLabsLimitStatus123ByTeacherId(@PathVariable Integer currentPage,
+    public String findOrderedLabsLimitStatus123ByTeacherIdOrderByStatus(@PathVariable Integer currentPage,
                                                            @PathVariable Integer teacherId,
                                                            Model model){
         Integer currentCount = 8;
-        PageBean<Order> pageBean = teacherService.getOrderedLabsLimitStatus123ByTeacherId(currentPage, currentCount, teacherId);
+        PageBean<Order> pageBean = teacherService.getOrderedLabsLimitStatus123ByTeacherIdOrderByStatus(currentPage, currentCount, teacherId);
         model.addAttribute("pageBean", pageBean);
         return "teacher/infos/orderRecord";
     }
 
     @GetMapping("/conditionOrderRecords/{currentPage}/{teacherId}")
-    public String findOrderRecordsLimitByCondition(@PathVariable Integer currentPage,
+    public String findOrderRecordsLimitByConditionOrderByStatus(@PathVariable Integer currentPage,
                                                    @PathVariable Integer teacherId,
                                                    OrderRecordCondition orderRecordCondition,
                                                    Model model){
         Integer currentCount = 8;
-        PageBean<Order> pageBean = teacherService.getOrderedLabsLimitByConditionByTeacherId(currentPage, currentCount, orderRecordCondition, teacherId);
+        PageBean<Order> pageBean = teacherService.getOrderedLabsLimitByConditionByTeacherIdOrderByStatus(currentPage, currentCount, orderRecordCondition, teacherId);
         model.addAttribute("pageBean", pageBean);
         model.addAttribute("orderRecordCondition", orderRecordCondition);
         return "teacher/infos/orderRecord";
@@ -151,12 +151,12 @@ public class TeacherController {
     }
 
     @GetMapping("/conditionReports/{currentPage}/{teacherId}")
-    public String findReportsLimitByCondition(@PathVariable Integer currentPage,
+    public String findReportsLimitByConditionOrderByStatus(@PathVariable Integer currentPage,
                                               @PathVariable Integer teacherId,
                                               ReportCondition reportCondition,
                                               Model model){
         Integer currentCount = 8;
-        PageBean<Report> pageBean = teacherService.getReportsLimitByConditionByTeacherId(currentPage, currentCount, reportCondition, teacherId);
+        PageBean<Report> pageBean = teacherService.getReportsLimitByConditionByTeacherIdOrderByStatus(currentPage, currentCount, reportCondition, teacherId);
         model.addAttribute("pageBean", pageBean);
         model.addAttribute("reportCondition", reportCondition);
         return "teacher/infos/report";
