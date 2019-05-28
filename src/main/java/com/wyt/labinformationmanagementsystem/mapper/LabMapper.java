@@ -63,4 +63,10 @@ public interface LabMapper {
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.AdminMapper.getAdminByAdmId")),
     })
     List<Lab> getLabsLimitByCondition(Integer index, Integer currentCount, Lab lab);
+
+    @Select("select count(*) from lab_tbl where lab_name like concat('%', #{labName}, '%')")
+    Integer getTotalLabCountByLabName(String labName);
+
+    @Select("select lab_id from lab_tbl where lab_name like concat('%', #{labName}, '%')")
+    Integer getLabIdByLabName(String labName);
 }

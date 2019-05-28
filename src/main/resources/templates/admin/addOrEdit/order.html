@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" rel="stylesheet">
+
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+
+    <title>orderAddOrEdit</title>
+</head>
+<body>
+
+<div th:replace="admin/commons/bar::topbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div th:replace="admin/commons/bar::sidebar(activeStatus='orderInfos')"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <form method="post" th:action="@{/admin/order}" style="padding-top: 15px">
+
+                <input type="hidden" name="_method" value="put" th:if="${order!=null}">
+                <input type="hidden" name="orderId" th:value="${order!=null}?${order.orderId}">
+
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="inputLabName">实验室名称</label>
+                        <input name="lab.labName" th:value="${order!=null}?${order.lab.labName}" type="text" class="form-control" id="inputLabName" placeholder="请填写实验室名称" required>
+                        <p style="color: red;" th:text="${labMsg}" th:if="${not #strings.isEmpty(labMsg)}"></p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inlineFormInputDate">选择使用日期</label>
+                        <input th:value="${order!=null}?${#dates.format(order.orderDate,'yyyy-MM-dd')}" name="orderDate" type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputDate" placeholder="选择使用日期" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inlineFormInputDate">选择使用时间</label>
+                        <select th:name="orderTime" class="custom-select mb-2 mr-sm-2" id="exampleFormControlSelect1" required>
+                            <option value="">选择使用时间</option>
+                            <option th:if="${order==null}" value="0">上午</option>
+                            <option th:if="${order==null}" value="1">下午</option>
+                            <option th:if="${order!=null && order.orderTime==0}" value="0" selected>上午</option>
+                            <option th:if="${order!=null && order.orderTime!=0}" value="0">上午</option>
+                            <option th:if="${order!=null && order.orderTime==1}" value="1" selected>下午</option>
+                            <option th:if="${order!=null && order.orderTime!=1}" value="1">下午</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-sm btn-primary" th:text="${order!=null?'更新':'录入'}"></button>&nbsp;&nbsp;
+                    <a th:href="@{/admin/orders/1}" class="btn btn-sm btn-secondary" th:text="取消"></a>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/popper.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/feather-icons/4.10.0/dist/feather.min.js}" type="text/javascript"></script>
+
+<script th:src="@{/js/dashboard.js}" type="text/javascript"></script>
+<script th:src="@{/laydate/laydate.js}" type="text/javascript"></script>
+
+<script>
+    laydate.render({
+        elem: '#inlineFormInputDate'
+    });
+</script>
+
+</body>
+</html>

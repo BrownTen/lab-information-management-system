@@ -20,4 +20,5 @@ public class OrderRecordCondition {
     private String groupName;
     private Integer orderStatus;
 
+    private String teacherName;
 }

@@ -2,6 +2,7 @@ package com.wyt.labinformationmanagementsystem.service;
 
 import com.wyt.labinformationmanagementsystem.mapper.*;
 import com.wyt.labinformationmanagementsystem.model.db.*;
+import com.wyt.labinformationmanagementsystem.model.vo.OrderRecordCondition;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import com.wyt.labinformationmanagementsystem.model.vo.ReportCondition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -374,5 +375,115 @@ public class AdminService {
                 .setList(reports);
 
         return pageBean;
+    }
+
+    public PageBean<Order> getOrdersLimit(Integer currentPage, Integer currentCount) {
+        PageBean<Order> pageBean = new PageBean<>();
+
+        Integer totalCount = 0;
+        totalCount = orderMapper.getTotalOrderCount();
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Order> orders = orderMapper.getOrdersLimit(index, currentCount);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(orders);
+
+        return pageBean;
+    }
+
+    public PageBean<Order> getOrdersLimitByCondition(Integer currentPage, Integer currentCount, OrderRecordCondition orderRecordCondition) {
+        PageBean<Order> pageBean = new PageBean<>();
+
+        String formatDate = null;
+        if(orderRecordCondition.getOrderDate()!=null){
+            formatDate =  new SimpleDateFormat("yyyy-MM-dd").format(orderRecordCondition.getOrderDate());
+        }
+
+        if("".equals(orderRecordCondition.getCourseName())){
+            orderRecordCondition.setCourseName(null);
+        }
+        if("".equals(orderRecordCondition.getGroupName())){
+            orderRecordCondition.setGroupName(null);
+        }
+        if("".equals(orderRecordCondition.getTeacherName())){
+            orderRecordCondition.setTeacherName(null);
+        }
+
+        Integer totalCount = 0;
+        totalCount = orderMapper.getTotalOrderCountByCondition(orderRecordCondition, formatDate);
+
+        Integer totalPage = (int) Math.ceil(1.0 * totalCount / currentCount);
+
+        Integer index = (currentPage - 1) * currentCount;
+        List<Order> orders = orderMapper.getOrdersLimitByCondition(index, currentCount, orderRecordCondition, formatDate);
+
+        pageBean
+                .setCurrentPage(currentPage)
+                .setCurrentCount(currentCount)
+                .setTotalCount(totalCount)
+                .setTotalPage(totalPage)
+                .setList(orders);
+
+        if(orderRecordCondition.getCourseName()==null){
+            orderRecordCondition.setCourseName("");
+        }
+        if(orderRecordCondition.getGroupName()==null){
+            orderRecordCondition.setGroupName("");
+        }
+        if(orderRecordCondition.getTeacherName()==null){
+            orderRecordCondition.setTeacherName("");
+        }
+
+        return pageBean;
+    }
+
+    public void updateOrderStatus1ByOrderId(Integer orderId) {
+        orderMapper.updateOrderStatus1ByOrderId(orderId);
+    }
+
+    public void updateOrderStatus3ByOrderId(Integer orderId, String orderMessage) {
+        orderMapper.updateOrderStatus3ByOrderId(orderId, orderMessage);
+    }
+
+    public void deleteOrderInfoByOrderId(Integer orderId) {
+        orderMapper.deleteOrderInfoByOrderId(orderId);
+    }
+
+    public Integer getLabIdByLabName(String labName) {
+        Integer onlyOne = labMapper.getTotalLabCountByLabName(labName);
+        if(onlyOne != 1){
+            return null;
+        }
+        return labMapper.getLabIdByLabName(labName);
+    }
+
+    public void insertOrder(Order order) {
+        String formatDate = new SimpleDateFormat("yyyy-MM-dd").format(order.getOrderDate());
+        orderMapper.insertOrder(order, formatDate);
+    }
+
+    public Order getOrderByOrderId(Integer orderId) {
+        return orderMapper.getOrderByOrderId(orderId);
+    }
+
+    public void updateOrderInfoByOrderId(Order order) {
+        orderMapper.updateOrderInfoByOrderId(order);
+    }
+
+    public void insertReport(Integer orderId) {
+        List<Integer> stuIds = orderMapper.getStudentIdsByOrderId(orderId);
+        for(Integer stuId : stuIds){
+            Order order = new Order().setOrderId(orderId);
+            Student stu = new Student().setStuId(stuId);
+            Report report = new Report().setOrder(order).setStudent(stu);
+            reportMapper.insertReport(report);
+        }
     }
 }

@@ -168,7 +168,8 @@ public class TeacherService {
     }
 
     public void insertOrder(Order order) {
-        orderMapper.insertOrder(order);
+        String formatDate = new SimpleDateFormat("yyyy-MM-dd").format(order.getOrderDate());
+        orderMapper.insertOrder(order, formatDate);
     }
 
     public Order findOrderByOrderId(Integer orderId) {

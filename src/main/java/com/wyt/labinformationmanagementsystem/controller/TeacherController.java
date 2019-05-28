@@ -134,7 +134,7 @@ public class TeacherController {
         return "teacher/infos/orderRecord";
     }
 
-    @PostMapping("/orderRecord/{orderId}/{teacherId}")
+    @PutMapping("/orderRecord/{orderId}/{teacherId}")
     public String updateOrderRecordStatus3ByOrderId(@PathVariable Integer orderId, @PathVariable Integer teacherId, String orderMessage){
         teacherService.updateOrderStatus3ByOrderId(orderId, orderMessage);
         Order order = teacherService.findOrderByOrderId(orderId);

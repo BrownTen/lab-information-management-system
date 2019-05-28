@@ -248,4 +248,8 @@ public interface ReportMapper {
                     one = @One(select = "com.wyt.labinformationmanagementsystem.mapper.StudentMapper.getStudentByStudentId"))
     })
     List<Report> getReportsLimitByCondition(Integer index, Integer currentCount, ReportCondition reportCondition, String orderDate);
+
+    @Insert("insert into report_tbl(report_status, order_id, stu_id) values(2, #{order.orderId}, #{student.stuId})")
+    @Options(useGeneratedKeys = true)
+    void insertReport(Report report);
 }

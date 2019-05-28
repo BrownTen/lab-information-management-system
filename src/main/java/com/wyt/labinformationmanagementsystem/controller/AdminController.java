@@ -1,6 +1,7 @@
 package com.wyt.labinformationmanagementsystem.controller;
 
 import com.wyt.labinformationmanagementsystem.model.db.*;
+import com.wyt.labinformationmanagementsystem.model.vo.OrderRecordCondition;
 import com.wyt.labinformationmanagementsystem.model.vo.PageBean;
 import com.wyt.labinformationmanagementsystem.model.vo.ReportCondition;
 import com.wyt.labinformationmanagementsystem.service.AdminService;
@@ -333,7 +334,78 @@ public class AdminController {
 
     @GetMapping("/orders/{currentPage}")
     public String orderInfos(@PathVariable Integer currentPage, Model model){
-        //TODO
+        Integer currentCount = 8;
+        PageBean<Order> pageBean = adminService.getOrdersLimit(currentPage, currentCount);
+        model.addAttribute("pageBean", pageBean);
         return "admin/infos/order";
+    }
+
+    @GetMapping("/conditionOrders/{currentPage}")
+    public String findOrderRecordsLimitByCondition(@PathVariable Integer currentPage,
+                                                   OrderRecordCondition orderRecordCondition,
+                                                   Model model){
+        Integer currentCount = 8;
+        PageBean<Order> pageBean = adminService.getOrdersLimitByCondition(currentPage, currentCount, orderRecordCondition);
+        model.addAttribute("pageBean", pageBean);
+        model.addAttribute("orderRecordCondition", orderRecordCondition);
+        return "admin/infos/order";
+    }
+
+    @PutMapping("/orderSuccess/{orderId}")
+    public String updateOrderStatus1ByOrderId(@PathVariable Integer orderId){
+        adminService.updateOrderStatus1ByOrderId(orderId);
+        adminService.insertReport(orderId);
+        return "redirect:/admin/orders/1";
+    }
+
+    @PutMapping("/orderCancel/{orderId}")
+    public String updateOrderRecordStatus3ByOrderId(@PathVariable Integer orderId, String orderMessage){
+        adminService.updateOrderStatus3ByOrderId(orderId, orderMessage);
+        return "redirect:/admin/orders/1/";
+    }
+
+    @DeleteMapping("/order/{orderId}")
+    public String deleteOrderByOrderId(@PathVariable Integer orderId){
+        adminService.deleteOrderInfoByOrderId(orderId);
+        return "redirect:/admin/orders/1";
+    }
+
+    @GetMapping("/order")
+    public String toOrderAddPage(){
+        return "admin/addOrEdit/order";
+    }
+
+    @PostMapping("/order")
+    public String insertOreder(Order order, Model model){
+        Integer labId = adminService.getLabIdByLabName(order.getLab().getLabName());
+        if (labId == null){
+            model.addAttribute("labMsg","请输入准确实验室");
+            model.addAttribute("order",null);
+            return "/admin/addOrEdit/order";
+        }
+        order.getLab().setLabId(labId);
+
+        adminService.insertOrder(order);
+        return "redirect:/admin/orders/1";
+    }
+
+    @GetMapping("/order/{orderId}")
+    public String toOrderEditPage(@PathVariable Integer orderId, Model model){
+        Order order = adminService.getOrderByOrderId(orderId);
+        model.addAttribute("order", order);
+        return "admin/addOrEdit/order";
+    }
+
+    @PutMapping("/order")
+    public String updateOrderInfo(Order order, Model model){
+        Integer labId = adminService.getLabIdByLabName(order.getLab().getLabName());
+        if (labId == null){
+            model.addAttribute("labMsg","请输入准确实验室");
+            return "/admin/addOrEdit/order";
+        }
+        order.getLab().setLabId(labId);
+
+        adminService.updateOrderInfoByOrderId(order);
+        return "redirect:/admin/orders/1";
     }
 }
