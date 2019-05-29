@@ -1,3 +1,38 @@
+# spring Configuration
 spring:
   profiles:
-    active: dev
+    active: test
+
+  # DB Configuration
+  datasource:
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+    # DB Pool Configuration
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 连接池配置信息
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    # 连接池其他配置信息
+    filters: stat,wall
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+  # Thymeleaf Configuration
+  thymeleaf:
+    cache: false
+
+  # MVC date format
+  # default configuration:
+  mvc:
+    date-format: yyyy-MM-dd
+

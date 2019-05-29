@@ -2,14 +2,14 @@
 server:
   servlet:
     context-path: /lims
-  port: 8888
+  port: 80
 
 # spring Configuration
 spring:
   # DB Configuration
   datasource:
-    password: root
-    url: jdbc:mysql://localhost/lims
+    password: 199612034532Wyt
+    url: jdbc:mysql://rm-bp12yhr4bu4nn8dslco.mysql.rds.aliyuncs.com:3306/lims
 
 # show sql in console
 logging:
