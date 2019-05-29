@@ -8,5 +8,7 @@ server:
 spring:
   # DB Configuration
   datasource:
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
     password: 199612034532Wyt
     url: jdbc:mysql://rm-bp12yhr4bu4nn8dsl.mysql.rds.aliyuncs.com:3306/lims

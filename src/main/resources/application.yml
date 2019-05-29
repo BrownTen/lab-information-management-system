@@ -5,8 +5,6 @@ spring:
 
   # DB Configuration
   datasource:
-    username: root
-    driver-class-name: com.mysql.jdbc.Driver
     # DB Pool Configuration
     type: com.alibaba.druid.pool.DruidDataSource
     # 连接池配置信息
