@@ -91,7 +91,7 @@
                     <td th:if="${order.orderStatus==1}" th:text="已预约"></td>
                     <td th:if="${order.orderStatus==3}" th:text="预约中止+'/'+失败"></td>
                     <td>
-                        <button th:attr="cancelUri=@{/admin/orderRecord/}+${order.orderId}" type="button" th:if="${order.orderStatus==2}" class="btn btn-sm btn-danger cancelBtn" data-toggle="modal" data-target="#exampleModalCenter">取消预约</button>
+                        <button th:attr="cancelUri=@{/teacher/orderRecord/}+${order.orderId}+'/'+${session.loginUser.teacherId}" type="button" th:if="${order.orderStatus==2}" class="btn btn-sm btn-danger cancelBtn" data-toggle="modal" data-target="#exampleModalCenter">取消预约</button>
                         <button type="button" th:if="${order.orderStatus==1}" class="btn btn-sm btn-success disabled">预约成功</button>
                         <button th:attr="message=${order.orderMessage}" type="button" th:if="${order.orderStatus==3}" class="btn btn-sm btn-primary showMessageBtn" data-toggle="modal" data-target="#exampleModalCenter2">查看信息</button>
                     </td>
